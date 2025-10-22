@@ -26,7 +26,7 @@ jobs:
       - uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.0
       
       - name: Run Snyk to check for vulnerabilities
-        uses: snyk/actions/node@b98d498629f1c368650224d6d212bf7dfa89e4bf # master
+        uses: snyk/actions/node@master
         continue-on-error: true # To make sure that SARIF upload gets called
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
@@ -34,13 +34,13 @@ jobs:
           args: --sarif-file-output=snyk.sarif --all-projects --dev --org=23a1dbcf-c24a-4c44-aa74-cabdc4ba99d5 --prune-repeated-subdependencies
 
       - name: Upload result to GitHub Code Scanning
-        uses: github/codeql-action/upload-sarif@cdcdbb579706841c47f7063dda365e292e5cad7a # v2.13.4
+        uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: snyk.sarif
           category: "Snyk Open Source"
 
       - name: Run Snyk to check for vulnerabilities (monitor)
-        uses: snyk/actions/node@b98d498629f1c368650224d6d212bf7dfa89e4bf # master
+        uses: snyk/actions/node@master
         continue-on-error: true # To make sure that SARIF upload gets called
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
@@ -63,16 +63,16 @@ jobs:
       - uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.0
 
       - name: Run Snyk to scan for bad code
-        uses: snyk/actions/node@b98d498629f1c368650224d6d212bf7dfa89e4bf # master
+        uses: snyk/actions/node@master
         continue-on-error: true # To make sure that SARIF upload gets called
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
           command: code test
           args: --org=23a1dbcf-c24a-4c44-aa74-cabdc4ba99d5 --sarif-file-output=snyk-code.sarif
-        
+
       - name: Upload result to GitHub Code Scanning
-        uses: github/codeql-action/upload-sarif@cdcdbb579706841c47f7063dda365e292e5cad7a # v2.13.4
+        uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: snyk-code.sarif
           category: "Snyk Code"
@@ -97,26 +97,26 @@ jobs:
           npm run build:docker -ws --if-present
 
       - name: Run Snyk to check for vulnerabilities (monitor)
-        uses: snyk/actions/docker@b98d498629f1c368650224d6d212bf7dfa89e4bf # master
+        uses: snyk/actions/docker@master
         continue-on-error: true # To make sure that SARIF upload gets called
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
           command: container monitor
           image: markdown-confluence/markdown-confluence
-          args: --org=23a1dbcf-c24a-4c44-aa74-cabdc4ba99d5 --file=packages/cli/Dockerfile 
+          args: --org=23a1dbcf-c24a-4c44-aa74-cabdc4ba99d5 --file=packages/cli/Dockerfile
 
       - name: Run Snyk to check Docker image for vulnerabilities
         continue-on-error: true
-        uses: snyk/actions/docker@b98d498629f1c368650224d6d212bf7dfa89e4bf
+        uses: snyk/actions/docker@master
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
           image: markdown-confluence/markdown-confluence
-          args: --org=23a1dbcf-c24a-4c44-aa74-cabdc4ba99d5 --file=packages/cli/Dockerfile
+          args: --org=23a1dbcf-c24a-4c44-aa74-cabdc4ba99d5 --file=packages/cli/Dockerfile --sarif-file-output=snyk.sarif
 
       - name: Upload result to GitHub Code Scanning
-        uses: github/codeql-action/upload-sarif@cdcdbb579706841c47f7063dda365e292e5cad7a # v2.13.4
+        uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: snyk.sarif
 
@@ -134,7 +134,7 @@ jobs:
 
       - uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.0
       - name: Run Snyk to create SBOM
-        uses: snyk/actions/node@b98d498629f1c368650224d6d212bf7dfa89e4bf # master
+        uses: snyk/actions/node@master
         continue-on-error: true # To make sure that SARIF upload gets called
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
