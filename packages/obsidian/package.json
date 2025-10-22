@@ -15,15 +15,15 @@
     "author": "andymac4182",
     "license": "Apache 2.0",
     "devDependencies": {
-        "@types/mime-types": "^2.1.1",
-        "@types/react-dom": "^18.0.11",
-        "obsidian": "1.1.1"
+        "@types/mime-types": "^2.1.4",
+        "@types/react-dom": "^18.3.5",
+        "obsidian": "1.7.2"
     },
     "dependencies": {
-        "confluence.js": "^1.6.3",
+        "confluence.js": "^1.7.4",
         "mime-types": "^2.1.35",
-        "react": "^16.14.0",
-        "react-dom": "^16.14.0",
+        "react": "^18.3.1",
+        "react-dom": "^18.3.1",
         "@markdown-confluence/lib": "5.5.2",
         "@markdown-confluence/mermaid-electron-renderer": "5.5.2"
     },
