@@ -38,5 +38,11 @@
    ],
    "lint-staged": {
       "packages/**/*.ts": "prettier --write"
+   },
+   "overrides": {
+      "test-exclude": "^7.0.1",
+      "@atlaskit/editor-common": {
+         "uuid": "^11.1.0"
+      }
    }
 }
