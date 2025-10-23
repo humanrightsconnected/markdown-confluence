@@ -4,15 +4,7 @@ import { SettingsLoader } from "./SettingsLoader";
 import fs from "fs";
 import yargs from "yargs/yargs";
 import { hideBin } from "yargs/helpers";
-
-/**
- * Type-safe wrapper for yargs parseSync method.
- * Yargs 18 includes parseSync but some transitive dependencies provide
- * outdated @types/yargs that lack this method definition.
- */
-interface YargsWithParseSync<T> {
-	parseSync(): T;
-}
+import { YargsWithParseSync } from "./yargsUtils";
 
 /**
  * Interface for the config option returned by yargs parsing.

@@ -2,15 +2,7 @@ import { ConfluenceSettings } from "../Settings";
 import { SettingsLoader } from "./SettingsLoader";
 import yargs from "yargs/yargs";
 import { hideBin } from "yargs/helpers";
-
-/**
- * Type-safe wrapper for yargs parseSync method.
- * Yargs 18 includes parseSync but some transitive dependencies provide
- * outdated @types/yargs that lack this method definition.
- */
-interface YargsWithParseSync<T> {
-	parseSync(): T;
-}
+import { YargsWithParseSync } from "./yargsUtils";
 
 /**
  * Interface defining the CLI options expected by the command-line argument parser.

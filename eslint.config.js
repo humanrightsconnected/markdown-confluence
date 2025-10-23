@@ -1,3 +1,4 @@
+import globals from 'globals';
 import eslint from '@eslint/js';
 import tseslint from 'typescript-eslint';
 import eslintConfigPrettier from 'eslint-config-prettier';
@@ -16,19 +17,8 @@ export default tseslint.config(
         sourceType: 'module'
       },
       globals: {
-        // Node.js globals
-        process: 'readonly',
-        __dirname: 'readonly',
-        __filename: 'readonly',
-        require: 'readonly',
-        module: 'readonly',
-        exports: 'writable',
-        Buffer: 'readonly',
-        // Browser globals
-        window: 'readonly',
-        document: 'readonly',
-        navigator: 'readonly',
-        console: 'readonly'
+        ...globals.node,
+        ...globals.browser
       }
     },
     rules: {
