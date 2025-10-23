@@ -57,7 +57,15 @@ export class CommandLineArgumentSettingsLoader extends SettingsLoader {
 				type: "boolean",
 				demandOption: false,
 			})
-			.parseSync();
+			.parse() as {
+			baseUrl?: string;
+			parentId?: string;
+			userName?: string;
+			apiToken?: string;
+			enableFolder?: string;
+			contentRoot?: string;
+			firstHeaderPageTitle?: boolean;
+		};
 
 		return {
 			...(options.baseUrl

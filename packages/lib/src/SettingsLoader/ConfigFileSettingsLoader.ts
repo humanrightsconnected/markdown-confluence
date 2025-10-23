@@ -33,7 +33,7 @@ export class ConfigFileSettingsLoader extends SettingsLoader {
 				default: this.configPath,
 				demandOption: false,
 			})
-			.parseSync();
+			.parse() as { config: string };
 
 		this.configPath = options.config;
 	}
