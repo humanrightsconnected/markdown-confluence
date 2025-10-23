@@ -42,7 +42,7 @@ export abstract class SettingsLoader {
 	 * (e.g., ensures contentRoot ends with a slash).
 	 *
 	 * @param settings - Partial settings to validate
-	 * @returns Complete ConfluenceSettings object
+	 * @returns Complete ConfluenceSettings object with normalized values
 	 * @throws Error if any required setting is missing
 	 */
 	protected validateSettings(
@@ -70,16 +70,20 @@ export abstract class SettingsLoader {
 
 		if (!settings.contentRoot) {
 			throw new Error("Content root is required");
-		} else {
-			if (!settings.contentRoot.endsWith("/")) {
-				settings.contentRoot += "/";
-			}
 		}
 
-		if (!("firstHeadingPageTitle" in settings)) {
-			settings.firstHeadingPageTitle = false;
-		}
+		// Normalize contentRoot: ensure it ends with a trailing slash
+		// Check for both forward slash (/) and backslash (\) for Windows compatibility
+		const endsWithSlash = /[\\/]+$/.test(settings.contentRoot);
+		const normalizedContentRoot = endsWithSlash
+			? settings.contentRoot
+			: `${settings.contentRoot}/`;
 
-		return settings as ConfluenceSettings;
+		// Return a new object to avoid mutating the input
+		return {
+			...settings,
+			contentRoot: normalizedContentRoot,
+			firstHeadingPageTitle: settings.firstHeadingPageTitle ?? false,
+		} as ConfluenceSettings;
 	}
 }

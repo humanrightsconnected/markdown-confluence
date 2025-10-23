@@ -29,6 +29,7 @@ jobs:
             api.github.com:443
             api.snyk.io:443
             github.com:443
+            registry.npmjs.org:443
 
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v5.2.2
       
@@ -71,6 +72,7 @@ jobs:
             api.github.com:443
             api.snyk.io:443
             github.com:443
+            registry.npmjs.org:443
 
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v5.2.2
 
@@ -155,6 +157,7 @@ jobs:
           allowed-endpoints: >
             api.snyk.io:443
             github.com:443
+            registry.npmjs.org:443
 
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v5.2.2
       - name: Run Snyk to create SBOM

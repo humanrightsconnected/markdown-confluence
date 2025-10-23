@@ -1,6 +1,29 @@
 import { ConfluenceSettings } from "../Settings";
 import { SettingsLoader } from "./SettingsLoader";
-import yargs from "yargs";
+import yargs from "yargs/yargs";
+import { hideBin } from "yargs/helpers";
+
+/**
+ * Type-safe wrapper for yargs parseSync method.
+ * Yargs 18 includes parseSync but some transitive dependencies provide
+ * outdated @types/yargs that lack this method definition.
+ */
+interface YargsWithParseSync<T> {
+	parseSync(): T;
+}
+
+/**
+ * Interface defining the CLI options expected by the command-line argument parser.
+ */
+interface CliOptions {
+	baseUrl?: string;
+	parentId?: string;
+	userName?: string;
+	apiToken?: string;
+	enableFolder?: string;
+	contentRoot?: string;
+	firstHeaderPageTitle?: boolean;
+}
 
 /**
  * Loads Confluence settings from command-line arguments.
@@ -41,7 +64,7 @@ export class CommandLineArgumentSettingsLoader extends SettingsLoader {
 	 * @returns A partial ConfluenceSettings object containing settings from command-line arguments
 	 */
 	loadPartial(): Partial<ConfluenceSettings> {
-		const yargsInstance = yargs(process.argv)
+		const yargsInstance = yargs(hideBin(process.argv))
 			.usage("Usage: $0 [options]")
 			.option("baseUrl", {
 				alias: "b",
@@ -68,7 +91,7 @@ export class CommandLineArgumentSettingsLoader extends SettingsLoader {
 			})
 			.option("enableFolder", {
 				alias: "f",
-				describe: "Folder enable to publish",
+				describe: "Folder to publish",
 				type: "string",
 				demandOption: false,
 			})
@@ -85,19 +108,10 @@ export class CommandLineArgumentSettingsLoader extends SettingsLoader {
 					"Replace page title with first header element when 'connie-title' isn't specified.",
 				type: "boolean",
 				demandOption: false,
-			});
+			}) as unknown as YargsWithParseSync<CliOptions>;
 
-		// Use parseSync to ensure synchronous parsing in yargs v18+
-		// Type assertion needed due to outdated @types/yargs package
-		const options = (yargsInstance as any).parseSync() as {
-			baseUrl?: string;
-			parentId?: string;
-			userName?: string;
-			apiToken?: string;
-			enableFolder?: string;
-			contentRoot?: string;
-			firstHeaderPageTitle?: boolean;
-		};
+		// Use type-safe parseSync call (yargs 18 runtime has this method)
+		const options = yargsInstance.parseSync();
 
 		return {
 			...(options.baseUrl
@@ -118,7 +132,7 @@ export class CommandLineArgumentSettingsLoader extends SettingsLoader {
 			...(options.contentRoot
 				? { contentRoot: options.contentRoot }
 				: undefined),
-			...(options.firstHeaderPageTitle
+			...(typeof options.firstHeaderPageTitle === "boolean"
 				? { firstHeadingPageTitle: options.firstHeaderPageTitle }
 				: undefined),
 		};

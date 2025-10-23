@@ -42,37 +42,33 @@ export class AutoSettingsLoader extends SettingsLoader {
 	 * override values from earlier loaders. Only includes settings with values that
 	 * match the expected type from DEFAULT_SETTINGS.
 	 *
-	 * @returns Combined ConfluenceSettings from all loaders
+	 * @returns Combined partial ConfluenceSettings from all loaders
 	 * @private
 	 */
-	private combineSettings(): ConfluenceSettings {
+	private combineSettings(): Partial<ConfluenceSettings> {
 		let settings: Partial<ConfluenceSettings> = {};
 
 		for (const loader of this.loaders) {
 			const partialSettings = loader.loadPartial();
-			for (const key in partialSettings) {
-				const propertyKey = key as keyof ConfluenceSettings;
+			const keys = Object.keys(
+				partialSettings,
+			) as (keyof ConfluenceSettings)[];
+
+			for (const propertyKey of keys) {
+				const element = partialSettings[propertyKey];
 				if (
-					Object.prototype.hasOwnProperty.call(
-						partialSettings,
-						propertyKey,
-					)
+					element !== undefined &&
+					typeof element === typeof DEFAULT_SETTINGS[propertyKey]
 				) {
-					const element = partialSettings[propertyKey];
-					if (
-						element &&
-						typeof element === typeof DEFAULT_SETTINGS[propertyKey]
-					) {
-						settings = {
-							...settings,
-							[propertyKey]: element,
-						};
-					}
+					settings = {
+						...settings,
+						[propertyKey]: element,
+					};
 				}
 			}
 		}
 
-		return settings as ConfluenceSettings;
+		return settings;
 	}
 
 	/**

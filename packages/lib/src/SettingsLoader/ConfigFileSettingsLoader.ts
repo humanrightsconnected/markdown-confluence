@@ -2,7 +2,24 @@ import path from "path";
 import { ConfluenceSettings, DEFAULT_SETTINGS } from "../Settings";
 import { SettingsLoader } from "./SettingsLoader";
 import fs from "fs";
-import yargs from "yargs";
+import yargs from "yargs/yargs";
+import { hideBin } from "yargs/helpers";
+
+/**
+ * Type-safe wrapper for yargs parseSync method.
+ * Yargs 18 includes parseSync but some transitive dependencies provide
+ * outdated @types/yargs that lack this method definition.
+ */
+interface YargsWithParseSync<T> {
+	parseSync(): T;
+}
+
+/**
+ * Interface for the config option returned by yargs parsing.
+ */
+interface ConfigOptions {
+	config: string;
+}
 
 /**
  * Loads Confluence settings from a configuration file.
@@ -38,28 +55,35 @@ export class ConfigFileSettingsLoader extends SettingsLoader {
 			return;
 		}
 
-		if (
+		const envConfigPath =
 			"CONFLUENCE_CONFIG_FILE" in process.env &&
 			process.env["CONFLUENCE_CONFIG_FILE"]
-		) {
-			this.configPath = process.env["CONFLUENCE_CONFIG_FILE"];
+				? process.env["CONFLUENCE_CONFIG_FILE"]
+				: undefined;
+
+		if (envConfigPath) {
+			this.configPath = envConfigPath;
 		}
 
-		const yargsInstance = yargs(process.argv).option("config", {
+		const yargsInstance = yargs(hideBin(process.argv)).option("config", {
 			alias: "c",
 			describe: "Path to the config file",
 			type: "string",
 			default: this.configPath,
 			demandOption: false,
-		});
+		}) as unknown as YargsWithParseSync<ConfigOptions>;
 
-		// Use parseSync to ensure synchronous parsing in yargs v18+
-		// Type assertion needed due to outdated @types/yargs package
-		const options = (yargsInstance as any).parseSync() as {
-			config: string;
-		};
+		// Use type-safe parseSync call (yargs 18 runtime has this method)
+		const options = yargsInstance.parseSync();
 
-		this.configPath = options.config;
+		// Only use CLI arg if env var was not set (respecting documented precedence)
+		// Check if --config or -c was explicitly provided on command line
+		const argv = hideBin(process.argv);
+		const hasConfigArg = argv.includes("--config") || argv.includes("-c");
+
+		if (!envConfigPath && hasConfigArg) {
+			this.configPath = options.config;
+		}
 	}
 
 	/**
@@ -77,7 +101,9 @@ export class ConfigFileSettingsLoader extends SettingsLoader {
 			const configData = fs.readFileSync(this.configPath, {
 				encoding: "utf-8",
 			});
-			const config = JSON.parse(configData);
+			const config = JSON.parse(
+				configData,
+			) as Partial<ConfluenceSettings>;
 
 			const result: Partial<ConfluenceSettings> = {};
 
@@ -85,8 +111,9 @@ export class ConfigFileSettingsLoader extends SettingsLoader {
 				if (Object.prototype.hasOwnProperty.call(config, key)) {
 					const propertyKey = key as keyof ConfluenceSettings;
 					const element = config[propertyKey];
-					if (element) {
-						(result as any)[propertyKey] = element;
+					if (element !== undefined && element !== null) {
+						(result as Record<string, unknown>)[propertyKey] =
+							element;
 					}
 				}
 			}

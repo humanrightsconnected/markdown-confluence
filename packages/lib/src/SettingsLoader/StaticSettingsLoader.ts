@@ -14,16 +14,18 @@ export class StaticSettingsLoader extends SettingsLoader {
 	 *
 	 * @param settings - The partial Confluence settings to use
 	 */
-	constructor(private settings: Partial<ConfluenceSettings>) {
+	constructor(
+		private readonly settings: Readonly<Partial<ConfluenceSettings>>,
+	) {
 		super();
 	}
 
 	/**
 	 * Loads the static Confluence settings provided at construction.
 	 *
-	 * @returns The partial ConfluenceSettings object provided to the constructor
+	 * @returns A defensive copy of the partial ConfluenceSettings object provided to the constructor
 	 */
 	loadPartial(): Partial<ConfluenceSettings> {
-		return this.settings;
+		return { ...this.settings };
 	}
 }

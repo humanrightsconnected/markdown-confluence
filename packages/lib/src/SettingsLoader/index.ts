@@ -2,7 +2,7 @@
  * Settings Loader Module
  *
  * Provides a flexible architecture for loading Confluence settings from multiple sources.
- * Each loader implements the SettingsLoader interface and can be combined using AutoSettingsLoader
+ * Each loader extends the SettingsLoader abstract class and can be combined using AutoSettingsLoader
  * to create a configuration hierarchy.
  *
  * Available loaders:
