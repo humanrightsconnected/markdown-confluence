@@ -23,6 +23,15 @@ import {
 	MermaidRendererPlugin,
 } from "./ADFProcessingPlugins/MermaidRendererPlugin";
 
+// Check if real Confluence credentials are available
+const hasRealCredentials =
+	process.env.CONFLUENCE_BASE_URL &&
+	process.env.ATLASSIAN_USERNAME &&
+	process.env.ATLASSIAN_API_TOKEN &&
+	process.env.CONFLUENCE_BASE_URL !== "https://test.atlassian.net" &&
+	process.env.ATLASSIAN_USERNAME !== "test@example.com" &&
+	process.env.ATLASSIAN_API_TOKEN !== "test-token";
+
 // Set up test environment variables if not already set
 if (!process.env.CONFLUENCE_BASE_URL) {
 	process.env.CONFLUENCE_BASE_URL = "https://test.atlassian.net";
@@ -265,63 +274,67 @@ class InMemoryAdaptor implements LoaderAdaptor {
 	}
 }
 
-test("Upload to Confluence", async () => {
-	const filesystemAdaptor = new InMemoryAdaptor(markdownTestCases);
-	const mermaidRenderer = new TestMermaidRenderer();
-	const confluenceClient = new ConfluenceClient({
-		host: settings.confluenceBaseUrl,
-		authentication: {
-			basic: {
-				email: settings.atlassianUserName,
-				apiToken: settings.atlassianApiToken,
+(hasRealCredentials ? test : test.skip)(
+	"Upload to Confluence",
+	async () => {
+		const filesystemAdaptor = new InMemoryAdaptor(markdownTestCases);
+		const mermaidRenderer = new TestMermaidRenderer();
+		const confluenceClient = new ConfluenceClient({
+			host: settings.confluenceBaseUrl,
+			authentication: {
+				basic: {
+					email: settings.atlassianUserName,
+					apiToken: settings.atlassianApiToken,
+				},
 			},
-		},
-	});
-
-	const searchParams = {
-		type: "page",
-		space: "it",
-		title: "Test - bf8bb13d-21b4-31b6-4584-8b9683d82086",
-		expand: ["version", "body.atlas_doc_format", "ancestors"],
-	};
-	const contentByTitle =
-		await confluenceClient.content.getContent(searchParams);
-
-	const pageResult = contentByTitle.results[0];
-	if (!pageResult) {
-		throw new Error("Missing Parent Page");
-	}
-	settings.confluenceParentId = pageResult.id;
-
-	const settingLoaders = [
-		new EnvironmentVariableSettingsLoader(),
-		new StaticSettingsLoader({
-			confluenceParentId: pageResult.id,
-		}),
-		new DefaultSettingsLoader(),
-	];
-	const publisherSettingsLoader = new AutoSettingsLoader(settingLoaders);
-
-	const publisher = new Publisher(
-		filesystemAdaptor,
-		publisherSettingsLoader,
-		confluenceClient,
-		[new MermaidRendererPlugin(mermaidRenderer)],
-	);
-
-	const result = await publisher.publish();
-
-	for (const uploadResult of result) {
-		const afterUpload = await confluenceClient.content.getContentById({
-			id: uploadResult.node.file.pageId,
-			expand: ["body.atlas_doc_format", "space"],
 		});
 
-		const uploadedAdf = orderMarks(
-			JSON.parse(afterUpload.body?.atlas_doc_format?.value ?? "{}"),
-		);
-		const returnedAdf = orderMarks(uploadResult.node.file.contents);
+		const searchParams = {
+			type: "page",
+			space: "it",
+			title: "Test - bf8bb13d-21b4-31b6-4584-8b9683d82086",
+			expand: ["version", "body.atlas_doc_format", "ancestors"],
+		};
+		const contentByTitle =
+			await confluenceClient.content.getContent(searchParams);
 
-		expect(returnedAdf).toEqual(uploadedAdf);
-	}
-}, 300000);
+		const pageResult = contentByTitle.results[0];
+		if (!pageResult) {
+			throw new Error("Missing Parent Page");
+		}
+		settings.confluenceParentId = pageResult.id;
+
+		const settingLoaders = [
+			new EnvironmentVariableSettingsLoader(),
+			new StaticSettingsLoader({
+				confluenceParentId: pageResult.id,
+			}),
+			new DefaultSettingsLoader(),
+		];
+		const publisherSettingsLoader = new AutoSettingsLoader(settingLoaders);
+
+		const publisher = new Publisher(
+			filesystemAdaptor,
+			publisherSettingsLoader,
+			confluenceClient,
+			[new MermaidRendererPlugin(mermaidRenderer)],
+		);
+
+		const result = await publisher.publish();
+
+		for (const uploadResult of result) {
+			const afterUpload = await confluenceClient.content.getContentById({
+				id: uploadResult.node.file.pageId,
+				expand: ["body.atlas_doc_format", "space"],
+			});
+
+			const uploadedAdf = orderMarks(
+				JSON.parse(afterUpload.body?.atlas_doc_format?.value ?? "{}"),
+			);
+			const returnedAdf = orderMarks(uploadResult.node.file.contents);
+
+			expect(returnedAdf).toEqual(uploadedAdf);
+		}
+	},
+	300000,
+);
