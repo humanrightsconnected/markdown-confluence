@@ -40,22 +40,6 @@ interface CliOptions {
  */
 export class CommandLineArgumentSettingsLoader extends SettingsLoader {
 	/**
-	 * Gets a configuration value from an environment variable.
-	 *
-	 * @param propertyKey - The key of the ConfluenceSettings property to set
-	 * @param envVar - The name of the environment variable to read
-	 * @returns A partial ConfluenceSettings object with the property set if the
-	 *          environment variable exists, or an empty object otherwise
-	 */
-	getValue<T extends keyof ConfluenceSettings>(
-		propertyKey: T,
-		envVar: string,
-	): Partial<ConfluenceSettings> {
-		const value = process.env[envVar];
-		return value ? { [propertyKey]: value } : {};
-	}
-
-	/**
 	 * Loads partial Confluence settings from command-line arguments.
 	 *
 	 * Parses process.argv to extract command-line options and maps them to

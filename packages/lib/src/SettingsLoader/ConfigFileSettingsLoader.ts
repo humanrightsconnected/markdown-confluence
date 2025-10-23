@@ -76,12 +76,8 @@ export class ConfigFileSettingsLoader extends SettingsLoader {
 		// Use type-safe parseSync call (yargs 18 runtime has this method)
 		const options = yargsInstance.parseSync();
 
-		// Only use CLI arg if env var was not set (respecting documented precedence)
-		// Check if --config or -c was explicitly provided on command line
-		const argv = hideBin(process.argv);
-		const hasConfigArg = argv.includes("--config") || argv.includes("-c");
-
-		if (!envConfigPath && hasConfigArg) {
+		// Only use CLI arg if env var was not set and CLI differs from default
+		if (!envConfigPath && options.config !== this.configPath) {
 			this.configPath = options.config;
 		}
 	}

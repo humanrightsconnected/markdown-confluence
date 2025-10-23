@@ -114,8 +114,8 @@ export class ConfluenceSettingTab extends PluginSettingTab {
 					})
 					.setValue(this.plugin.settings.mermaidTheme)
 					.onChange(async (value) => {
-						// @ts-expect-error - Obsidian dropdown onChange returns string, but mermaidTheme expects specific string literal type
-						this.plugin.settings.mermaidTheme = value;
+						this.plugin.settings.mermaidTheme =
+							value as typeof this.plugin.settings.mermaidTheme;
 						await this.plugin.saveSettings();
 					});
 				/* eslint-enable @typescript-eslint/naming-convention */

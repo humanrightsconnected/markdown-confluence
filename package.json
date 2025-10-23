@@ -40,9 +40,6 @@
    },
    "overrides": {
       "test-exclude": "^7.0.1",
-      "@atlaskit/editor-common": {
-         "uuid": "^11.1.0"
-      },
       "@types/d3-dispatch": "2.0.4",
       "@types/yargs": "^17.0.33",
       "prosemirror-model": "1.25.4"
