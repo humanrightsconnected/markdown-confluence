@@ -43,21 +43,21 @@ jobs:
     - name: Run ESLint
       id: eslint
       continue-on-error: true
-      run: npm run lint -ws --if-present
+      run: npm run lint --workspaces --if-present
       env:
         NODE_OPTIONS: "--no-deprecation"
 
     - name: Run Prettier check
       id: prettier
       continue-on-error: true
-      run: npm run prettier-check -ws --if-present
+      run: npm run prettier-check --workspaces --if-present
       env:
         NODE_OPTIONS: "--no-deprecation"
 
     - name: Run Tests
       id: tests
       continue-on-error: true
-      run: npm run test -ws --if-present
+      run: npm run test --workspaces --if-present
       env:
         NODE_OPTIONS: "--no-deprecation"
         CONFLUENCE_BASE_URL: ${{ secrets.CONFLUENCE_BASE_URL }}
@@ -68,14 +68,14 @@ jobs:
     - name: Run npm build
       id: build
       continue-on-error: true
-      run: npm run build -ws --if-present
+      run: npm run build --workspaces --if-present
       env:
         NODE_OPTIONS: "--no-deprecation"
 
     - name: Run docker build
       id: builddocker
       continue-on-error: true
-      run: npm run build:docker -ws --if-present
+      run: npm run build:docker --workspaces --if-present
       env:
         NODE_OPTIONS: "--no-deprecation"
 

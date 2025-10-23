@@ -223,6 +223,23 @@ function renderADFContent(
 		case "tableCell": {
 			return renderChildrenResult;
 		}
+		case "decisionItem": {
+			const decisionState =
+				element.attrs && element.attrs["state"]
+					? element.attrs["state"]
+					: "DECIDED";
+			const stateMarkdown = decisionState === "DECIDED" ? "x" : " ";
+			return `- [${stateMarkdown}] ${renderChildrenResult}\n`;
+		}
+		case "date": {
+			const timestamp =
+				element.attrs && element.attrs["timestamp"]
+					? element.attrs["timestamp"]
+					: "";
+			return timestamp
+				? new Date(Number(timestamp)).toLocaleDateString()
+				: "";
+		}
 		default:
 			console.warn(`Unknown ADFEntity Type ${element.type}`);
 			return new Error(`Unknown ADFEntity Type ${element.type}`);

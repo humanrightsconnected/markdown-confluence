@@ -23,6 +23,20 @@ import {
 	MermaidRendererPlugin,
 } from "./ADFProcessingPlugins/MermaidRendererPlugin";
 
+// Set up test environment variables if not already set
+if (!process.env.CONFLUENCE_BASE_URL) {
+	process.env.CONFLUENCE_BASE_URL = "https://test.atlassian.net";
+}
+if (!process.env.ATLASSIAN_USERNAME) {
+	process.env.ATLASSIAN_USERNAME = "test@example.com";
+}
+if (!process.env.ATLASSIAN_API_TOKEN) {
+	process.env.ATLASSIAN_API_TOKEN = "test-token";
+}
+if (!process.env.CONFLUENCE_PARENT_ID) {
+	process.env.CONFLUENCE_PARENT_ID = "12345";
+}
+
 const settingsLoader = new AutoSettingsLoader();
 const settings = settingsLoader.load();
 
