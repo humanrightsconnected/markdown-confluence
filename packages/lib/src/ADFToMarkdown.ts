@@ -236,9 +236,15 @@ function renderADFContent(
 				element.attrs && element.attrs["timestamp"]
 					? element.attrs["timestamp"]
 					: "";
-			return timestamp
-				? new Date(Number(timestamp)).toLocaleDateString()
-				: "";
+			if (!timestamp) {
+				return "";
+			}
+			const date = new Date(Number(timestamp));
+			// Use UTC to ensure consistent results across timezones
+			const year = date.getUTCFullYear();
+			const month = date.getUTCMonth() + 1;
+			const day = date.getUTCDate();
+			return `${month}/${day}/${year}`;
 		}
 		default:
 			console.warn(`Unknown ADFEntity Type ${element.type}`);
