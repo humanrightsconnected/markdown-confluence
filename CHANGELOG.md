@@ -1,5 +1,23 @@
 # Changelog
 
+## [Unreleased]
+
+### Dependencies
+
+* **deps:** bump mermaid from 10.9.3 to 11.12.0 in /packages/mermaid-puppeteer-renderer - This is a major version update with new features and improvements
+
+### Bug Fixes
+
+* Fix yargs.parse() async behavior in ConfigFileSettingsLoader and CommandLineArgumentSettingsLoader by using parseSync() for synchronous parsing
+* Remove unused @atlaskit/editor-common dependency from mermaid-puppeteer-renderer package
+* Replace getAuthenticationToken with local getAuthorizationHeader helper in MyBaseClient to avoid dependency on potentially non-existent confluence.js functions
+* Improve error serialization in MyBaseClient - toJSON now preserves error message, name, and other properties instead of returning empty object
+
+### Documentation
+
+* Add comprehensive JSDoc docstrings to all SettingsLoader classes and methods
+* Add clarifying comments in MyBaseClient error handling to explain middleware vs callback error flow
+
 ## [5.5.2](https://github.com/markdown-confluence/markdown-confluence/compare/obsidian-confluence-root-v5.5.1...obsidian-confluence-root-v5.5.2) (2023-09-24)
 
 ### Bug Fixes

@@ -5,7 +5,25 @@ import { ConfigFileSettingsLoader } from "./ConfigFileSettingsLoader";
 import { CommandLineArgumentSettingsLoader } from "./CommandLineArgumentSettingsLoader";
 import { SettingsLoader } from "./SettingsLoader";
 
+/**
+ * Automatically loads and combines Confluence settings from multiple sources.
+ *
+ * This loader orchestrates multiple settings loaders in a specific order of precedence:
+ * 1. DefaultSettingsLoader - provides baseline defaults
+ * 2. ConfigFileSettingsLoader - loads from .markdown-confluence.json
+ * 3. EnvironmentVariableSettingsLoader - loads from environment variables
+ * 4. CommandLineArgumentSettingsLoader - loads from command-line arguments
+ *
+ * Later loaders override settings from earlier loaders, allowing for flexible
+ * configuration hierarchies (e.g., command-line args override environment variables).
+ */
 export class AutoSettingsLoader extends SettingsLoader {
+	/**
+	 * Creates a new AutoSettingsLoader instance.
+	 *
+	 * @param loaders - Optional array of custom loaders. If not provided or empty,
+	 *                  uses the default set of loaders in the standard precedence order.
+	 */
 	constructor(private loaders: SettingsLoader[] = []) {
 		super();
 
@@ -17,6 +35,16 @@ export class AutoSettingsLoader extends SettingsLoader {
 		}
 	}
 
+	/**
+	 * Combines settings from all configured loaders.
+	 *
+	 * Iterates through all loaders in order, merging their settings. Later loaders
+	 * override values from earlier loaders. Only includes settings with values that
+	 * match the expected type from DEFAULT_SETTINGS.
+	 *
+	 * @returns Combined ConfluenceSettings from all loaders
+	 * @private
+	 */
 	private combineSettings(): ConfluenceSettings {
 		let settings: Partial<ConfluenceSettings> = {};
 
@@ -47,6 +75,11 @@ export class AutoSettingsLoader extends SettingsLoader {
 		return settings as ConfluenceSettings;
 	}
 
+	/**
+	 * Loads partial Confluence settings by combining all configured loaders.
+	 *
+	 * @returns Combined partial ConfluenceSettings from all loaders
+	 */
 	loadPartial(): Partial<ConfluenceSettings> {
 		return this.combineSettings();
 	}

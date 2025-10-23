@@ -1,16 +1,35 @@
-import {
-	Api,
-	Callback,
-	Client,
-	Config,
-	RequestConfig,
-	getAuthenticationToken,
-} from "confluence.js";
+import { Api, Callback, Client, Config, RequestConfig } from "confluence.js";
 import { requestUrl } from "obsidian";
 import { RequiredConfluenceClient } from "@markdown-confluence/lib";
 
 const ATLASSIAN_TOKEN_CHECK_FLAG = "X-Atlassian-Token";
 const ATLASSIAN_TOKEN_CHECK_NOCHECK_VALUE = "no-check";
+
+/**
+ * Generates the Authorization header value from the authentication config.
+ *
+ * Supports Basic authentication using email and apiToken from the config.
+ * This is a local implementation to avoid dependency on confluence.js internal functions.
+ *
+ * @param authentication - The authentication configuration
+ * @returns The Authorization header value
+ */
+function getAuthorizationHeader(
+	authentication: Config["authentication"],
+): string {
+	if (!authentication) {
+		throw new Error("Authentication configuration is required");
+	}
+
+	if ("basic" in authentication && authentication.basic) {
+		const { email, apiToken } = authentication.basic;
+		const credentials = `${email}:${apiToken}`;
+		const encoded = Buffer.from(credentials).toString("base64");
+		return `Basic ${encoded}`;
+	}
+
+	throw new Error("Unsupported authentication type");
+}
 
 export class MyBaseClient implements Client {
 	protected urlSuffix = "/wiki/rest";
@@ -124,14 +143,8 @@ export class MyBaseClient implements Client {
 						? ATLASSIAN_TOKEN_CHECK_NOCHECK_VALUE
 						: undefined,
 					...this.config.baseRequestConfig?.headers,
-					Authorization: await getAuthenticationToken(
+					Authorization: getAuthorizationHeader(
 						this.config.authentication,
-						{
-							// eslint-disable-next-line @typescript-eslint/naming-convention
-							baseURL: this.config.host,
-							url: `${this.config.host}${this.urlSuffix}`,
-							method: requestConfig.method ?? "GET",
-						},
 					),
 					...requestConfig.headers,
 					"Content-Type": requestContentType,
@@ -168,11 +181,18 @@ export class MyBaseClient implements Client {
 		} catch (e: any) {
 			console.warn({ httpError: e, requestConfig });
 
-			// Create an AxiosError-compatible error for the callback
+			// Transform the error for the callback.
+			// Note: The middleware receives the raw error `e` (which includes .response),
+			// while the callback receives this transformed error for serialization compatibility.
+			// Mark as non-Axios error
 			const axiosLikeError = {
 				...e,
 				isAxiosError: false,
-				toJSON: () => ({}),
+				toJSON: () => ({
+					message: e.message,
+					name: e.name,
+					...e,
+				}),
 			};
 
 			const callbackErrorHandler =
@@ -184,6 +204,7 @@ export class MyBaseClient implements Client {
 
 			const errorHandler = callbackErrorHandler ?? defaultErrorHandler;
 
+			// Middleware receives the raw error with .response property
 			this.config.middlewares?.onError?.(e);
 
 			return errorHandler(axiosLikeError);

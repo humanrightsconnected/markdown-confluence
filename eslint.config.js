@@ -4,7 +4,7 @@ import eslintConfigPrettier from 'eslint-config-prettier';
 
 export default tseslint.config(
   {
-    ignores: ['dist/**', 'dev-vault/**', 'dist-cli/**', '.husky/**', 'node_modules/**']
+    ignores: ['dist/**', 'dev-vault/**', 'dist-cli/**', '.husky/**', 'node_modules/**', 'coverage/**']
   },
   eslint.configs.recommended,
   ...tseslint.configs.recommended,
@@ -34,7 +34,13 @@ export default tseslint.config(
     rules: {
       'no-unused-vars': 'off',
       '@typescript-eslint/no-unused-vars': ['error', { args: 'none' }],
-      '@typescript-eslint/ban-ts-comment': 'off',
+      '@typescript-eslint/ban-ts-comment': ['error', {
+        'ts-ignore': 'allow-with-description',
+        'ts-expect-error': 'allow-with-description',
+        'ts-nocheck': true,
+        'ts-check': false,
+        minimumDescriptionLength: 10
+      }],
       'no-prototype-builtins': 'off',
       '@typescript-eslint/no-empty-function': 'off',
       '@typescript-eslint/naming-convention': [
