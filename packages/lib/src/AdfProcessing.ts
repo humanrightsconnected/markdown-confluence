@@ -583,19 +583,19 @@ function levenshteinDistance(a: string, b: string): number {
 	for (let i = 1; i <= a.length; i++) {
 		for (let j = 1; j <= b.length; j++) {
 			const cost = a[i - 1] === b[j - 1] ? 0 : 1;
-			// @ts-expect-error
+			// @ts-expect-error - TypeScript doesn't infer that matrix rows are fully initialized with numbers
 			matrix[i][j] = Math.min(
-				// @ts-expect-error
+				// @ts-expect-error - TypeScript doesn't track that matrix[i-1][j] is always a number
 				matrix[i - 1][j] + 1,
-				// @ts-expect-error
+				// @ts-expect-error - TypeScript doesn't track that matrix[i][j-1] is always a number
 				matrix[i][j - 1] + 1,
-				// @ts-expect-error
+				// @ts-expect-error - TypeScript doesn't track that matrix[i-1][j-1] is always a number
 				matrix[i - 1][j - 1] + cost,
 			);
 		}
 	}
 
-	// @ts-expect-error
+	// @ts-expect-error - TypeScript doesn't infer that matrix[a.length][b.length] is always defined and is a number
 	return matrix[a.length][b.length];
 }
 

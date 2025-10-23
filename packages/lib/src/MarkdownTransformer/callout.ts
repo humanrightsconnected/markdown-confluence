@@ -80,7 +80,7 @@ function getPanelAttributes(calloutType: string): [string, string][] {
 		return toReturn;
 	}
 
-	// @ts-expect-error
+	// @ts-expect-error - TypeScript thinks "info" key could be undefined, but it's always defined in panelTypeToAttributesMap
 	return panelTypeToAttributesMap["info"];
 }
 

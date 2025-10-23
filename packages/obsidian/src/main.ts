@@ -133,7 +133,7 @@ export default class ConfluencePlugin extends Plugin {
 
 		extraStyleSheets.push("app://obsidian.md/app.css");
 
-		// @ts-expect-error
+		// @ts-expect-error - Obsidian vault getConfig method is not typed in the public API, but it exists at runtime
 		const cssTheme = this.app.vault?.getConfig("cssTheme") as string;
 		if (cssTheme) {
 			const fileExists = await this.app.vault.adapter.exists(
@@ -148,7 +148,7 @@ export default class ConfluencePlugin extends Plugin {
 		}
 
 		const cssSnippets =
-			// @ts-expect-error
+			// @ts-expect-error - Obsidian vault getConfig method is not typed in the public API, but it exists at runtime
 			(this.app.vault?.getConfig("enabledCssSnippets") as string[]) ?? [];
 		for (const snippet of cssSnippets) {
 			const fileExists = await this.app.vault.adapter.exists(
