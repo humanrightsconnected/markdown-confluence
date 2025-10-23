@@ -9,7 +9,7 @@
         "build": "tsc && node esbuild.config.mjs production",
         "build:docker": "docker build -t markdown-confluence/markdown-confluence .",
         "fmt": "npx prettier --write src/",
-        "lint": "eslint --ignore-path ../../.eslintignore --ext .js,.ts src/",
+        "lint": "eslint --ext .js,.ts src/",
         "prettier-check": "npx prettier --check src/"
     },
     "keywords": [],
