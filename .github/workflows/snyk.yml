@@ -9,6 +9,9 @@ on:
 
 permissions:
   contents: read
+
+env:
+  SNYK_CFG_ORG: 84f53b20-a807-4dab-a295-fcf9ace978d7
   
 jobs:
   oss:
@@ -27,7 +30,7 @@ jobs:
             api.snyk.io:443
             github.com:443
 
-      - uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.0
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v5.2.2
       
       - name: Run Snyk to check for vulnerabilities
         uses: snyk/actions/node@master
@@ -35,7 +38,7 @@ jobs:
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
-          args: --sarif-file-output=snyk.sarif --all-projects --dev --org=84f53b20-a807-4dab-a295-fcf9ace978d7 --prune-repeated-subdependencies
+          args: --sarif-file-output=snyk.sarif --all-projects --dev --prune-repeated-subdependencies
 
       - name: Upload result to GitHub Code Scanning
         uses: github/codeql-action/upload-sarif@v3
@@ -51,7 +54,7 @@ jobs:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
           command: monitor
-          args: --all-projects --dev --print-deps --org=84f53b20-a807-4dab-a295-fcf9ace978d7 --prune-repeated-subdependencies
+          args: --all-projects --dev --print-deps --prune-repeated-subdependencies
   
   code:
     runs-on: ubuntu-latest
@@ -69,7 +72,7 @@ jobs:
             api.snyk.io:443
             github.com:443
 
-      - uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.0
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v5.2.2
 
       - name: Run Snyk to scan for bad code
         uses: snyk/actions/node@master
@@ -78,7 +81,7 @@ jobs:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
           command: code test
-          args: --org=84f53b20-a807-4dab-a295-fcf9ace978d7 --sarif-file-output=snyk-code.sarif
+          args: --sarif-file-output=snyk-code.sarif
 
       - name: Upload result to GitHub Code Scanning
         uses: github/codeql-action/upload-sarif@v3
@@ -106,7 +109,7 @@ jobs:
             release-assets.githubusercontent.com:443
             storage.googleapis.com:443
 
-      - uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.0
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v5.2.2
       - name: Build a Docker image
         run: |
           npm ci
@@ -121,7 +124,7 @@ jobs:
         with:
           command: container monitor
           image: markdown-confluence/markdown-confluence
-          args: --org=84f53b20-a807-4dab-a295-fcf9ace978d7 --file=packages/cli/Dockerfile
+          args: --file=packages/cli/Dockerfile
 
       - name: Run Snyk to check Docker image for vulnerabilities
         continue-on-error: true
@@ -130,7 +133,7 @@ jobs:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
           image: markdown-confluence/markdown-confluence
-          args: --org=84f53b20-a807-4dab-a295-fcf9ace978d7 --file=packages/cli/Dockerfile --sarif-file-output=snyk.sarif
+          args: --file=packages/cli/Dockerfile --sarif-file-output=snyk.sarif
 
       - name: Upload result to GitHub Code Scanning
         uses: github/codeql-action/upload-sarif@v3
@@ -153,7 +156,7 @@ jobs:
             api.snyk.io:443
             github.com:443
 
-      - uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.0
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v5.2.2
       - name: Run Snyk to create SBOM
         uses: snyk/actions/node@master
         continue-on-error: true # To make sure that SARIF upload gets called
@@ -161,7 +164,7 @@ jobs:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
           command: sbom
-          args: --format=cyclonedx1.4+json --org=84f53b20-a807-4dab-a295-fcf9ace978d7
+          args: --format=cyclonedx1.4+json
   
   check_jobs:
     runs-on: ubuntu-latest
