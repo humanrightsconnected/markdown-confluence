@@ -99,11 +99,13 @@ export function panel(state: StateCore): boolean {
 	let calloutStartIndex = 0;
 	let blockTitle = "";
 	const newTokens = state.tokens.reduce(
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		(
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			previousTokens: any[],
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			token: any,
 			currentIndex: number,
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			allTokens: any[],
 		) => {
 			let tokenToReturn = token;
