@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+
 import { expect, test } from "@jest/globals";
 import { ConfluenceClient } from "confluence.js";
 import {
@@ -235,7 +235,6 @@ class InMemoryAdaptor implements LoaderAdaptor {
 	): Promise<void> {}
 
 	async loadMarkdownFile(absoluteFilePath: string): Promise<MarkdownFile> {
-		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 		return this.inMemoryFiles.find(
 			(t) => t.absoluteFilePath === absoluteFilePath,
 		)!;
@@ -271,9 +270,8 @@ test("Upload to Confluence", async () => {
 		title: "Test - bf8bb13d-21b4-31b6-4584-8b9683d82086",
 		expand: ["version", "body.atlas_doc_format", "ancestors"],
 	};
-	const contentByTitle = await confluenceClient.content.getContent(
-		searchParams,
-	);
+	const contentByTitle =
+		await confluenceClient.content.getContent(searchParams);
 
 	const pageResult = contentByTitle.results[0];
 	if (!pageResult) {

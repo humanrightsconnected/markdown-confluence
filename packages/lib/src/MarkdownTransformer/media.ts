@@ -162,7 +162,6 @@ function createRule() {
 						)
 						.reverse();
 
-					// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 					const matches = token.content.match(regx)!;
 					let inlineContentStack = token.content;
 					matches.forEach((match) => {

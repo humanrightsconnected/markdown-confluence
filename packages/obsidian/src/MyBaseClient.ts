@@ -27,15 +27,12 @@ export class MyBaseClient implements Client {
 			}
 
 			if (Array.isArray(value)) {
-				// eslint-disable-next-line no-param-reassign
 				value = value.join(",");
 			}
 
 			if (value instanceof Date) {
-				// eslint-disable-next-line no-param-reassign
 				value = value.toISOString();
 			} else if (value !== null && typeof value === "object") {
-				// eslint-disable-next-line no-param-reassign
 				value = JSON.stringify(value);
 			} else if (value instanceof Function) {
 				const part = value();
@@ -114,7 +111,7 @@ export class MyBaseClient implements Client {
 				? [
 						requestConfig.data.getHeaders(),
 						requestConfig.data.getBuffer().buffer,
-				  ]
+					]
 				: [{}, JSON.stringify(requestConfig.data)];
 
 			const modifiedRequestConfig = {

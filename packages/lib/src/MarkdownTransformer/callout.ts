@@ -100,7 +100,7 @@ export function panel(state: StateCore): boolean {
 			let tokenToReturn = token;
 			if (token.type === "blockquote_open") {
 				let currentCheck = currentIndex + 1; // Start after this token
-				// eslint-disable-next-line no-constant-condition
+
 				while (true) {
 					const tokenToCheck = allTokens[currentCheck];
 					currentCheck = currentCheck + 1;
