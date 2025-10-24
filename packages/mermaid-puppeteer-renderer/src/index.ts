@@ -1,7 +1,8 @@
 import { ChartData, MermaidRenderer } from "@markdown-confluence/lib";
 import path from "path";
-import puppeteer, { PuppeteerLaunchOptions } from "puppeteer";
-import { downloadBrowser } from "puppeteer/lib/esm/puppeteer/node/install.js";
+import puppeteer from "puppeteer";
+import type { LaunchOptions } from "puppeteer-core";
+import { downloadBrowsers } from "puppeteer/lib/esm/puppeteer/node/install.js";
 import url from "url";
 
 interface RemoteWindowedCustomFunctions {
@@ -17,12 +18,12 @@ export class PuppeteerMermaidRenderer implements MermaidRenderer {
 	): Promise<Map<string, Buffer>> {
 		const capturedCharts = new Map<string, Buffer>();
 
-		await downloadBrowser();
+		await downloadBrowsers();
 		//for (const chart of charts) {
 		const promises = charts.map(async (chart) => {
 			const puppeteerLaunchConfig = {
 				executablePath: puppeteer.executablePath(),
-				headless: "new",
+				headless: true,
 				args: [
 					"--ignore-certificate-errors",
 					"--no-sandbox",
@@ -30,7 +31,7 @@ export class PuppeteerMermaidRenderer implements MermaidRenderer {
 					"--disable-accelerated-2d-canvas",
 					"--disable-gpu",
 				],
-			} satisfies PuppeteerLaunchOptions;
+			} satisfies LaunchOptions;
 
 			console.log(
 				"LAUNCHING CHROME",
@@ -84,7 +85,7 @@ export class PuppeteerMermaidRenderer implements MermaidRenderer {
 					height: result.height,
 				});
 				const imageBuffer = await page.screenshot();
-				capturedCharts.set(chart.name, imageBuffer);
+				capturedCharts.set(chart.name, Buffer.from(imageBuffer));
 			} finally {
 				await page.close();
 				await browser.close();

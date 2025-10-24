@@ -1,18 +1,32 @@
 import { ConfluenceSettings } from "../Settings";
 import { SettingsLoader } from "./SettingsLoader";
-import yargs from "yargs";
+import yargs from "yargs/yargs";
+import { hideBin } from "yargs/helpers";
 
+/**
+ * Loads Confluence settings from command-line arguments.
+ *
+ * Parses command-line arguments using yargs to extract Confluence configuration.
+ * Supports the following command-line options:
+ * - --baseUrl, -b: Confluence base URL
+ * - --parentId, -p: Confluence parent page ID
+ * - --userName, -u: Atlassian user name
+ * - --apiToken: Atlassian API token
+ * - --enableFolder, -f: Folder to enable for publishing
+ * - --contentRoot, -cr: Root directory for content files
+ * - --firstHeaderPageTitle, -fh: Use first header as page title
+ */
 export class CommandLineArgumentSettingsLoader extends SettingsLoader {
-	getValue<T extends keyof ConfluenceSettings>(
-		propertyKey: T,
-		envVar: string,
-	): Partial<ConfluenceSettings> {
-		const value = process.env[envVar];
-		return value ? { [propertyKey]: value } : {};
-	}
-
+	/**
+	 * Loads partial Confluence settings from command-line arguments.
+	 *
+	 * Parses process.argv to extract command-line options and maps them to
+	 * ConfluenceSettings properties. Only provided options are included in the result.
+	 *
+	 * @returns A partial ConfluenceSettings object containing settings from command-line arguments
+	 */
 	loadPartial(): Partial<ConfluenceSettings> {
-		const options = yargs(process.argv)
+		const options = yargs(hideBin(process.argv))
 			.usage("Usage: $0 [options]")
 			.option("baseUrl", {
 				alias: "b",
@@ -39,7 +53,7 @@ export class CommandLineArgumentSettingsLoader extends SettingsLoader {
 			})
 			.option("enableFolder", {
 				alias: "f",
-				describe: "Folder enable to publish",
+				describe: "Folder to publish",
 				type: "string",
 				demandOption: false,
 			})
@@ -78,7 +92,7 @@ export class CommandLineArgumentSettingsLoader extends SettingsLoader {
 			...(options.contentRoot
 				? { contentRoot: options.contentRoot }
 				: undefined),
-			...(options.firstHeaderPageTitle
+			...(typeof options.firstHeaderPageTitle === "boolean"
 				? { firstHeadingPageTitle: options.firstHeaderPageTitle }
 				: undefined),
 		};

@@ -1,16 +1,35 @@
-import {
-	Api,
-	Callback,
-	Client,
-	Config,
-	RequestConfig,
-	AuthenticationService,
-} from "confluence.js";
+import { Api, Callback, Client, Config, RequestConfig } from "confluence.js";
 import { requestUrl } from "obsidian";
 import { RequiredConfluenceClient } from "@markdown-confluence/lib";
 
 const ATLASSIAN_TOKEN_CHECK_FLAG = "X-Atlassian-Token";
 const ATLASSIAN_TOKEN_CHECK_NOCHECK_VALUE = "no-check";
+
+/**
+ * Generates the Authorization header value from the authentication config.
+ *
+ * Supports Basic authentication using email and apiToken from the config.
+ * This is a local implementation to avoid dependency on confluence.js internal functions.
+ *
+ * @param authentication - The authentication configuration
+ * @returns The Authorization header value
+ */
+function getAuthorizationHeader(
+	authentication: Config["authentication"],
+): string {
+	if (!authentication) {
+		throw new Error("Authentication configuration is required");
+	}
+
+	if ("basic" in authentication && authentication.basic) {
+		const { email, apiToken } = authentication.basic;
+		const credentials = `${email}:${apiToken}`;
+		const encoded = Buffer.from(credentials).toString("base64");
+		return `Basic ${encoded}`;
+	}
+
+	throw new Error("Unsupported authentication type");
+}
 
 export class MyBaseClient implements Client {
 	protected urlSuffix = "/wiki/rest";
@@ -27,15 +46,12 @@ export class MyBaseClient implements Client {
 			}
 
 			if (Array.isArray(value)) {
-				// eslint-disable-next-line no-param-reassign
 				value = value.join(",");
 			}
 
 			if (value instanceof Date) {
-				// eslint-disable-next-line no-param-reassign
 				value = value.toISOString();
 			} else if (value !== null && typeof value === "object") {
-				// eslint-disable-next-line no-param-reassign
 				value = JSON.stringify(value);
 			} else if (value instanceof Function) {
 				const part = value();
@@ -114,7 +130,7 @@ export class MyBaseClient implements Client {
 				? [
 						requestConfig.data.getHeaders(),
 						requestConfig.data.getBuffer().buffer,
-				  ]
+					]
 				: [{}, JSON.stringify(requestConfig.data)];
 
 			const modifiedRequestConfig = {
@@ -127,16 +143,9 @@ export class MyBaseClient implements Client {
 						? ATLASSIAN_TOKEN_CHECK_NOCHECK_VALUE
 						: undefined,
 					...this.config.baseRequestConfig?.headers,
-					Authorization:
-						await AuthenticationService.getAuthenticationToken(
-							this.config.authentication,
-							{
-								// eslint-disable-next-line @typescript-eslint/naming-convention
-								baseURL: this.config.host,
-								url: `${this.config.host}${this.urlSuffix}`,
-								method: requestConfig.method ?? "GET",
-							},
-						),
+					Authorization: getAuthorizationHeader(
+						this.config.authentication,
+					),
 					...requestConfig.headers,
 					"Content-Type": requestContentType,
 					...requestBody[0],
@@ -171,22 +180,34 @@ export class MyBaseClient implements Client {
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		} catch (e: any) {
 			console.warn({ httpError: e, requestConfig });
-			const err =
-				this.config.newErrorHandling && e.isAxiosError
-					? e.response.data
-					: e;
+
+			// Transform the error for the callback.
+			// Note: The middleware receives the raw error `e` (which includes .response),
+			// while the callback receives this transformed error for serialization compatibility.
+			// Mark as non-Axios error
+			const axiosLikeError = {
+				...e,
+				isAxiosError: false,
+				toJSON: () => ({
+					message: e.message,
+					name: e.name,
+					...e,
+				}),
+			};
 
 			const callbackErrorHandler =
-				callback && ((error: Config.Error) => callback(error));
+				// eslint-disable-next-line @typescript-eslint/no-explicit-any
+				callback && ((error: any) => callback(error));
 			const defaultErrorHandler = (error: Error) => {
 				throw error;
 			};
 
 			const errorHandler = callbackErrorHandler ?? defaultErrorHandler;
 
-			this.config.middlewares?.onError?.(err);
+			// Middleware receives the raw error with .response property
+			this.config.middlewares?.onError?.(e);
 
-			return errorHandler(err);
+			return errorHandler(axiosLikeError);
 		}
 	}
 }

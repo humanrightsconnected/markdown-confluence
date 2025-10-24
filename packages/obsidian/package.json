@@ -8,7 +8,7 @@
         "dev": "node esbuild.config.mjs",
         "build": "tsc && node esbuild.config.mjs production",
         "fmt": "npx prettier --write src/",
-        "lint": "eslint --ignore-path ../../.eslintignore --ext .jsx,tsx,.js,.ts src/",
+        "lint": "eslint --ext .jsx,tsx,.js,.ts src/",
         "prettier-check": "npx prettier --check src/"
     },
     "keywords": [],
@@ -20,15 +20,12 @@
         "obsidian": "1.7.2"
     },
     "dependencies": {
-        "confluence.js": "^1.7.4",
+        "confluence.js": "^2.1.0",
         "mime-types": "^2.1.35",
         "react": "^18.3.1",
         "react-dom": "^18.3.1",
         "@markdown-confluence/lib": "5.5.2",
         "@markdown-confluence/mermaid-electron-renderer": "5.5.2"
-    },
-    "resolutions": {
-        "prosemirror-model": "1.14.3"
     }
 }
        

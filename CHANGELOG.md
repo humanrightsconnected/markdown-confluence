@@ -1,7 +1,24 @@
 # Changelog
 
-## [5.5.2](https://github.com/markdown-confluence/markdown-confluence/compare/obsidian-confluence-root-v5.5.1...obsidian-confluence-root-v5.5.2) (2023-09-24)
+## [Unreleased]
 
+### Dependencies
+
+* **deps:** bump mermaid from 10.9.3 to 11.12.0 in /packages/mermaid-puppeteer-renderer - This is a major version update with new features and improvements
+
+### Bug Fixes
+
+* Fix yargs.parse() async behavior in ConfigFileSettingsLoader and CommandLineArgumentSettingsLoader by using parseSync() for synchronous parsing
+* Remove unused @atlaskit/editor-common dependency from mermaid-puppeteer-renderer package
+* Replace getAuthenticationToken with local getAuthorizationHeader helper in MyBaseClient to avoid dependency on potentially non-existent confluence.js functions
+* Improve error serialization in MyBaseClient - toJSON now preserves error message, name, and other properties instead of returning empty object
+
+### Documentation
+
+* Add comprehensive JSDoc docstrings to all SettingsLoader classes and methods
+* Add clarifying comments in MyBaseClient error handling to explain middleware vs callback error flow
+
+## [5.5.2](https://github.com/markdown-confluence/markdown-confluence/compare/obsidian-confluence-root-v5.5.1...obsidian-confluence-root-v5.5.2) (2023-09-24)
 
 ### Bug Fixes
 
@@ -9,12 +26,10 @@
 
 ## [5.5.1](https://github.com/markdown-confluence/markdown-confluence/compare/obsidian-confluence-root-v5.5.0...obsidian-confluence-root-v5.5.1) (2023-09-24)
 
-
 ### Bug Fixes
 
 * bump @typescript-eslint/parser to same as @typescript-eslint/plugin to avoid peer dependency issues ([7a422cf](https://github.com/markdown-confluence/markdown-confluence/commit/7a422cf3d1ebd22e1b6bea1b69caf171c559259c))
 * bump markdown-it-table to v4.1.1 ([806eabe](https://github.com/markdown-confluence/markdown-confluence/commit/806eabe5e05e7981b0367e1609d3c596830a4cff))
-
 
 ### Dependencies
 
@@ -60,16 +75,13 @@
 
 ## [5.5.0](https://github.com/markdown-confluence/markdown-confluence/compare/obsidian-confluence-root-v5.4.0...obsidian-confluence-root-v5.5.0) (2023-06-29)
 
-
 ### Features
 
 * **FolderNote:** Add README.md and readme.md as options for folder note file names ([81ee277](https://github.com/markdown-confluence/markdown-confluence/commit/81ee277694e742aa4ab0202d7ba8e563a5a67b95))
 
-
 ### Bug Fixes
 
 * yargs is a dep of lib not cli ([aca0a8b](https://github.com/markdown-confluence/markdown-confluence/commit/aca0a8bd259703850b6694c9f1bec01ac7d8205f))
-
 
 ### Dependencies
 
@@ -115,25 +127,21 @@
 
 ## [5.4.0](https://github.com/markdown-confluence/markdown-confluence/compare/obsidian-confluence-root-v5.3.0...obsidian-confluence-root-v5.4.0) (2023-05-12)
 
-
 ### Features
 
 * Handle 404 when pageId included in YAML. Set to not publish and remove bad pageId ([33dde01](https://github.com/markdown-confluence/markdown-confluence/commit/33dde014ccc24368f065eec0a92dba3755644fc8))
 
 ## [5.3.0](https://github.com/markdown-confluence/markdown-confluence/compare/obsidian-confluence-root-v5.2.6...obsidian-confluence-root-v5.3.0) (2023-05-11)
 
-
 ### Features
 
 * Move ImageUpload and MermaidRendering to plugins to allow for more plugins easily ([cfae670](https://github.com/markdown-confluence/markdown-confluence/commit/cfae670d3bc94c4a88d02936c94ca9c1ab47ce9e))
-
 
 ### Bug Fixes
 
 * Handle relative paths for images ([dbaba70](https://github.com/markdown-confluence/markdown-confluence/commit/dbaba70dc5b2ca068543295de43a8a1674fb3baf))
 
 ## [5.2.6](https://github.com/markdown-confluence/markdown-confluence/compare/obsidian-confluence-root-v5.2.5...obsidian-confluence-root-v5.2.6) (2023-05-11)
-
 
 ### Bug Fixes
 
@@ -142,13 +150,11 @@
 
 ## [5.2.5](https://github.com/markdown-confluence/markdown-confluence/compare/obsidian-confluence-root-v5.2.4...obsidian-confluence-root-v5.2.5) (2023-05-10)
 
-
 ### Bug Fixes
 
 * Only load CSS that exists for obsidian styles ([c825559](https://github.com/markdown-confluence/markdown-confluence/commit/c825559c4c318d665996d4da0b2488666c44fcaa))
 
 ## [5.2.4](https://github.com/markdown-confluence/markdown-confluence/compare/obsidian-confluence-root-v5.2.3...obsidian-confluence-root-v5.2.4) (2023-05-10)
-
 
 ### Bug Fixes
 
@@ -157,13 +163,11 @@
 
 ## [5.2.3](https://github.com/markdown-confluence/markdown-confluence/compare/obsidian-confluence-root-v5.2.2...obsidian-confluence-root-v5.2.3) (2023-05-10)
 
-
 ### Bug Fixes
 
 * HTML should be next to CLI ([9cefae1](https://github.com/markdown-confluence/markdown-confluence/commit/9cefae132f930db5a2b964dd7199434875093e82))
 
 ## [5.2.2](https://github.com/markdown-confluence/markdown-confluence/compare/obsidian-confluence-root-v5.2.1...obsidian-confluence-root-v5.2.2) (2023-05-10)
-
 
 ### Bug Fixes
 
@@ -171,13 +175,11 @@
 
 ## [5.2.1](https://github.com/markdown-confluence/markdown-confluence/compare/obsidian-confluence-root-v5.2.0...obsidian-confluence-root-v5.2.1) (2023-05-10)
 
-
 ### Bug Fixes
 
 * Write out puppeteer launch options to see why it can't find the browser ([fb3ca7f](https://github.com/markdown-confluence/markdown-confluence/commit/fb3ca7f0a34e2202cdc62e6dd89f573cd434a0d4))
 
 ## [5.2.0](https://github.com/markdown-confluence/markdown-confluence/compare/obsidian-confluence-root-v5.1.0...obsidian-confluence-root-v5.2.0) (2023-05-09)
-
 
 ### Features
 
@@ -185,14 +187,12 @@
 
 ## [5.1.0](https://github.com/markdown-confluence/markdown-confluence/compare/obsidian-confluence-root-v5.0.1...obsidian-confluence-root-v5.1.0) (2023-05-09)
 
-
 ### Features
 
 * Add support for mentions ([f17dd84](https://github.com/markdown-confluence/markdown-confluence/commit/f17dd8460c7ee428846f1dc7adb4382ae3f772f2))
 * ADF To Markdown ([7257893](https://github.com/markdown-confluence/markdown-confluence/commit/725789372481baef6ba20aaf37a82dc5ca126b2e))
 * Diff page details to see if they have changed. If so then publish page. ([7e30ca8](https://github.com/markdown-confluence/markdown-confluence/commit/7e30ca80f4feb93b2b86b85a4bec70c0e93edf91))
 * Handle smartcards storing URL without page name on the end ([d489f83](https://github.com/markdown-confluence/markdown-confluence/commit/d489f83b3f565bd986dd7fb801eb762142db8a13))
-
 
 ### Bug Fixes
 
@@ -205,11 +205,9 @@
 * Settings path ([d1c43e6](https://github.com/markdown-confluence/markdown-confluence/commit/d1c43e66bfe0e3c50a3a79d81e46659e3e3e75ee))
 * Tests ([4f91706](https://github.com/markdown-confluence/markdown-confluence/commit/4f91706e49cef54c53fce4729b155c4799686d1e))
 
-
 ### Documentation
 
 * Update Obsidian docs to remove need for BRAT install ([9fc8fc8](https://github.com/markdown-confluence/markdown-confluence/commit/9fc8fc8236c369b53c3d5bdcc63777525f30a0c9))
-
 
 ### Dependencies
 
@@ -221,14 +219,12 @@
 
 ## [5.0.1](https://github.com/markdown-confluence/markdown-confluence/compare/obsidian-confluence-root-v5.0.0...obsidian-confluence-root-v5.0.1) (2023-05-03)
 
-
 ### Documentation
 
 * Add note about logging issues to mono repo ([19992f6](https://github.com/markdown-confluence/markdown-confluence/commit/19992f6705e0882025a1f8100b4ef42903df71e8))
 * Fix docs when they are published to obsidian-integration repo ([bb5887b](https://github.com/markdown-confluence/markdown-confluence/commit/bb5887b96fcd27678c52552576defd0fda8dcf19))
 
 ## [5.0.0](https://github.com/markdown-confluence/markdown-confluence/compare/obsidian-confluence-root-v4.9.0...obsidian-confluence-root-v5.0.0) (2023-05-03)
-
 
 ### ⚠ BREAKING CHANGES
 
@@ -242,7 +238,6 @@
 * Mark lib as sideEffects: false to help treeshaking ([1a622e3](https://github.com/markdown-confluence/markdown-confluence/commit/1a622e39cf5a84a86bcc7cbfd61eebd690a2ebfb))
 * Remove ADFView. It adds a lot of complexity and size to Obsidian Plugin ([74c8436](https://github.com/markdown-confluence/markdown-confluence/commit/74c84360bf0fe2afeafd4d769f11b41a5f9d6e03))
 * Snyk container scanning ([710a4a0](https://github.com/markdown-confluence/markdown-confluence/commit/710a4a0c6d544835c74bbfa31939745d7e4a7b0d))
-
 
 ### Bug Fixes
 
@@ -270,7 +265,6 @@
 * Update snyk org id ([945f87c](https://github.com/markdown-confluence/markdown-confluence/commit/945f87c42d3c8245776452e4cf6c400498017ca0))
 * use latest tag ([b7458ab](https://github.com/markdown-confluence/markdown-confluence/commit/b7458ab9a1b771b3073b3fc39c0febb0b97808b0))
 
-
 ### Documentation
 
 * Add badges to README.md ([53d2bf3](https://github.com/markdown-confluence/markdown-confluence/commit/53d2bf330d341ed13296784339d1e7849cf9fe39))
@@ -278,7 +272,6 @@
 * Add Discord link ([9c093f6](https://github.com/markdown-confluence/markdown-confluence/commit/9c093f67c523a677c34c6e99d79be799b2c9e46f))
 * Add README.md files to all NPM Packages ([75c4781](https://github.com/markdown-confluence/markdown-confluence/commit/75c47816b7895fd26d50382c316f83d6993cc56c))
 * amended the broken readme image paths for obsidian package ([97876cf](https://github.com/markdown-confluence/markdown-confluence/commit/97876cf7c55e3ac4de89d85a70dfd4ba4e8b3f15))
-
 
 ### Dependencies
 
@@ -289,11 +282,9 @@
 
 ## [4.9.0](https://github.com/markdown-confluence/markdown-confluence/compare/obsidian-confluence-root-v4.8.0...obsidian-confluence-root-v4.9.0) (2023-04-30)
 
-
 ### Features
 
 * Add support for "index.md" as a folder file ([f598074](https://github.com/markdown-confluence/markdown-confluence/commit/f5980740cb99f0fa04cd0c66c6f5dba6ea78c288))
-
 
 ### Bug Fixes
 
@@ -301,13 +292,11 @@
 
 ## [4.8.0](https://github.com/markdown-confluence/markdown-confluence/compare/obsidian-confluence-root-v4.7.5...obsidian-confluence-root-v4.8.0) (2023-04-30)
 
-
 ### Features
 
 * Add new setting to allow you to use the first heading as the page title. ([ec4e426](https://github.com/markdown-confluence/markdown-confluence/commit/ec4e426700d241c29f84ac25b28893f28f20a555))
 
 ## [4.7.5](https://github.com/markdown-confluence/markdown-confluence/compare/obsidian-confluence-root-v4.7.4...obsidian-confluence-root-v4.7.5) (2023-04-30)
-
 
 ### Bug Fixes
 
@@ -315,13 +304,11 @@
 
 ## [4.7.4](https://github.com/markdown-confluence/markdown-confluence/compare/obsidian-confluence-root-v4.7.3...obsidian-confluence-root-v4.7.4) (2023-04-29)
 
-
 ### Bug Fixes
 
 * Check for duplicate page titles not file names. ([540b1f9](https://github.com/markdown-confluence/markdown-confluence/commit/540b1f93cd20784f9c7c8f14895221667fe5f3f5))
 
 ## [4.7.3](https://github.com/markdown-confluence/markdown-confluence/compare/obsidian-confluence-root-v4.7.2...obsidian-confluence-root-v4.7.3) (2023-04-29)
-
 
 ### Bug Fixes
 
@@ -329,13 +316,11 @@
 
 ## [4.7.2](https://github.com/markdown-confluence/markdown-confluence/compare/obsidian-confluence-root-v4.7.1...obsidian-confluence-root-v4.7.2) (2023-04-28)
 
-
 ### Bug Fixes
 
 * Don't specify default for contentRoot on CommandLineArgumentSettingsLoader. ([ec8c338](https://github.com/markdown-confluence/markdown-confluence/commit/ec8c3387dc4d324acf49853917f5ee8c95442e7e))
 
 ## [4.7.1](https://github.com/markdown-confluence/markdown-confluence/compare/obsidian-confluence-root-v4.7.0...obsidian-confluence-root-v4.7.1) (2023-04-28)
-
 
 ### Bug Fixes
 
@@ -343,11 +328,9 @@
 
 ## [4.7.0](https://github.com/markdown-confluence/markdown-confluence/compare/obsidian-confluence-root-v4.6.4...obsidian-confluence-root-v4.7.0) (2023-04-28)
 
-
 ### Features
 
 * Add links to updated pages on Completed Dialog ([65c1a42](https://github.com/markdown-confluence/markdown-confluence/commit/65c1a42b7b039512d5582b055f8adfb4f25333c8))
-
 
 ### Bug Fixes
 
@@ -355,13 +338,11 @@
 * Replace spaces with `-` to match what confluence uses. ([92b9d2d](https://github.com/markdown-confluence/markdown-confluence/commit/92b9d2d9266ac777cc8ae4cbcd665f591a17b636))
 * Wrap check for file in try catch to report the errors better ([3fabce0](https://github.com/markdown-confluence/markdown-confluence/commit/3fabce0fb09573106552a37586bc1caf3883da6a))
 
-
 ### Documentation
 
 * Update repo and org names to match new names ([404a85b](https://github.com/markdown-confluence/markdown-confluence/commit/404a85b206704873d57c233131ba4f564c4ccd86))
 
 ## [4.6.4](https://github.com/markdown-confluence/markdown-confluence/compare/obsidian-confluence-root-v4.6.3...obsidian-confluence-root-v4.6.4) (2023-04-28)
-
 
 ### Bug Fixes
 
@@ -371,13 +352,11 @@
 
 ## [4.6.3](https://github.com/markdown-confluence/markdown-confluence/compare/obsidian-confluence-root-v4.6.2...obsidian-confluence-root-v4.6.3) (2023-04-28)
 
-
 ### Bug Fixes
 
 * Wrong Ordering of AutoSettingsLoader Loaders ([4b1dc22](https://github.com/markdown-confluence/markdown-confluence/commit/4b1dc22895001646b638997536706053bda7cbf2))
 
 ## [4.6.2](https://github.com/markdown-confluence/markdown-confluence/compare/obsidian-confluence-root-v4.6.1...obsidian-confluence-root-v4.6.2) (2023-04-28)
-
 
 ### Bug Fixes
 
@@ -385,13 +364,11 @@
 
 ## [4.6.1](https://github.com/markdown-confluence/markdown-confluence/compare/obsidian-confluence-root-v4.6.0...obsidian-confluence-root-v4.6.1) (2023-04-28)
 
-
 ### Bug Fixes
 
 * Temp hack to show all files to be published ([d3539e9](https://github.com/markdown-confluence/markdown-confluence/commit/d3539e9e503d16dd8277847f28214d8a7552d51f))
 
 ## [4.6.0](https://github.com/markdown-confluence/markdown-confluence/compare/obsidian-confluence-root-v4.5.0...obsidian-confluence-root-v4.6.0) (2023-04-28)
-
 
 ### Features
 
@@ -399,13 +376,11 @@
 
 ## [4.5.0](https://github.com/markdown-confluence/markdown-confluence/compare/obsidian-confluence-root-v4.4.0...obsidian-confluence-root-v4.5.0) (2023-04-28)
 
-
 ### Features
 
 * Enable SourceMaps in Docker ([5f13f52](https://github.com/markdown-confluence/markdown-confluence/commit/5f13f526ec1dc3326d3517a6080139d047c6e9ca))
 
 ## [4.4.0](https://github.com/markdown-confluence/markdown-confluence/compare/obsidian-confluence-root-v4.3.0...obsidian-confluence-root-v4.4.0) (2023-04-27)
-
 
 ### Features
 
@@ -413,11 +388,9 @@
 
 ## [4.3.0](https://github.com/markdown-confluence/markdown-confluence/compare/obsidian-confluence-root-v4.2.8...obsidian-confluence-root-v4.3.0) (2023-04-27)
 
-
 ### Features
 
 * Allow setting content root for FilesystemAdaptor ([d008f29](https://github.com/markdown-confluence/markdown-confluence/commit/d008f294170561cec8ebfc7aa54352fb34c8cc44))
-
 
 ### Bug Fixes
 
@@ -425,7 +398,6 @@
 * If environment variable is empty or "" then don't use. ([b0b7684](https://github.com/markdown-confluence/markdown-confluence/commit/b0b7684f42906710929833f5883aab31fefc8e10))
 * Pin puppeteer Docker container ([d9d5f11](https://github.com/markdown-confluence/markdown-confluence/commit/d9d5f11516582ec80a51cf0f137ba30d0a15ef8e))
 * Trim and add back the contentRoot ([c48a9c0](https://github.com/markdown-confluence/markdown-confluence/commit/c48a9c0171bf34655ac5b3826ae0b35fdb4085f1))
-
 
 ### Dependencies
 
@@ -440,16 +412,14 @@
 * **deps:** bump puppeteer/puppeteer in /packages/cli ([07eeca7](https://github.com/markdown-confluence/markdown-confluence/commit/07eeca733ab5104397afcbe620015da91b13dfff))
 * Update lint-staged to resolve vuln ([4ba7926](https://github.com/markdown-confluence/markdown-confluence/commit/4ba7926a1d8a8a3334eeabafcf6dac43ed39c37d))
 
-
 ### Documentation
 
 * Add link direct to Report a vuln ([61ce80a](https://github.com/markdown-confluence/markdown-confluence/commit/61ce80a43356d5353b8a7705bd5bc6f026abc79d))
 * Add Snyk badge ([15f8382](https://github.com/markdown-confluence/markdown-confluence/commit/15f8382e62c5bbfaccf51afc30ba76d3f5c1e758))
-* Docs moved to https://github.com/markdown-confluence/docs-obsidian-confluence ([442d353](https://github.com/markdown-confluence/markdown-confluence/commit/442d3534b63c538c5a9ab2e8ab1a82e81717995d))
+* Docs moved to <https://github.com/markdown-confluence/docs-obsidian-confluence> ([442d353](https://github.com/markdown-confluence/markdown-confluence/commit/442d3534b63c538c5a9ab2e8ab1a82e81717995d))
 * Fix OpenSSF Scorecard Link ([16ca266](https://github.com/markdown-confluence/markdown-confluence/commit/16ca266abacc64dbb3eb33c716dcf33f1a65d4d1))
 
 ## [4.2.8](https://github.com/markdown-confluence/markdown-confluence/compare/obsidian-confluence-root-v4.2.7...obsidian-confluence-root-v4.2.8) (2023-04-26)
-
 
 ### Bug Fixes
 
@@ -457,13 +427,11 @@
 
 ## [4.2.7](https://github.com/markdown-confluence/markdown-confluence/compare/obsidian-confluence-root-v4.2.6...obsidian-confluence-root-v4.2.7) (2023-04-26)
 
-
 ### Bug Fixes
 
 * Clean out obsidian-integration repo before copying in latest files ([02b3887](https://github.com/markdown-confluence/markdown-confluence/commit/02b38872133ddb685e804901b97adbaa20d4283f))
 
 ## [4.2.6](https://github.com/markdown-confluence/markdown-confluence/compare/obsidian-confluence-root-v4.2.5...obsidian-confluence-root-v4.2.6) (2023-04-26)
-
 
 ### Bug Fixes
 
@@ -471,13 +439,11 @@
 
 ## [4.2.5](https://github.com/markdown-confluence/markdown-confluence/compare/obsidian-confluence-root-v4.2.4...obsidian-confluence-root-v4.2.5) (2023-04-26)
 
-
 ### Bug Fixes
 
 * git add for all files ([614f13c](https://github.com/markdown-confluence/markdown-confluence/commit/614f13c0a74b750d76cd1f2a7b8374e84251b835))
 
 ## [4.2.4](https://github.com/markdown-confluence/markdown-confluence/compare/obsidian-confluence-root-v4.2.3...obsidian-confluence-root-v4.2.4) (2023-04-26)
-
 
 ### Bug Fixes
 
@@ -485,13 +451,11 @@
 
 ## [4.2.3](https://github.com/markdown-confluence/markdown-confluence/compare/obsidian-confluence-root-v4.2.2...obsidian-confluence-root-v4.2.3) (2023-04-26)
 
-
 ### Bug Fixes
 
 * Bump version ([f22975a](https://github.com/markdown-confluence/markdown-confluence/commit/f22975a0899fa895b06f6ec3be6046d7958e08d5))
 
 ## [4.2.2](https://github.com/markdown-confluence/markdown-confluence/compare/obsidian-confluence-root-v4.2.1...obsidian-confluence-root-v4.2.2) (2023-04-26)
-
 
 ### Bug Fixes
 
@@ -500,11 +464,9 @@
 
 ## [4.2.1](https://github.com/markdown-confluence/markdown-confluence/compare/obsidian-confluence-root-v4.2.0...obsidian-confluence-root-v4.2.1) (2023-04-26)
 
-
 ### Bug Fixes
 
 * Add new manifest.json to allow new commit for release to be tagged against ([f35d0a4](https://github.com/markdown-confluence/markdown-confluence/commit/f35d0a445531c413f52f40f7c57d2db80dd7c455))
-
 
 ### Dependencies
 
@@ -512,13 +474,11 @@
 
 ## [4.2.0](https://github.com/markdown-confluence/markdown-confluence/compare/obsidian-confluence-root-v4.1.1...obsidian-confluence-root-v4.2.0) (2023-04-26)
 
-
 ### Features
 
 * Update to publish to obsidian-integration repo ([c1b7b98](https://github.com/markdown-confluence/markdown-confluence/commit/c1b7b983c6aeb7773d2e5b2ff77857682b250a1b))
 
 ## [4.1.1](https://github.com/markdown-confluence/markdown-confluence/compare/obsidian-confluence-root-v4.1.0...obsidian-confluence-root-v4.1.1) (2023-04-26)
-
 
 ### Bug Fixes
 
@@ -526,13 +486,11 @@
 
 ## [4.1.0](https://github.com/markdown-confluence/markdown-confluence/compare/obsidian-confluence-root-v4.0.4...obsidian-confluence-root-v4.1.0) (2023-04-26)
 
-
 ### Features
 
 * Tag docker with extra tags for Major and Major.Minor ([6ef7b65](https://github.com/markdown-confluence/markdown-confluence/commit/6ef7b652105cc609d6023f8fa4243dade8d863a2))
 
 ## [4.0.4](https://github.com/markdown-confluence/markdown-confluence/compare/obsidian-confluence-root-v4.0.3...obsidian-confluence-root-v4.0.4) (2023-04-26)
-
 
 ### Bug Fixes
 
@@ -541,13 +499,11 @@
 
 ## [4.0.3](https://github.com/markdown-confluence/markdown-confluence/compare/obsidian-confluence-root-v4.0.2...obsidian-confluence-root-v4.0.3) (2023-04-26)
 
-
 ### Bug Fixes
 
 * Update Token to support packages ([73d3b54](https://github.com/markdown-confluence/markdown-confluence/commit/73d3b544781c927cf847dfe34e839201cb5b92d2))
 
 ## [4.0.2](https://github.com/markdown-confluence/markdown-confluence/compare/obsidian-confluence-root-v4.0.1...obsidian-confluence-root-v4.0.2) (2023-04-26)
-
 
 ### Bug Fixes
 
@@ -555,14 +511,12 @@
 
 ## [4.0.1](https://github.com/markdown-confluence/markdown-confluence/compare/obsidian-confluence-root-v4.0.0...obsidian-confluence-root-v4.0.1) (2023-04-26)
 
-
 ### Bug Fixes
 
 * Only build and release docker when release is created ([fe26002](https://github.com/markdown-confluence/markdown-confluence/commit/fe260026267fa1974b712bd425238c9e1b347766))
 * package-lock.json out of date ([1468cb1](https://github.com/markdown-confluence/markdown-confluence/commit/1468cb1a28050808def376531a26c8fd9968ca9c))
 
 ## [4.0.0](https://github.com/markdown-confluence/markdown-confluence/compare/obsidian-confluence-root-v3.7.0...obsidian-confluence-root-v4.0.0) (2023-04-26)
-
 
 ### ⚠ BREAKING CHANGES
 
@@ -573,23 +527,19 @@
 * Add docker CLI ([e8f930f](https://github.com/markdown-confluence/markdown-confluence/commit/e8f930fbeb612152cf19f5b387fb322b4c82bc5e))
 * Initial CLI version ([85b4aff](https://github.com/markdown-confluence/markdown-confluence/commit/85b4aff13921accf6dd376e18929f3a19087757e))
 
-
 ### Bug Fixes
 
 * Path in docs ([486bc74](https://github.com/markdown-confluence/markdown-confluence/commit/486bc74e11a0f1a1292933e0684a22288906d57d))
 
-
 ### Documentation
 
 * Fix links on Thanks page ([96c4953](https://github.com/markdown-confluence/markdown-confluence/commit/96c4953f0251595ff17ec92f950bded255b0b0a1))
-
 
 ### Dependencies
 
 * **deps:** bump github/codeql-action from 2.2.12 to 2.3.0 ([2c4d081](https://github.com/markdown-confluence/markdown-confluence/commit/2c4d081a3733ff527b993663662698cace53887f))
 
 ## [3.7.0](https://github.com/markdown-confluence/markdown-confluence/compare/obsidian-confluence-root-v3.6.1...obsidian-confluence-root-v3.7.0) (2023-04-24)
-
 
 ### Features
 
@@ -602,7 +552,6 @@
 * Make ADF the same as what Confluence returns. ([a223c72](https://github.com/markdown-confluence/markdown-confluence/commit/a223c72057fe154f3a47916fb97e1c92830bdf7c))
 * Map Inline Comments with best effort ([b1d8db3](https://github.com/markdown-confluence/markdown-confluence/commit/b1d8db3eb1d68ebc06c614052ea41693f47842e2))
 
-
 ### Bug Fixes
 
 * Add category when uploading Sarif file ([3fb888b](https://github.com/markdown-confluence/markdown-confluence/commit/3fb888b9600aea095892c50dc210779df709c240))
@@ -610,10 +559,9 @@
 * Fix permissions syntax ([b7e585b](https://github.com/markdown-confluence/markdown-confluence/commit/b7e585b5a46bb9bf8b2ca7af0bccdf1dff95063a))
 * Ignore error under eslint due to not being an issue ([e784c6c](https://github.com/markdown-confluence/markdown-confluence/commit/e784c6ca1d2a6e2cae19c695cf8488ee60ce7056))
 * Ignore vuln not being used ([619daca](https://github.com/markdown-confluence/markdown-confluence/commit/619daca0e1adb8c24f5768abf9f3c412757f6c8a))
-* Root permissions all read as per https://github.com/ossf/scorecard/blob/376f465c111c39c6a5ad7408e8896cd790cb5219/docs/checks.md#token-permissions ([4560446](https://github.com/markdown-confluence/markdown-confluence/commit/45604462575d96e9ac085c15eb45c9207fd1c232))
+* Root permissions all read as per <https://github.com/ossf/scorecard/blob/376f465c111c39c6a5ad7408e8896cd790cb5219/docs/checks.md#token-permissions> ([4560446](https://github.com/markdown-confluence/markdown-confluence/commit/45604462575d96e9ac085c15eb45c9207fd1c232))
 
 ## [3.6.1](https://github.com/markdown-confluence/markdown-confluence/compare/obsidian-confluence-root-v3.6.0...obsidian-confluence-root-v3.6.1) (2023-04-21)
-
 
 ### Bug Fixes
 
@@ -621,18 +569,15 @@
 
 ## [3.6.0](https://github.com/markdown-confluence/markdown-confluence/compare/obsidian-confluence-root-v3.5.0...obsidian-confluence-root-v3.6.0) (2023-04-21)
 
-
 ### Features
 
 * Add step-security/harden-runner to GHA ([f49c627](https://github.com/markdown-confluence/markdown-confluence/commit/f49c6273b984120ad53f8b32b28f47cc5cd65a73))
-
 
 ### Bug Fixes
 
 * Upload release assets ([95b5c61](https://github.com/markdown-confluence/markdown-confluence/commit/95b5c61bf197441b556df630f3fc0837e9952ed4))
 
 ## [3.5.0](https://github.com/markdown-confluence/markdown-confluence/compare/obsidian-confluence-root-v3.4.1...obsidian-confluence-root-v3.5.0) (2023-04-21)
-
 
 ### Features
 
@@ -642,7 +587,6 @@
 * Custom ADF via Codeblock and adf language ([8e91630](https://github.com/markdown-confluence/markdown-confluence/commit/8e916307b14654da4bc54bc71579e2a0283b365f))
 * Scan code with snyk ([#128](https://github.com/markdown-confluence/markdown-confluence/issues/128)) ([118e46a](https://github.com/markdown-confluence/markdown-confluence/commit/118e46ad413c9819d6c9f0f2076f9915a6667c80))
 * Sign releases ([06ddd88](https://github.com/markdown-confluence/markdown-confluence/commit/06ddd887e493d00d7e009252334d194e9a6527fb))
-
 
 ### Bug Fixes
 
@@ -655,13 +599,11 @@
 
 ## [3.4.1](https://github.com/markdown-confluence/markdown-confluence/compare/obsidian-confluence-root-v3.4.0...obsidian-confluence-root-v3.4.1) (2023-04-20)
 
-
 ### Bug Fixes
 
 * Add repository information for providence ([362e025](https://github.com/markdown-confluence/markdown-confluence/commit/362e0252bd24440f6311286e2b4446ffcf458dc4))
 
 ## [3.4.0](https://github.com/markdown-confluence/markdown-confluence/compare/obsidian-confluence-root-v3.3.0...obsidian-confluence-root-v3.4.0) (2023-04-20)
-
 
 ### Features
 
@@ -670,31 +612,26 @@
 * Update Confluence Page Settings Command ([a7d395e](https://github.com/markdown-confluence/markdown-confluence/commit/a7d395e5a2ddc9323a683bc9c877f8878740422a))
 * Write `connie-publish: true` to all files that have been published to ensure even if you move the files they still will be published. ([a7d395e](https://github.com/markdown-confluence/markdown-confluence/commit/a7d395e5a2ddc9323a683bc9c877f8878740422a))
 
-
 ### Dependencies
 
 * Clean up mermaid-electron-renderer package.json ([8137934](https://github.com/markdown-confluence/markdown-confluence/commit/81379341178e28046174ceadcb74f271ac0dd10b))
 
 ## [3.3.0](https://github.com/markdown-confluence/markdown-confluence/compare/obsidian-confluence-root-v3.2.0...obsidian-confluence-root-v3.3.0) (2023-04-18)
 
-
 ### Features
 
 * Update a page when you are the last modifier ([5c42d77](https://github.com/markdown-confluence/markdown-confluence/commit/5c42d7787cf4c53098759ac221a81369e033df3d))
 
-
 ### Bug Fixes
 
 * npm fmt ([206269c](https://github.com/markdown-confluence/markdown-confluence/commit/206269cc887eb75659dd77673318715eb3db1457))
-* Updates requested https://github.com/obsidianmd/obsidian-releases/pull/1867#issuecomment-1512710718 ([47c4bf9](https://github.com/markdown-confluence/markdown-confluence/commit/47c4bf9d6ba2efb70e2ae62d59623f13f5db9183))
+* Updates requested <https://github.com/obsidianmd/obsidian-releases/pull/1867#issuecomment-1512710718> ([47c4bf9](https://github.com/markdown-confluence/markdown-confluence/commit/47c4bf9d6ba2efb70e2ae62d59623f13f5db9183))
 
 ## [3.2.0](https://github.com/markdown-confluence/markdown-confluence/compare/obsidian-confluence-root-v3.1.0...obsidian-confluence-root-v3.2.0) (2023-04-18)
-
 
 ### Features
 
 * Publish `mermaid-electron-renderer` ([351d78d](https://github.com/markdown-confluence/markdown-confluence/commit/351d78d4cc9a9e06c2216a0dbfa60988bc76abf2))
-
 
 ### Bug Fixes
 
@@ -702,11 +639,9 @@
 
 ## [3.1.0](https://github.com/markdown-confluence/markdown-confluence/compare/obsidian-confluence-root-v3.0.2...obsidian-confluence-root-v3.1.0) (2023-04-18)
 
-
 ### Features
 
 * Create manual release to align with Obsidian requirements ([a9b90e5](https://github.com/markdown-confluence/markdown-confluence/commit/a9b90e5cb1ad61fe56d33c5e8a6c0288c7f111a6))
-
 
 ### Bug Fixes
 
@@ -714,7 +649,6 @@
 * Bump version ([a798554](https://github.com/markdown-confluence/markdown-confluence/commit/a798554d470e880ab53f689412b0c6aeab269d2c))
 
 ## [3.0.2](https://github.com/markdown-confluence/markdown-confluence/compare/obsidian-confluence-root-v3.0.1...obsidian-confluence-root-v3.0.2) (2023-04-18)
-
 
 ### Bug Fixes
 
@@ -724,13 +658,11 @@
 
 ## [3.0.1](https://github.com/markdown-confluence/markdown-confluence/compare/obsidian-confluence-root-v3.0.0...obsidian-confluence-root-v3.0.1) (2023-04-18)
 
-
 ### Bug Fixes
 
 * noEmit for Obsidian package ([7a36a92](https://github.com/markdown-confluence/markdown-confluence/commit/7a36a924f8bd8b97b53d6bdaf8132e8f36191192))
 
 ## [3.0.0](https://github.com/markdown-confluence/markdown-confluence/compare/obsidian-confluence-root-v3.0.4...obsidian-confluence-root-v3.0.0) (2023-04-18)
-
 
 ### Features
 
@@ -750,7 +682,6 @@
 * **tests:** Add initial unit tests and GH Actions to ensure they pass ([b7f636e](https://github.com/markdown-confluence/markdown-confluence/commit/b7f636e2fb8e8a99c06cd60d227e38ae9e8d2873))
 * **Wikilinks:** First pass at supporting Wikilinks Syntax ([57e9f65](https://github.com/markdown-confluence/markdown-confluence/commit/57e9f65da1ddb4beb21d997bdf8652a6eed29720))
 * **Wikilinks:** Support smart links and pages in multiple spaces ([20656f4](https://github.com/markdown-confluence/markdown-confluence/commit/20656f489d32a50ebd70587f25ca0d167c721cf0))
-
 
 ### Bug Fixes
 
@@ -785,7 +716,7 @@
 * Manifest ([b87659e](https://github.com/markdown-confluence/markdown-confluence/commit/b87659e8c780a77092b0c5de616feda20f9dcefa))
 * **Mermaid:** Remove extra console.log ([cfbddd5](https://github.com/markdown-confluence/markdown-confluence/commit/cfbddd531d4b79e3bd2447e39299db19b6393014))
 * Move "." to the bottom ([e3a68ce](https://github.com/markdown-confluence/markdown-confluence/commit/e3a68cee680ac1f65f49577f537937a2ae502cfd))
-* **Obsidian:** Update to match recommendations from https://github.com/obsidianmd/obsidian-releases/blob/master/plugin-review.md ([a038a46](https://github.com/markdown-confluence/markdown-confluence/commit/a038a46c08fb363d46a3f80ba431d165a507ca64))
+* **Obsidian:** Update to match recommendations from <https://github.com/obsidianmd/obsidian-releases/blob/master/plugin-review.md> ([a038a46](https://github.com/markdown-confluence/markdown-confluence/commit/a038a46c08fb363d46a3f80ba431d165a507ca64))
 * Only remove component from tag name for Obsidian ([84c6628](https://github.com/markdown-confluence/markdown-confluence/commit/84c662823f550906e7764127d8a3782cea308c43))
 * **ReleasePlease:** Fix to use a different name for package due to the actual obsidian package ([3f94f7e](https://github.com/markdown-confluence/markdown-confluence/commit/3f94f7e15745139f7530ae1f86b0334f7d6ff184))
 * Rename `MainSettingTab` to `ConfluenceSettingTab` ([29ef8f2](https://github.com/markdown-confluence/markdown-confluence/commit/29ef8f256305a13d520fc65c7a49064ed90aa296))
@@ -804,23 +735,20 @@
 * Work around bug in release-please ([b740114](https://github.com/markdown-confluence/markdown-confluence/commit/b74011475d85c5ca4551aba998b1ea3b8627a025))
 * Wrong path for manifest.json ([8444d3f](https://github.com/markdown-confluence/markdown-confluence/commit/8444d3f7f571e37e42565bddc403ac1dbd943eb7))
 
-
 ### Dependencies
 
 * **deps:** bump @atlaskit/renderer from 107.2.0 to 107.3.2 ([7ae7a58](https://github.com/markdown-confluence/markdown-confluence/commit/7ae7a58ebdca4a516eba61504ef3299d4c42f6ce))
 * Remove unused deps ([2bfd5c4](https://github.com/markdown-confluence/markdown-confluence/commit/2bfd5c4741202f4d18639254758ac9f914ec8eab))
-
 
 ### Documentation
 
 * Add BRAT installation instructions ([a46cd23](https://github.com/markdown-confluence/markdown-confluence/commit/a46cd23023426153405aef6e9d7c413a9c4bda01))
 * Add brat to readme.md ([9d8efb0](https://github.com/markdown-confluence/markdown-confluence/commit/9d8efb076b3dc43c787c684456559f8347c71c66))
 * Add Installation BRAT to side nav ([5d87192](https://github.com/markdown-confluence/markdown-confluence/commit/5d871924fa93eceffc8be6817c61b42f70f9404f))
-* Add reference to https://github.com/LostPaul/obsidian-folder-notes/tree/main ([d783f1b](https://github.com/markdown-confluence/markdown-confluence/commit/d783f1b0b60f0864f07bac7a8eaeeafbac7e6101))
+* Add reference to <https://github.com/LostPaul/obsidian-folder-notes/tree/main> ([d783f1b](https://github.com/markdown-confluence/markdown-confluence/commit/d783f1b0b60f0864f07bac7a8eaeeafbac7e6101))
 * Add Wikilinks example ([92a979f](https://github.com/markdown-confluence/markdown-confluence/commit/92a979ffd496e1993d36be26422bf341c0a58b72))
 * Fix book.toml ([985561a](https://github.com/markdown-confluence/markdown-confluence/commit/985561a25f9a801f6570c368941792fb24abfc64))
 * Minor documentation changes from jvsteiner ([f2d3b47](https://github.com/markdown-confluence/markdown-confluence/commit/f2d3b474474d80bd05ff589a3654e4400e05265d))
-
 
 ### Miscellaneous Chores
 
@@ -829,13 +757,11 @@
 
 ## [3.0.4](https://github.com/markdown-confluence/markdown-confluence/compare/3.0.3...3.0.4) (2023-04-18)
 
-
 ### Bug Fixes
 
 * Enable merge due to not having `linked-versions` ([8850884](https://github.com/markdown-confluence/markdown-confluence/commit/8850884803b8168de9031de1d09cb56da2e6c11e))
 
 ## [3.0.3](https://github.com/markdown-confluence/markdown-confluence/compare/3.0.2...3.0.3) (2023-04-18)
-
 
 ### Bug Fixes
 
@@ -846,13 +772,11 @@
 
 ## [3.0.2](https://github.com/markdown-confluence/markdown-confluence/compare/3.0.1...3.0.2) (2023-04-18)
 
-
 ### Bug Fixes
 
 * Bump version I hope ([39b93eb](https://github.com/markdown-confluence/markdown-confluence/commit/39b93eba447f2a1f706ff6e65e7e8cabea08bf75))
 
 ## [3.0.1](https://github.com/markdown-confluence/markdown-confluence/compare/3.0.0...3.0.1) (2023-04-18)
-
 
 ### Bug Fixes
 
@@ -864,7 +788,6 @@
 
 ## [3.0.0](https://github.com/markdown-confluence/markdown-confluence/compare/2.1.1...3.0.0) (2023-04-18)
 
-
 ### Features
 
 * Add NPM publish after release is created ([2979a11](https://github.com/markdown-confluence/markdown-confluence/commit/2979a11507c140436ce0ca236e86aca70991bfb9))
@@ -872,7 +795,6 @@
 * **build:** Add `mermaidRendererPlugin.js` ([a64a176](https://github.com/markdown-confluence/markdown-confluence/commit/a64a1763c8c440e8d826b8f4a8bc6aa304eafc38))
 * Include stats/expanded file names on publish ([d618b66](https://github.com/markdown-confluence/markdown-confluence/commit/d618b665521364ebfbea05a2713ff70f74630b91))
 * Lots of changes to enable better testing ([0ce560c](https://github.com/markdown-confluence/markdown-confluence/commit/0ce560c3fb2c60edd4509d31ed99f52f500e2f13))
-
 
 ### Bug Fixes
 
@@ -893,17 +815,15 @@
 * Use package names not short names ([f851af4](https://github.com/markdown-confluence/markdown-confluence/commit/f851af442df0d5986ae218248c229c5daec42220))
 * Wrong path for manifest.json ([8444d3f](https://github.com/markdown-confluence/markdown-confluence/commit/8444d3f7f571e37e42565bddc403ac1dbd943eb7))
 
-
 ### Documentation
 
 * Add BRAT installation instructions ([a46cd23](https://github.com/markdown-confluence/markdown-confluence/commit/a46cd23023426153405aef6e9d7c413a9c4bda01))
 * Add brat to readme.md ([9d8efb0](https://github.com/markdown-confluence/markdown-confluence/commit/9d8efb076b3dc43c787c684456559f8347c71c66))
 * Add Installation BRAT to side nav ([5d87192](https://github.com/markdown-confluence/markdown-confluence/commit/5d871924fa93eceffc8be6817c61b42f70f9404f))
-* Add reference to https://github.com/LostPaul/obsidian-folder-notes/tree/main ([d783f1b](https://github.com/markdown-confluence/markdown-confluence/commit/d783f1b0b60f0864f07bac7a8eaeeafbac7e6101))
+* Add reference to <https://github.com/LostPaul/obsidian-folder-notes/tree/main> ([d783f1b](https://github.com/markdown-confluence/markdown-confluence/commit/d783f1b0b60f0864f07bac7a8eaeeafbac7e6101))
 * Add Wikilinks example ([92a979f](https://github.com/markdown-confluence/markdown-confluence/commit/92a979ffd496e1993d36be26422bf341c0a58b72))
 * Fix book.toml ([985561a](https://github.com/markdown-confluence/markdown-confluence/commit/985561a25f9a801f6570c368941792fb24abfc64))
 * Minor documentation changes from jvsteiner ([f2d3b47](https://github.com/markdown-confluence/markdown-confluence/commit/f2d3b474474d80bd05ff589a3654e4400e05265d))
-
 
 ### Miscellaneous Chores
 
@@ -911,12 +831,10 @@
 
 ## [2.1.1](https://github.com/markdown-confluence/markdown-confluence/compare/2.1.0...2.1.1) (2023-04-14)
 
-
 ### Bug Fixes
 
 * Rename frontmatter-to-publish to connie-frontmatter-to-publish ([d18d209](https://github.com/markdown-confluence/markdown-confluence/commit/d18d20998fdd686a2aefe2aefbda33a4c2b86341))
 * **stringifyObject:** Replacing stringify-object with JSON.stringify ([0297b44](https://github.com/markdown-confluence/markdown-confluence/commit/0297b44b42af151e88d9a942a814b6dffabe5f20))
-
 
 ### Dependencies
 
@@ -924,13 +842,11 @@
 
 ## [2.1.0](https://github.com/markdown-confluence/markdown-confluence/compare/2.0.1...2.1.0) (2023-04-14)
 
-
 ### Features
 
 * **build:** Minify outputs to save size in main.js file ([c879d5d](https://github.com/markdown-confluence/markdown-confluence/commit/c879d5ddb3f40376fea7b2ce903818865bcac175))
 * **ci:** Export meta.json from esbuild ([c27ca7d](https://github.com/markdown-confluence/markdown-confluence/commit/c27ca7d67230a5aa051c94407a69745dbcf83f81))
 * **tests:** Add initial unit tests and GH Actions to ensure they pass ([b7f636e](https://github.com/markdown-confluence/markdown-confluence/commit/b7f636e2fb8e8a99c06cd60d227e38ae9e8d2873))
-
 
 ### Bug Fixes
 
@@ -939,13 +855,11 @@
 * **ci:** Run Release Please via PAT to allow GHA checks to run ([adb0708](https://github.com/markdown-confluence/markdown-confluence/commit/adb07085f4bd026f994b5c8201abe0782e9b3828))
 * **test:** Fix snapshot test to test passing all tests ([8e26790](https://github.com/markdown-confluence/markdown-confluence/commit/8e26790ff219105ccfd54078239515164369b0b6))
 
-
 ### Dependencies
 
 * **deps:** bump @atlaskit/renderer from 107.2.0 to 107.3.2 ([7ae7a58](https://github.com/markdown-confluence/markdown-confluence/commit/7ae7a58ebdca4a516eba61504ef3299d4c42f6ce))
 
 ## [2.0.1](https://github.com/markdown-confluence/markdown-confluence/compare/2.0.0...2.0.1) (2023-04-13)
-
 
 ### Bug Fixes
 
@@ -953,18 +867,15 @@
 
 ## [2.0.0](https://github.com/markdown-confluence/markdown-confluence/compare/1.4.0...2.0.0) (2023-04-12)
 
-
 ### Bug Fixes
 
-* **Obsidian:** Update to match recommendations from https://github.com/obsidianmd/obsidian-releases/blob/master/plugin-review.md ([a038a46](https://github.com/markdown-confluence/markdown-confluence/commit/a038a46c08fb363d46a3f80ba431d165a507ca64))
-
+* **Obsidian:** Update to match recommendations from <https://github.com/obsidianmd/obsidian-releases/blob/master/plugin-review.md> ([a038a46](https://github.com/markdown-confluence/markdown-confluence/commit/a038a46c08fb363d46a3f80ba431d165a507ca64))
 
 ### Miscellaneous Chores
 
 * release 2.0.0 ([a9eae0c](https://github.com/markdown-confluence/markdown-confluence/commit/a9eae0cf43f20e3eb57096792c78f7215e6f2dd0))
 
 ## [1.4.0](https://github.com/markdown-confluence/markdown-confluence/compare/1.3.0...1.4.0) (2023-04-11)
-
 
 ### Features
 
@@ -975,13 +886,11 @@
 
 ## [1.3.0](https://github.com/markdown-confluence/markdown-confluence/compare/1.2.4...1.3.0) (2023-04-11)
 
-
 ### Features
 
 * **AdfPreview:** Make local files render correctly in ADF Preview ([860bfb8](https://github.com/markdown-confluence/markdown-confluence/commit/860bfb8e5cf1f094231abd2f4b4e7ae6bc91e7fd))
 * **eslint:** Add checks to GH Actions ([e786154](https://github.com/markdown-confluence/markdown-confluence/commit/e7861542f9dbe99bbc81bb0cecfee00f32ae5c5a))
 * **PageId:** Specify PageId when page published to Confluence ([c545009](https://github.com/markdown-confluence/markdown-confluence/commit/c5450092bb8abdf106d80d5a12b4a075dbd61130))
-
 
 ### Bug Fixes
 
@@ -990,13 +899,11 @@
 
 ## [1.2.4](https://github.com/markdown-confluence/markdown-confluence/compare/1.2.3...1.2.4) (2023-04-07)
 
-
 ### Bug Fixes
 
 * **settings:** SaveSettings before Init ([64c4e41](https://github.com/markdown-confluence/markdown-confluence/commit/64c4e41565364525bfb2b53480630d30c875b91d))
 
 ## [1.2.3](https://github.com/markdown-confluence/markdown-confluence/compare/1.2.2...1.2.3) (2023-04-06)
-
 
 ### Bug Fixes
 
@@ -1004,13 +911,11 @@
 
 ## [1.2.2](https://github.com/markdown-confluence/markdown-confluence/compare/1.2.1...1.2.2) (2023-04-06)
 
-
 ### Bug Fixes
 
 * **ci:** Move manifest to root of repo to align with Obsidian requirements ([78d09e4](https://github.com/markdown-confluence/markdown-confluence/commit/78d09e43daad45aa0cf51f5f1ca874fa5b13e8e1))
 
 ## [1.2.1](https://github.com/markdown-confluence/markdown-confluence/compare/1.2.0...1.2.1) (2023-04-06)
-
 
 ### Bug Fixes
 
@@ -1018,11 +923,9 @@
 
 ## [1.2.0](https://github.com/markdown-confluence/markdown-confluence/compare/v1.1.0...1.2.0) (2023-04-06)
 
-
 ### Features
 
 * **ci:** Add initial google-github-actions/release-please-action@v3 ([39cc200](https://github.com/markdown-confluence/markdown-confluence/commit/39cc2001113f6f846dddc56bc8ba75f5ff7ce026))
-
 
 ### Bug Fixes
 
@@ -1036,11 +939,9 @@
 
 ## [1.1.0](https://github.com/markdown-confluence/markdown-confluence/compare/obsidian-confluence-v1.0.4...obsidian-confluence-1.1.0) (2023-04-06)
 
-
 ### Features
 
 * **ci:** Add initial google-github-actions/release-please-action@v3 ([39cc200](https://github.com/markdown-confluence/markdown-confluence/commit/39cc2001113f6f846dddc56bc8ba75f5ff7ce026))
-
 
 ### Bug Fixes
 
@@ -1053,20 +954,17 @@
 
 ## [1.0.4](https://github.com/markdown-confluence/markdown-confluence/compare/v1.0.3...v1.0.4) (2023-04-06)
 
-
 ### Bug Fixes
 
 * **ci:** Remove v from version number ([2a024bd](https://github.com/markdown-confluence/markdown-confluence/commit/2a024bdf2d640749561f41a24f79343005066d13))
 
 ## [1.0.3](https://github.com/markdown-confluence/markdown-confluence/compare/v1.0.2...v1.0.3) (2023-04-06)
 
-
 ### Bug Fixes
 
 * **Mermaid:** Remove extra console.log ([cfbddd5](https://github.com/markdown-confluence/markdown-confluence/commit/cfbddd531d4b79e3bd2447e39299db19b6393014))
 
 ## [1.0.2](https://github.com/markdown-confluence/markdown-confluence/compare/v1.0.1...v1.0.2) (2023-04-05)
-
 
 ### Bug Fixes
 
@@ -1075,13 +973,11 @@
 
 ## [1.0.1](https://github.com/markdown-confluence/markdown-confluence/compare/v1.0.0...v1.0.1) (2023-04-05)
 
-
 ### Bug Fixes
 
 * **ci:** Add support to bundle up files for plugin ([250984b](https://github.com/markdown-confluence/markdown-confluence/commit/250984b2baf462266d7cafc5a6eb7b82b0fd2dbb))
 
 ## 1.0.0 (2023-04-05)
-
 
 ### Features
 

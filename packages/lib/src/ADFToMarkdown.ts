@@ -223,6 +223,29 @@ function renderADFContent(
 		case "tableCell": {
 			return renderChildrenResult;
 		}
+		case "decisionItem": {
+			const decisionState =
+				element.attrs && element.attrs["state"]
+					? element.attrs["state"]
+					: "DECIDED";
+			const stateMarkdown = decisionState === "DECIDED" ? "x" : " ";
+			return `- [${stateMarkdown}] ${renderChildrenResult}\n`;
+		}
+		case "date": {
+			const timestamp =
+				element.attrs && element.attrs["timestamp"]
+					? element.attrs["timestamp"]
+					: "";
+			if (!timestamp) {
+				return "";
+			}
+			const date = new Date(Number(timestamp));
+			// Use UTC to ensure consistent results across timezones
+			const year = date.getUTCFullYear();
+			const month = date.getUTCMonth() + 1;
+			const day = date.getUTCDate();
+			return `${month}/${day}/${year}`;
+		}
 		default:
 			console.warn(`Unknown ADFEntity Type ${element.type}`);
 			return new Error(`Unknown ADFEntity Type ${element.type}`);

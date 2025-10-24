@@ -34,6 +34,7 @@
       "declaration":true,
       "declarationMap":true,
       "forceConsistentCasingInFileNames": true,
+      "skipLibCheck": true,
       "newLine": "lf",
       "lib":[
          "DOM",

@@ -55,7 +55,7 @@
  * [1, 3] !== [1, 2] // same result as without checkDataOrder
  *
  */
-// eslint-disable-next-line @typescript-eslint/no-inferrable-types, @typescript-eslint/no-explicit-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const isEqual = (obj1: any, obj2: any): boolean => {
 	if (obj1 === null || obj2 === null) {
 		return obj1 === obj2;

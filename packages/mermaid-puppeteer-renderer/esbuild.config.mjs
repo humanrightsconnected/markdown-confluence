@@ -12,13 +12,17 @@ const mermaidRendererPlugin = {
 				entryPoints: ['src/mermaid_renderer.js'],
 				bundle: true,
 				format: 'cjs',
+				platform: 'browser',
 				target: 'chrome106',
 				logLevel: 'info',
 				sourcemap: false,
 				treeShaking: true,
 				write: false,
-				mainFields: ['module', 'main'],
+				mainFields: ['browser', 'module', 'main'],
 				minify: true,
+				define: {
+					'process.env.NODE_ENV': '"production"',
+				},
 			}).catch(() => process.exit(1));
 
 			const fileContents = `

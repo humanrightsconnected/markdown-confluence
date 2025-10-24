@@ -1,4 +1,5 @@
 import MarkdownIt from "markdown-it";
+// @ts-expect-error - markdown-it internal modules don't have type declarations
 import StateInline from "markdown-it/lib/rules_inline/state_inline";
 
 export function wikilinks(state: StateInline): boolean {

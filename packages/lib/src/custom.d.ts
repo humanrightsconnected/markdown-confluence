@@ -14,7 +14,6 @@ declare module "mermaid_renderer.esbuild" {
 }
 
 declare module "sort-any" {
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	export default function sortAny<T>(item: T): T;
 }
 

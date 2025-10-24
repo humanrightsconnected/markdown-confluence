@@ -131,7 +131,7 @@ function processADF(adf: JSONDocNode, confluenceBaseUrl: string): JSONDocNode {
 					);
 					node = parsedAdf;
 					return node;
-				} catch (e) {
+				} catch {
 					return node;
 				}
 			}

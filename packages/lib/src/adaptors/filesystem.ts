@@ -98,9 +98,8 @@ export class FileSystemAdaptor implements LoaderAdaptor {
 	}
 
 	async loadMarkdownFile(absoluteFilePath: string): Promise<MarkdownFile> {
-		const { data, content: contents } = await this.getFileContent(
-			absoluteFilePath,
-		);
+		const { data, content: contents } =
+			await this.getFileContent(absoluteFilePath);
 
 		const folderName = path.basename(path.parse(absoluteFilePath).dir);
 		const fileName = path.basename(absoluteFilePath);
@@ -260,7 +259,7 @@ async function isFile(filePath: string): Promise<boolean> {
 	try {
 		const stats = await fs.stat(filePath);
 		return stats.isFile();
-	} catch (error: unknown) {
+	} catch {
 		return false; // Just return false instead of rethrowing any other errors.
 	}
 }

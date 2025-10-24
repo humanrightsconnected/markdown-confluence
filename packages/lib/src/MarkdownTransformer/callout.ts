@@ -1,5 +1,8 @@
+// @ts-expect-error - markdown-it internal modules don't have type declarations
 import type MarkdownIt from "markdown-it/lib";
+// @ts-expect-error - markdown-it internal modules don't have type declarations
 import type StateCore from "markdown-it/lib/rules_core/state_core";
+// @ts-expect-error - markdown-it internal modules don't have type declarations
 import Token from "markdown-it/lib/token";
 
 const panelRegex =
@@ -77,7 +80,7 @@ function getPanelAttributes(calloutType: string): [string, string][] {
 		return toReturn;
 	}
 
-	// @ts-expect-error
+	// @ts-expect-error - TypeScript thinks "info" key could be undefined, but it's always defined in panelTypeToAttributesMap
 	return panelTypeToAttributesMap["info"];
 }
 
@@ -96,11 +99,19 @@ export function panel(state: StateCore): boolean {
 	let calloutStartIndex = 0;
 	let blockTitle = "";
 	const newTokens = state.tokens.reduce(
-		(previousTokens, token, currentIndex: number, allTokens) => {
+		(
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			previousTokens: any[],
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			token: any,
+			currentIndex: number,
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			allTokens: any[],
+		) => {
 			let tokenToReturn = token;
 			if (token.type === "blockquote_open") {
 				let currentCheck = currentIndex + 1; // Start after this token
-				// eslint-disable-next-line no-constant-condition
+
 				while (true) {
 					const tokenToCheck = allTokens[currentCheck];
 					currentCheck = currentCheck + 1;
