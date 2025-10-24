@@ -5,7 +5,7 @@ import eslintConfigPrettier from 'eslint-config-prettier';
 
 export default tseslint.config(
   {
-    ignores: ['dist/**', 'dev-vault/**', 'dist-cli/**', '.husky/**', 'node_modules/**', 'coverage/**']
+    ignores: ['dist/**', 'dev-vault/**', 'dist-cli/**', '.husky/**', 'node_modules/**', 'coverage/**', '**/dist/**', '**/*.js.map']
   },
   eslint.configs.recommended,
   ...tseslint.configs.recommended,
@@ -44,6 +44,13 @@ export default tseslint.config(
           }
         }
       ]
+    }
+  },
+  {
+    // Disable naming-convention for config files
+    files: ['**/*.config.js', '**/*.config.ts', '**/*.config.mjs', 'eslint.config.js'],
+    rules: {
+      '@typescript-eslint/naming-convention': 'off'
     }
   }
 );

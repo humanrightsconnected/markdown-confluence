@@ -1,8 +1,7 @@
 import { ConfluenceSettings } from "../Settings";
 import { SettingsLoader } from "./SettingsLoader";
-import yargs from "yargs/yargs";
+import yargs, { type ArgumentsCamelCase } from "yargs/yargs";
 import { hideBin } from "yargs/helpers";
-import { YargsWithParseSync } from "./yargsUtils";
 
 /**
  * Interface defining the CLI options expected by the command-line argument parser.
@@ -40,7 +39,9 @@ export class CommandLineArgumentSettingsLoader extends SettingsLoader {
 	 * @returns A partial ConfluenceSettings object containing settings from command-line arguments
 	 */
 	loadPartial(): Partial<ConfluenceSettings> {
-		const yargsInstance = yargs(hideBin(process.argv))
+		const options: ArgumentsCamelCase<CliOptions> = yargs(
+			hideBin(process.argv),
+		)
 			.usage("Usage: $0 [options]")
 			.option("baseUrl", {
 				alias: "b",
@@ -84,10 +85,8 @@ export class CommandLineArgumentSettingsLoader extends SettingsLoader {
 					"Replace page title with first header element when 'connie-title' isn't specified.",
 				type: "boolean",
 				demandOption: false,
-			}) as unknown as YargsWithParseSync<CliOptions>;
-
-		// Use type-safe parseSync call (yargs 18 runtime has this method)
-		const options = yargsInstance.parseSync();
+			})
+			.parseSync();
 
 		return {
 			...(options.baseUrl

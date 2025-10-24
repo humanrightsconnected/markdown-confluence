@@ -2,9 +2,8 @@ import path from "path";
 import { ConfluenceSettings, DEFAULT_SETTINGS } from "../Settings";
 import { SettingsLoader } from "./SettingsLoader";
 import fs from "fs";
-import yargs from "yargs/yargs";
+import yargs, { type ArgumentsCamelCase } from "yargs/yargs";
 import { hideBin } from "yargs/helpers";
-import { YargsWithParseSync } from "./yargsUtils";
 
 /**
  * Interface for the config option returned by yargs parsing.
@@ -57,16 +56,17 @@ export class ConfigFileSettingsLoader extends SettingsLoader {
 			this.configPath = envConfigPath;
 		}
 
-		const yargsInstance = yargs(hideBin(process.argv)).option("config", {
-			alias: "c",
-			describe: "Path to the config file",
-			type: "string",
-			default: this.configPath,
-			demandOption: false,
-		}) as unknown as YargsWithParseSync<ConfigOptions>;
-
-		// Use type-safe parseSync call (yargs 18 runtime has this method)
-		const options = yargsInstance.parseSync();
+		const options: ArgumentsCamelCase<ConfigOptions> = yargs(
+			hideBin(process.argv),
+		)
+			.option("config", {
+				alias: "c",
+				describe: "Path to the config file",
+				type: "string",
+				default: this.configPath,
+				demandOption: false,
+			})
+			.parseSync();
 
 		// Only use CLI arg if env var was not set and CLI differs from default
 		if (!envConfigPath && options.config !== this.configPath) {
