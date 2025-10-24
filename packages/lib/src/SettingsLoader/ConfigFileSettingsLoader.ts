@@ -6,13 +6,6 @@ import yargs from "yargs/yargs";
 import { hideBin } from "yargs/helpers";
 
 /**
- * Interface for the config option returned by yargs parsing.
- */
-interface ConfigOptions {
-	config: string;
-}
-
-/**
  * Loads Confluence settings from a configuration file.
  *
  * This settings loader reads configuration from a JSON file, with support for:

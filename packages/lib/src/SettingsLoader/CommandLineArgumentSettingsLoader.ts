@@ -4,19 +4,6 @@ import yargs from "yargs/yargs";
 import { hideBin } from "yargs/helpers";
 
 /**
- * Interface defining the CLI options expected by the command-line argument parser.
- */
-interface CliOptions {
-	baseUrl?: string;
-	parentId?: string;
-	userName?: string;
-	apiToken?: string;
-	enableFolder?: string;
-	contentRoot?: string;
-	firstHeaderPageTitle?: boolean;
-}
-
-/**
  * Loads Confluence settings from command-line arguments.
  *
  * Parses command-line arguments using yargs to extract Confluence configuration.
