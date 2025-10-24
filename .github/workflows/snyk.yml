@@ -106,6 +106,7 @@ jobs:
           allowed-endpoints: >
             api.snyk.io:443
             edgedl.me.gvt1.com:443
+            ghcr.io:443
             github.com:443
             registry.npmjs.org:443
             release-assets.githubusercontent.com:443
