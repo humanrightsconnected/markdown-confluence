@@ -1,11 +1,11 @@
 # Markdown to Confluence Tools
 
-[![Discord](https://img.shields.io/discord/1102841755646316576)](https://discord.gg/3ZVEc3S48x)  
-[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/markdown-confluence/markdown-confluence/badge)](https://api.securityscorecards.dev/projects/github.com/markdown-confluence/markdown-confluence)
-[![Known Vulnerabilities](https://snyk.io/test/github/markdown-confluence/markdown-confluence/badge.svg)](https://snyk.io/test/github/markdown-confluence/markdown-confluence)
-![GitHub Workflow Status (with branch)](https://img.shields.io/github/actions/workflow/status/markdown-confluence/markdown-confluence/release-please.yml)
-![Lines of code](https://img.shields.io/tokei/lines/github/markdown-confluence/markdown-confluence)
-![GitHub manifest version](https://img.shields.io/github/manifest-json/v/markdown-confluence/obsidian-integration)  
+[![Discord](https://img.shields.io/discord/1102841755646316576)](https://discord.gg/3ZVEc3S48x)
+[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/humanrightsconnected/markdown-confluence/badge)](https://api.securityscorecards.dev/projects/github.com/humanrightsconnected/markdown-confluence)
+[![Known Vulnerabilities](https://snyk.io/test/github/humanrightsconnected/markdown-confluence/badge.svg)](https://snyk.io/test/github/humanrightsconnected/markdown-confluence)
+![GitHub Workflow Status (with branch)](https://img.shields.io/github/actions/workflow/status/humanrightsconnected/markdown-confluence/release-please.yml)
+![GitHub code size](https://img.shields.io/github/languages/code-size/humanrightsconnected/markdown-confluence)
+![GitHub repo size](https://img.shields.io/github/repo-size/humanrightsconnected/markdown-confluence)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-%23FE5196?logo=conventionalcommits&logoColor=white)](https://conventionalcommits.org)
 
 Obsidian Downloads: ![GitHub all releases](https://img.shields.io/github/downloads/markdown-confluence/obsidian-integration/total)
