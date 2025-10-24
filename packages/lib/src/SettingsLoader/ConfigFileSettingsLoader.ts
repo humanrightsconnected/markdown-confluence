@@ -2,7 +2,7 @@ import path from "path";
 import { ConfluenceSettings, DEFAULT_SETTINGS } from "../Settings";
 import { SettingsLoader } from "./SettingsLoader";
 import fs from "fs";
-import yargs, { type ArgumentsCamelCase } from "yargs/yargs";
+import yargs from "yargs/yargs";
 import { hideBin } from "yargs/helpers";
 
 /**
@@ -56,9 +56,7 @@ export class ConfigFileSettingsLoader extends SettingsLoader {
 			this.configPath = envConfigPath;
 		}
 
-		const options: ArgumentsCamelCase<ConfigOptions> = yargs(
-			hideBin(process.argv),
-		)
+		const options = yargs(hideBin(process.argv))
 			.option("config", {
 				alias: "c",
 				describe: "Path to the config file",

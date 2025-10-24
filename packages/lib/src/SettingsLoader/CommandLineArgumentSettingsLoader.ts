@@ -1,6 +1,6 @@
 import { ConfluenceSettings } from "../Settings";
 import { SettingsLoader } from "./SettingsLoader";
-import yargs, { type ArgumentsCamelCase } from "yargs/yargs";
+import yargs from "yargs/yargs";
 import { hideBin } from "yargs/helpers";
 
 /**
@@ -39,9 +39,7 @@ export class CommandLineArgumentSettingsLoader extends SettingsLoader {
 	 * @returns A partial ConfluenceSettings object containing settings from command-line arguments
 	 */
 	loadPartial(): Partial<ConfluenceSettings> {
-		const options: ArgumentsCamelCase<CliOptions> = yargs(
-			hideBin(process.argv),
-		)
+		const options = yargs(hideBin(process.argv))
 			.usage("Usage: $0 [options]")
 			.option("baseUrl", {
 				alias: "b",
