@@ -4,7 +4,7 @@
    "version": "5.5.2",
    "type": "module",
    "scripts": {
-      "prepare": "husky install",
+      "prepare": "husky",
       "predev-obsidian": "npm run build",
       "dev-obsidian": "npm run dev --workspace=@markdown-confluence/lib & npm run dev --workspace=@markdown-confluence/mermaid-electron-renderer & npm run dev --workspace=obsidian-confluence",
       "build": "npm run build --workspaces --if-present",
@@ -12,7 +12,7 @@
       "test": "npm test --workspaces --if-present"
    },
    "devDependencies": {
-      "@types/node": "^24.9.1",
+      "@types/node": "^24.9.2",
       "builtin-modules": "5.0.0",
       "esbuild": "0.25.11",
       "esbuild-node-externals": "^1.18.0",
@@ -21,7 +21,7 @@
       "eslint-config-prettier": "^10.1.8",
       "globals": "^16.4.0",
       "husky": "^9.1.7",
-      "lint-staged": "16.2.5",
+      "lint-staged": "16.2.6",
       "prettier": "3.6.2",
       "ts-jest": "^29.4.5",
       "ts-node": "^10.9.2",
@@ -41,7 +41,7 @@
    },
    "overrides": {
       "test-exclude": "^7.0.1",
-      "uuid": "^11.1.0",
+      "uuid": "^13.0.0",
       "@types/yargs": "^17.0.33",
       "@types/d3-dispatch": "2.0.4",
       "prosemirror-model": "1.25.4",
