@@ -104,10 +104,13 @@ jobs:
         with:
           egress-policy: block
           allowed-endpoints: >
+            api.github.com:443
             api.snyk.io:443
             edgedl.me.gvt1.com:443
             ghcr.io:443
             github.com:443
+            nodejs.org:443
+            objects.githubusercontent.com:443
             pkg-containers.githubusercontent.com:443
             registry.npmjs.org:443
             release-assets.githubusercontent.com:443
