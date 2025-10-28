@@ -12,7 +12,7 @@
       "test": "npm test --workspaces --if-present"
    },
    "devDependencies": {
-      "@types/node": "^24.9.1",
+      "@types/node": "^24.9.2",
       "builtin-modules": "5.0.0",
       "esbuild": "0.25.11",
       "esbuild-node-externals": "^1.18.0",
