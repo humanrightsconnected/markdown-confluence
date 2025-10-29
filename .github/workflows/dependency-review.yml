@@ -24,6 +24,7 @@ jobs:
         with:
           egress-policy: block
           allowed-endpoints: >
+            api.deps.dev:443
             api.github.com:443
             edgedl.me.gvt1.com:443
             ghcr.io:443
