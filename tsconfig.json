@@ -46,7 +46,7 @@
       ],
       "paths":{
          "@markdown-confluence/*":[
-            "packages/*/"
+            "packages/*/dist"
          ]
       }
    },
