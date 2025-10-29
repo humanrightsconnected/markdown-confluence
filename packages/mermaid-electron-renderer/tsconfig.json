@@ -9,7 +9,7 @@
     "skipLibCheck": true,
     "listEmittedFiles": true,
     "module":"ESNext",
-    "target":"ESNext",
+    "target":"ESNext"
   },
   "include":[ "**/*.ts", "**/*.tsx"  ],
     "exclude": ["node_modules", "packages/**/dist/*", "dist/*", "**/*.test.ts", "**/jest.config.ts"]
