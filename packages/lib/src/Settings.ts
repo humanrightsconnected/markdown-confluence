@@ -1,3 +1,6 @@
+/**
+ * Global settings that control how Markdown is discovered and published to Confluence.
+ */
 export type ConfluenceSettings = {
 	confluenceBaseUrl: string;
 	confluenceParentId: string;
@@ -8,6 +11,9 @@ export type ConfluenceSettings = {
 	firstHeadingPageTitle: boolean;
 };
 
+/**
+ * Default values for {@link ConfluenceSettings}.
+ */
 export const DEFAULT_SETTINGS: ConfluenceSettings = {
 	confluenceBaseUrl: "",
 	confluenceParentId: "",
