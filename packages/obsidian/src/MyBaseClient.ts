@@ -31,6 +31,76 @@ function getAuthorizationHeader(
 	throw new Error("Unsupported authentication type");
 }
 
+/**
+ * Sanitizes a RequestConfig object for safe logging by removing sensitive data.
+ *
+ * This function removes or redacts fields that could contain sensitive information:
+ * - Authorization, Cookie, and other authentication-related headers
+ * - Request body data
+ * - Authentication credentials
+ *
+ * @param requestConfig - The request configuration to sanitize
+ * @returns A sanitized copy safe for logging
+ */
+function sanitizeRequestConfig(requestConfig: RequestConfig): {
+	method?: string;
+	url?: string;
+	params?: unknown;
+	headers?: Record<string, string>;
+	data?: string;
+} {
+	const sanitized: {
+		method?: string;
+		url?: string;
+		params?: unknown;
+		headers?: Record<string, string>;
+		data?: string;
+	} = {};
+
+	// Include basic request info
+	if (requestConfig.method !== undefined) {
+		sanitized.method = requestConfig.method;
+	}
+	if (requestConfig.url !== undefined) {
+		sanitized.url = requestConfig.url;
+	}
+	if (requestConfig.params !== undefined) {
+		sanitized.params = requestConfig.params;
+	}
+
+	// Sanitize headers if present
+	if (requestConfig.headers) {
+		const sanitizedHeaders: Record<string, string> = {};
+		const sensitiveHeaderPatterns = [
+			/^authorization$/i,
+			/^cookie$/i,
+			/^x-api-key$/i,
+			/^api-key$/i,
+			/^api-token$/i,
+			/^auth/i,
+		];
+
+		Object.entries(requestConfig.headers).forEach(([key, value]) => {
+			const isSensitive = sensitiveHeaderPatterns.some((pattern) =>
+				pattern.test(key),
+			);
+			sanitizedHeaders[key] = isSensitive
+				? "[REDACTED]"
+				: (value?.toString() ?? "");
+		});
+
+		sanitized.headers = sanitizedHeaders;
+	}
+
+	// Do not include the request body/data as it might contain sensitive information
+	// Only indicate whether data was present
+	if (requestConfig.data !== undefined) {
+		sanitized.data = "[REDACTED]";
+	}
+
+	return sanitized;
+}
+
 export class MyBaseClient implements Client {
 	protected urlSuffix = "/wiki/rest";
 
@@ -179,7 +249,10 @@ export class MyBaseClient implements Client {
 			return responseHandler(response.json);
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		} catch (e: any) {
-			console.warn({ httpError: e, requestConfig });
+			console.warn({
+				httpError: e,
+				requestConfig: sanitizeRequestConfig(requestConfig),
+			});
 
 			// Transform the error for the callback.
 			// Note: The middleware receives the raw error `e` (which includes .response),
