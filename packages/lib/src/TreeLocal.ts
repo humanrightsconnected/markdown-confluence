@@ -148,7 +148,11 @@ const processNode = (commonPath: string, node: LocalAdfFileTreeNode) => {
 };
 
 /**
- * Internal: throws if any page titles in the tree are duplicates.
+ * Ensure every node in the tree has a unique page title; aborts on the first duplicate found.
+ *
+ * @param rootNode - The tree node to validate (root of the subtree to check)
+ * @param pageTitles - Internal set of already-seen page titles used while recursing; callers can omit
+ * @throws Error if a duplicate page title is encountered
  */
 function checkUniquePageTitle(
 	rootNode: LocalAdfFileTreeNode,
