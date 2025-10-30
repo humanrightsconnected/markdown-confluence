@@ -185,7 +185,10 @@ export class FileSystemAdaptor implements LoaderAdaptor {
 				lookup(path.extname(absoluteFilePath)) ||
 				"application/octet-stream";
 			return {
-				contents: fileContents,
+				contents: fileContents.buffer.slice(
+					fileContents.byteOffset,
+					fileContents.byteOffset + fileContents.byteLength,
+				),
 				filePath: absoluteFilePath.replace(
 					this.settings.contentRoot,
 					"",
