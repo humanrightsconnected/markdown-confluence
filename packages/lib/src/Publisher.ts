@@ -209,9 +209,16 @@ export class Publisher {
 				};
 			}
 
+			// Handle non-Error objects by extracting useful information
+			// JSON.stringify() doesn't capture Error properties well due to non-enumerable properties
 			return {
 				node,
-				reason: JSON.stringify(e), // TODO: Understand why this doesn't show error message properly
+				reason:
+					typeof e === "string"
+						? e
+						: typeof e === "object" && e !== null
+							? String(e)
+							: "Unknown error",
 			};
 		}
 	}
@@ -339,13 +346,6 @@ export class Publisher {
 			!isEqual(existingPageDetails, newPageDetails)
 		) {
 			result.contentResult = "updated";
-			console.log(`TESTING DIFF - ${adfFile.absoluteFilePath}`);
-
-			const replacer = (_key: unknown, value: unknown) =>
-				typeof value === "undefined" ? null : value;
-
-			console.log(JSON.stringify(existingPageData.adfContent, replacer));
-			console.log(JSON.stringify(adfToUpload, replacer));
 
 			const updateContentDetails = {
 				...newPageDetails,
