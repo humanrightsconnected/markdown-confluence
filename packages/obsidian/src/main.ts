@@ -166,7 +166,6 @@ export default class ConfluencePlugin extends Plugin {
 		// For older versions, use default mermaid config
 		let mermaidConfig;
 		try {
-			// @ts-expect-error - loadMermaid may not exist in older Obsidian versions
 			const { loadMermaid } = await import("obsidian");
 			if (loadMermaid) {
 				mermaidConfig = (

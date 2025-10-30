@@ -55,7 +55,14 @@ export async function uploadBuffer(
 	>,
 ): Promise<UploadedImageData | null> {
 	const spark = new SparkMD5.ArrayBuffer();
-	const currentFileMd5 = spark.append(fileBuffer).end();
+	const currentFileMd5 = spark
+		.append(
+			fileBuffer.buffer.slice(
+				fileBuffer.byteOffset,
+				fileBuffer.byteOffset + fileBuffer.byteLength,
+			) as ArrayBuffer,
+		)
+		.end();
 	const imageSize = await sizeOf(fileBuffer);
 
 	const fileInCurrentAttachments = currentAttachments[uploadFilename];
