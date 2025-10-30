@@ -28,4 +28,4 @@ export const baseConfig = {
  * Helper to determine if running in production mode.
  * Checks both command-line arguments and NODE_ENV environment variable.
  */
-export const isProd = process.argv.includes('production') || process.env.NODE_ENV === 'production';
+export const isProd = process.argv[2] === 'production' || process.env.NODE_ENV === 'production';
