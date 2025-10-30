@@ -11,6 +11,13 @@ import {
 	conniePerPageConfig,
 } from "../ConniePageConfig";
 
+/**
+ * Filesystem-backed implementation of LoaderAdaptor.
+ *
+ * Discovers markdown files under `contentRoot`, reads frontmatter/content,
+ * updates frontmatter fields, resolves binary assets relative to referencing files,
+ * and provides helpers to enumerate files for publishing.
+ */
 export class FileSystemAdaptor implements LoaderAdaptor {
 	settings: ConfluenceSettings;
 
@@ -25,12 +32,19 @@ export class FileSystemAdaptor implements LoaderAdaptor {
 		}
 	}
 
+	/**
+	 * Read a markdown file and parse its YAML frontmatter.
+	 * @param absoluteFilePath Absolute path to the file on disk.
+	 */
 	async getFileContent(absoluteFilePath: string) {
 		const fileContent = await fs.readFile(absoluteFilePath, "utf-8");
 		const { data, content } = matter(fileContent);
 		return { data, content };
 	}
 
+	/**
+	 * Update selected frontmatter keys in a markdown file, removing keys when falsy.
+	 */
 	async updateMarkdownValues(
 		absoluteFilePath: string,
 		values: Partial<ConfluencePerPageAllValues>,
@@ -97,6 +111,9 @@ export class FileSystemAdaptor implements LoaderAdaptor {
 		await fs.writeFile(actualAbsoluteFilePath, updatedData);
 	}
 
+	/**
+	 * Load a single markdown file and return its metadata and contents.
+	 */
 	async loadMarkdownFile(absoluteFilePath: string): Promise<MarkdownFile> {
 		const { data, content: contents } =
 			await this.getFileContent(absoluteFilePath);
@@ -120,6 +137,9 @@ export class FileSystemAdaptor implements LoaderAdaptor {
 		};
 	}
 
+	/**
+	 * Recursively load all markdown files under the given folder.
+	 */
 	async loadMarkdownFiles(folderPath: string): Promise<MarkdownFile[]> {
 		const files: MarkdownFile[] = [];
 
@@ -142,6 +162,9 @@ export class FileSystemAdaptor implements LoaderAdaptor {
 		return files;
 	}
 
+	/**
+	 * Return markdown files selected for publish based on folder and `connie-publish` frontmatter.
+	 */
 	async getMarkdownFilesToUpload(): Promise<FilesToUpload> {
 		const files = await this.loadMarkdownFiles(this.settings.contentRoot);
 		const filesToPublish = [];
@@ -167,6 +190,9 @@ export class FileSystemAdaptor implements LoaderAdaptor {
 		return filesToPublish;
 	}
 
+	/**
+	 * Read a binary file referenced from a markdown file, searching upward and downward for closest match.
+	 */
 	async readBinary(
 		searchPath: string,
 		referencedFromFilePath: string,
@@ -185,7 +211,10 @@ export class FileSystemAdaptor implements LoaderAdaptor {
 				lookup(path.extname(absoluteFilePath)) ||
 				"application/octet-stream";
 			return {
-				contents: fileContents,
+				contents: fileContents.buffer.slice(
+					fileContents.byteOffset,
+					fileContents.byteOffset + fileContents.byteLength,
+				),
 				filePath: absoluteFilePath.replace(
 					this.settings.contentRoot,
 					"",
