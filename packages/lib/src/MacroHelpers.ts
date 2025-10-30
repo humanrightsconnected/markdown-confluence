@@ -162,7 +162,7 @@ export function createPageTreeMacro(
 	}
 
 	return {
-		type: "inlineExtension",
+		type: "extension",
 		attrs: {
 			extensionType: "com.atlassian.confluence.macro.core",
 			extensionKey: "pagetree",
