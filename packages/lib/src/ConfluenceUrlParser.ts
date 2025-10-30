@@ -27,11 +27,15 @@ export function cleanUpUrlIfConfluence(
 	}
 
 	// Check if the input matches the specified path format
-	const pathRegex = /\/wiki\/spaces\/(?:~)?(\w+)\/pages\/(\d+)(?:\/(\w*))?/;
+	// Captures:
+	//   [1] - space key (including optional ~ prefix for personal spaces and hyphens)
+	//   [2] - page ID
+	//   [3] - optional trailing slug (to be removed in canonical form)
+	const pathRegex = /\/wiki\/spaces\/(~?[\w-]+)\/pages\/(\d+)(?:\/(\w*))?/;
 	const matches = url.pathname.match(pathRegex);
 
 	if (matches) {
-		// Update the pathname to remove the last optional part
+		// Update the pathname to remove the last optional part while preserving space key and tilde
 		url.pathname = `/wiki/spaces/${matches[1]}/pages/${matches[2]}`;
 
 		// Return the updated URL
