@@ -1,3 +1,13 @@
+/**
+ * Normalize Confluence page URLs to a canonical form, preserving only space and page ID.
+ *
+ * If the URL does not match the target Confluence hostname, the input is returned unchanged.
+ * Non-URL inputs return a fallback of `#`.
+ *
+ * @param input Any string that may be a URL.
+ * @param confluenceBaseUrl Base URL of the Confluence instance to match against.
+ * @returns Canonicalized URL for Confluence pages or the original input/fallback.
+ */
 export function cleanUpUrlIfConfluence(
 	input: string,
 	confluenceBaseUrl: string,
