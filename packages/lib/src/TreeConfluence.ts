@@ -56,7 +56,11 @@ export async function ensureAllFilesExistInConfluence(
 }
 
 /**
- * Internal: Walk a ConfluenceTreeNode to flatten into ConfluenceNode[] for batch processing.
+ * Flatten a ConfluenceTreeNode hierarchy into a flat array of ConfluenceNode entries with ancestor context.
+ *
+ * @param node - The root ConfluenceTreeNode to traverse
+ * @param ancestors - Accumulated ancestor page IDs from parent nodes (use an empty array for the top-level call)
+ * @returns An array of ConfluenceNode objects where each entry includes its file, version, lastUpdatedBy, existingPageData, and an `ancestors` array of page IDs
  */
 function flattenTree(
 	node: ConfluenceTreeNode,
@@ -85,7 +89,18 @@ function flattenTree(
 }
 
 /**
- * Internal: Recursively create each local page/folder as a page in Confluence if needed, with blanks pre-filled.
+ * Ensure the given local node and its descendants exist as Confluence pages and return a tree describing their Confluence state.
+ *
+ * @param settings - Confluence settings used to build page URLs and other configuration
+ * @param confluenceClient - Client used to query, create, and update Confluence content
+ * @param adaptor - Loader adaptor used to update local file metadata (e.g., publish status and pageId)
+ * @param node - Local file/folder node to create or inspect in Confluence
+ * @param spaceKey - Confluence space key where pages should reside
+ * @param parentPageId - Confluence page ID to treat as the parent for the current node
+ * @param topPageId - Top-level page ID for the tree; used to prevent cross-tree overwrites
+ * @param createPage - When true, resolve or create the Confluence page for `node`; when false, initialize defaults for the top-level invocation
+ * @returns A ConfluenceTreeNode representing the resolved file (including pageUrl), its version, lastUpdatedBy, child nodes, and existing page data (ADF content, page title, ancestors, and content type)
+ * @throws Error if `node.file` is missing
  */
 async function createFileStructureInConfluence(
 	settings: ConfluenceSettings,
@@ -170,7 +185,18 @@ async function createFileStructureInConfluence(
 }
 
 /**
- * Internal: Looks up existing page by ID or by space/title; creates a blank if needed and returns the key details.
+ * Resolve or create the Confluence page corresponding to a local file and return its identifiers and metadata.
+ *
+ * Looks up content by `file.pageId` when present; otherwise searches by `spaceKey` and `file.pageTitle`. If no existing page is found, creates a blank page (with `blankPageAdf`) under `parentPageId` when the content type is "page". Updates the loader adaptor's markdown values with `publish` and `pageId` as it discovers or creates the page.
+ *
+ * @param confluenceClient - Confluence client used to fetch or create content
+ * @param adaptor - Loader adaptor used to update local markdown metadata
+ * @param file - Local file descriptor; `pageId`, `pageTitle`, and `contentType` influence lookup/creation behavior
+ * @param spaceKey - Target Confluence space key to search/create content in
+ * @param parentPageId - Ancestor page id to attach newly created pages under (used when creating pages)
+ * @param topPageId - The selected top page id; used to prevent overwriting pages outside the selected page tree
+ * @returns An object with page details: `id`, `title`, `version`, `lastUpdatedBy`, `existingAdf`, `pageTitle`, `ancestors` (array of `{ id }`), `spaceKey`, and `contentType`
+ * @throws Error if an existing page of type "page" is found but none of its ancestors matches `topPageId` (prevents cross-tree overwrite)
  */
 async function ensurePageExists(
 	confluenceClient: RequiredConfluenceClient,

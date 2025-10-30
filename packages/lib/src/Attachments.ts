@@ -104,18 +104,18 @@ export async function uploadBuffer(
 }
 
 /**
- * Reads a file from disk, computes its hash, and uploads to Confluence as an attachment.
+ * Read a local file, compute its MD5, and attach it to a Confluence page if not already present.
  *
- * If the file is unchanged and already attached, a new upload is skipped. Handles filenames with percent encoding.
+ * Attempts to read `fileNameToUpload` and, if missing, retries with percent-decoded filename. If an attachment with the same MD5 already exists for the computed upload key, returns the existing attachment metadata; otherwise uploads the file and returns the uploaded metadata.
  *
- * @param confluenceClient Confluence API client.
- * @param adaptor Adaptor for reading local files.
- * @param pageId Page ID to attach file to.
- * @param pageFilePath Path to the page the attachment relates to.
- * @param fileNameToUpload Filename to upload (relative).
- * @param currentAttachments Attachments already present in Confluence.
- * @returns Metadata for the uploaded/existing file, or null if not found.
- * @throws If reading or uploading the file fails.
+ * @param confluenceClient - Confluence API client used to create or update attachments.
+ * @param adaptor - Loader adaptor used to read the file contents.
+ * @param pageId - Confluence page ID to attach the file to.
+ * @param pageFilePath - File path context for resolving the file via the adaptor.
+ * @param fileNameToUpload - Filename to upload (may be percent-encoded); the function will retry with decodeURI if the initial read fails.
+ * @param currentAttachments - Mapping of existing attachments keyed by computed upload filename (used for MD5-based deduplication).
+ * @returns Metadata for the existing or newly uploaded image, or `null` if the file cannot be read.
+ * @throws If the Confluence upload response does not contain an expected result.
  */
 export async function uploadFile(
 	confluenceClient: RequiredConfluenceClient,

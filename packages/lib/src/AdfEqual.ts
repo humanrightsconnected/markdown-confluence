@@ -29,9 +29,12 @@ const sortDeep = (object: unknown): any => {
 };
 
 /**
- * Return a new ADF tree with all node marks sorted for consistent comparison.
- * @param adf The input ADF tree/entity.
- * @returns ADF with marks sorted.
+ * Produce an ADF tree where every node's `marks` array is sorted to enable order-insensitive comparisons.
+ *
+ * Traverses the provided ADF entity and replaces any `marks` arrays with their deeply sorted equivalents.
+ *
+ * @param adf - The input ADF entity to normalize
+ * @returns The same ADF entity with each node's `marks` sorted
  */
 export function orderMarks(adf: ADFEntity) {
 	return traverse(adf, {
@@ -45,20 +48,22 @@ export function orderMarks(adf: ADFEntity) {
 }
 
 /**
- * Compare two ADF documents, ignoring mark order and nested collection order.
- * @param first First ADF entity or tree
- * @param second Second ADF entity or tree
- * @returns True if ADF structures are equal (ignoring mark order)
+ * Determine whether two ADF documents are structurally equal while ignoring mark order and nested collection order.
+ *
+ * @param first - The first ADF entity or tree to compare
+ * @param second - The second ADF entity or tree to compare
+ * @returns `true` if the ADF structures are deeply equal when mark order and nested collection order are ignored, `false` otherwise
  */
 export function adfEqual(first: ADFEntity, second: ADFEntity): boolean {
 	return isEqual(orderMarks(first), orderMarks(second));
 }
 
 /**
- * Compare two mark arrays for deep equality (order-insensitive).
- * @param first Array of marks (or undefined)
- * @param second Array of marks (or undefined)
- * @returns True if the marks are deeply equal ignoring order
+ * Determine whether two arrays of ADF marks are deeply equal regardless of mark order.
+ *
+ * @param first - The first array of marks, or `undefined`
+ * @param second - The second array of marks, or `undefined`
+ * @returns `true` if the two mark arrays contain the same marks regardless of order, `false` otherwise.
  */
 export function marksEqual(
 	first: ADFEntityMark[] | undefined,
