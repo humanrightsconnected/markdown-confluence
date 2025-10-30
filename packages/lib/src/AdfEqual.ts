@@ -1,3 +1,6 @@
+/**
+ * Utilities for structural equality checks on ADF trees, tolerant to mark ordering.
+ */
 import sortAny from "sort-any";
 import { mapValues } from "lodash-es";
 import { traverse } from "@atlaskit/adf-utils/traverse";

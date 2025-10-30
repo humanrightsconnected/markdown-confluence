@@ -4,6 +4,14 @@ import { convertMDtoADF } from "./MdToADF";
 import { folderFile } from "./FolderFile";
 import { JSONDocNode } from "@atlaskit/editor-json-transformer";
 import { LocalAdfFileTreeNode } from "./Publisher";
+
+/**
+ * Local tree construction utilities for Markdown files destined for Confluence.
+ *
+ * Transforms a flat list of `MarkdownFile` entries into a hierarchical tree mirroring
+ * folders, attaches ADF content and per-page config, and enforces invariants such as
+ * unique page titles per node.
+ */
 import { ConfluenceSettings } from "./Settings";
 
 /**

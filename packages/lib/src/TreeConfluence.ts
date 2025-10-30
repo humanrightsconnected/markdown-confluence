@@ -9,6 +9,14 @@ import { doc, p } from "@atlaskit/adf-utils/builders";
 import { RequiredConfluenceClient, LoaderAdaptor } from "./adaptors";
 import { JSONDocNode } from "@atlaskit/editor-json-transformer";
 import { prepareAdfToUpload } from "./AdfProcessing";
+
+/**
+ * Confluence tree synchronization utilities.
+ *
+ * Builds and synchronizes a Confluence page tree mirroring the local markdown folder tree,
+ * ensuring each local node has a corresponding remote page and collecting metadata necessary
+ * for publishing updates (version, ancestors, last author, etc.).
+ */
 import { ConfluenceSettings } from "./Settings";
 
 const blankPageAdf: string = JSON.stringify(doc(p("Page not published yet")));

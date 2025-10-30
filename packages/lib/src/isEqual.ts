@@ -29,6 +29,9 @@
  */
 
 /**
+ * Minimal deep-equality helper used by ADF comparison utilities.
+ */
+/**
  * Recursively compare objects and arrays for deep equality. Order within objects is ignored; order in arrays is relevant.
  *
  * Works for plain objects/arrays/primitives, including nested structures. Dates and function equality are not handled.

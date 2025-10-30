@@ -9,6 +9,9 @@ export const ImageUploaderPlugin: ADFProcessingPlugin<
 	string[],
 	Record<string, UploadedImageData | null>
 > = {
+	/**
+	 * Extract a de-duplicated list of image URLs found in media nodes.
+	 */
 	extract(adf: JSONDocNode): string[] {
 		const mediaNodes = filter(
 			adf,
@@ -24,6 +27,9 @@ export const ImageUploaderPlugin: ADFProcessingPlugin<
 		return Array.from(imagesToUpload);
 	},
 
+	/**
+	 * Upload discovered images and return a mapping from original URL to uploaded metadata.
+	 */
 	async transform(
 		imagesToUpload: string[],
 		supportFunctions: PublisherFunctions,
@@ -46,6 +52,9 @@ export const ImageUploaderPlugin: ADFProcessingPlugin<
 		return imageMap;
 	},
 
+	/**
+	 * Replace media nodes referencing local URLs with Confluence file references; validate mediaSingle.
+	 */
 	load(
 		adf: JSONDocNode,
 		imageMap: Record<string, UploadedImageData | null>,
