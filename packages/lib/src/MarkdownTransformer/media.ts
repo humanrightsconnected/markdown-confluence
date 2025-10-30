@@ -1,3 +1,7 @@
+import type MarkdownIt from "markdown-it";
+// @ts-expect-error - markdown-it internal modules don't have type declarations
+import type StateCore from "markdown-it/lib/rules_core/state_core";
+
 export type Token = {
 	new (type: string, tag: string, level: number): Token;
 	type: string;
@@ -42,7 +46,7 @@ function createRule() {
 	 * This is applied before the inline content is parsed, to ensure that the formatting of
 	 * remaining inline content (bold, links, etc.) is kept intact!
 	 */
-	return function media(State: MdState) {
+	return function media(State: StateCore) {
 		const getUrl = (str: string) => {
 			const res = State.md.helpers.parseLinkDestination(
 				str,
@@ -222,10 +226,9 @@ function createRule() {
 	};
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 /**
  * Markdown-it plugin that lifts inline image syntax into media/mediaSingle blocks with attributes.
  */
-export const markdownItMedia = (md: any) => {
+export const markdownItMedia = (md: MarkdownIt) => {
 	md.core.ruler.before("inline", "media", createRule());
 };

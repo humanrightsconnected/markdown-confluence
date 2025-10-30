@@ -43,25 +43,25 @@ export function createTocMacro(
 	const macroParams: MacroParams = {};
 
 	if (options.printable !== undefined) {
-		macroParams.printable = { value: String(options.printable) };
+		macroParams["printable"] = { value: String(options.printable) };
 	}
 	if (options.maxLevel !== undefined) {
-		macroParams.maxLevel = { value: String(options.maxLevel) };
+		macroParams["maxLevel"] = { value: String(options.maxLevel) };
 	}
 	if (options.minLevel !== undefined) {
-		macroParams.minLevel = { value: String(options.minLevel) };
+		macroParams["minLevel"] = { value: String(options.minLevel) };
 	}
 	if (options.outline !== undefined) {
-		macroParams.outline = { value: String(options.outline) };
+		macroParams["outline"] = { value: String(options.outline) };
 	}
 	if (options.style) {
-		macroParams.style = { value: options.style };
+		macroParams["style"] = { value: options.style };
 	}
 	if (options.indent) {
-		macroParams.indent = { value: options.indent };
+		macroParams["indent"] = { value: options.indent };
 	}
 	if (options.separator) {
-		macroParams.separator = { value: options.separator };
+		macroParams["separator"] = { value: options.separator };
 	}
 
 	return {
@@ -158,7 +158,7 @@ export function createPageTreeMacro(
 	};
 
 	if (options.expandedDepth !== undefined) {
-		macroParams.expandedDepth = { value: String(options.expandedDepth) };
+		macroParams["expandedDepth"] = { value: String(options.expandedDepth) };
 	}
 
 	return {
@@ -210,19 +210,19 @@ export function createCodeMacro(
 	const macroParams: MacroParams = {};
 
 	if (options.language) {
-		macroParams.language = { value: options.language };
+		macroParams["language"] = { value: options.language };
 	}
 	if (options.title) {
-		macroParams.title = { value: options.title };
+		macroParams["title"] = { value: options.title };
 	}
 	if (options.linenumbers !== undefined) {
-		macroParams.linenumbers = { value: String(options.linenumbers) };
+		macroParams["linenumbers"] = { value: String(options.linenumbers) };
 	}
 	if (options.theme) {
-		macroParams.theme = { value: options.theme };
+		macroParams["theme"] = { value: options.theme };
 	}
 	if (options.collapse !== undefined) {
-		macroParams.collapse = { value: String(options.collapse) };
+		macroParams["collapse"] = { value: String(options.collapse) };
 	}
 
 	return {
