@@ -13,13 +13,17 @@ export type ConfluenceSettings = {
 
 /**
  * Default values for {@link ConfluenceSettings}.
+ *
+ * Note: contentRoot is intentionally set to empty string as a placeholder.
+ * The DefaultSettingsLoader will provide process.cwd() at runtime to avoid
+ * capturing the working directory at module load time.
  */
-export const DEFAULT_SETTINGS: ConfluenceSettings = {
+export const DEFAULT_SETTINGS: Readonly<ConfluenceSettings> = {
 	confluenceBaseUrl: "",
 	confluenceParentId: "",
 	atlassianUserName: "",
 	atlassianApiToken: "",
 	folderToPublish: "Confluence Pages",
-	contentRoot: process.cwd(),
+	contentRoot: "",
 	firstHeadingPageTitle: false,
 };
