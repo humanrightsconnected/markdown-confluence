@@ -1,4 +1,4 @@
-import { Plugin, Notice, MarkdownView, Workspace, loadMermaid } from "obsidian";
+import { Plugin, Notice, MarkdownView, Workspace } from "obsidian";
 import {
 	ConfluenceUploadSettings,
 	Publisher,
@@ -162,12 +162,33 @@ export default class ConfluencePlugin extends Plugin {
 			}
 		}
 
+		// loadMermaid is only available in Obsidian 1.9.0+
+		// For older versions, use default mermaid config
+		let mermaidConfig;
+		try {
+			// @ts-expect-error - loadMermaid may not exist in older Obsidian versions
+			const { loadMermaid } = await import("obsidian");
+			if (loadMermaid) {
+				mermaidConfig = (
+					(await loadMermaid()) as Mermaid
+				).mermaidAPI.getConfig();
+			} else {
+				// Fallback to default mermaid config
+				mermaidConfig = {};
+			}
+		} catch (error) {
+			// loadMermaid not available in this Obsidian version
+			// Use default mermaid config
+			console.log(
+				"Confluence Integration: loadMermaid not available, using default mermaid configuration. This is normal for Obsidian versions < 1.9.0",
+			);
+			mermaidConfig = {};
+		}
+
 		return {
 			extraStyleSheets,
 			extraStyles,
-			mermaidConfig: (
-				(await loadMermaid()) as Mermaid
-			).mermaidAPI.getConfig(),
+			mermaidConfig,
 			bodyStyles,
 		};
 	}
