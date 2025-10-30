@@ -223,6 +223,9 @@ function createRule() {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
+/**
+ * Markdown-it plugin that lifts inline image syntax into media/mediaSingle blocks with attributes.
+ */
 export const markdownItMedia = (md: any) => {
 	md.core.ruler.before("inline", "media", createRule());
 };
