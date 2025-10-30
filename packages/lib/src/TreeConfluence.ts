@@ -169,7 +169,18 @@ async function ensurePageExists(
 			});
 
 			if (!contentById.space?.key) {
-				throw new Error("Missing Space Key");
+				throw new Error(
+					`Failed to retrieve space key for page ID: ${file.pageId}. ` +
+						`The Confluence API did not return space data for this page. ` +
+						`Common causes:\n` +
+						`  - Invalid or non-existent page ID (${file.pageId})\n` +
+						`  - Insufficient permissions to access this page\n` +
+						`  - Page may have been deleted or moved\n` +
+						`Solutions:\n` +
+						`  - Verify the page ID in '${file.absoluteFilePath}' frontmatter is correct\n` +
+						`  - Check that you have read access to this page in Confluence\n` +
+						`  - Remove the page ID from frontmatter to create a new page instead`,
+				);
 			}
 
 			await adaptor.updateMarkdownValues(file.absoluteFilePath, {

@@ -150,7 +150,19 @@ export class Publisher {
 			expand: ["body.atlas_doc_format", "space"],
 		});
 		if (!parentPage.space) {
-			throw new Error("Missing Space Key");
+			throw new Error(
+				`Failed to retrieve space information for parent page ID: ${settings.confluenceParentId}. ` +
+					`The Confluence API did not return space data for this page. ` +
+					`Common causes:\n` +
+					`  - Invalid or non-existent page ID (${settings.confluenceParentId})\n` +
+					`  - Insufficient permissions to access this page\n` +
+					`  - Page may have been deleted or moved\n` +
+					`Solutions:\n` +
+					`  - Verify the 'confluenceParentId' in your configuration is correct\n` +
+					`  - Check that you have read access to the parent page in Confluence\n` +
+					`  - Ensure your API token has appropriate permissions\n` +
+					`  - Visit ${settings.confluenceBaseUrl}/wiki/spaces to find the correct space and page ID`,
+			);
 		}
 
 		const spaceToPublishTo = parentPage.space;
