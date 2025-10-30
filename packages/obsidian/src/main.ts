@@ -179,8 +179,9 @@ export default class ConfluencePlugin extends Plugin {
 		} catch (error) {
 			// loadMermaid not available in this Obsidian version
 			// Use default mermaid config
-			console.log(
+			console.error(
 				"Confluence Integration: loadMermaid not available, using default mermaid configuration. This is normal for Obsidian versions < 1.9.0",
+				error,
 			);
 			mermaidConfig = {};
 		}
