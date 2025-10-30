@@ -4,7 +4,7 @@
     "inlineSourceMap": true,
     "inlineSources": true,
     "jsx": "react",
-    "module": "CommonJS",
+    "module": "ESNext",
     "target": "ES2021",
     "allowJs": true,
     "moduleResolution": "node",
