@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+
+echo "Validating package-lock.json is in sync..."
+npm run validate:lockfile
