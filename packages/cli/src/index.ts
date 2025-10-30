@@ -1,5 +1,12 @@
 #!/usr/bin/env node
 
+/**
+ * CLI entrypoint for publishing Markdown content to Confluence.
+ *
+ * Loads settings, initializes adaptors and Confluence client, runs ADF processing
+ * plugins, and publishes content. Outputs a per-file success/failure summary.
+ */
+
 process.setMaxListeners(Infinity);
 
 import chalk from "chalk";
@@ -13,7 +20,9 @@ import {
 import { PuppeteerMermaidRenderer } from "@markdown-confluence/mermaid-puppeteer-renderer";
 import { ConfluenceClient } from "confluence.js";
 
-// Define the main function
+/**
+ * Execute the CLI end-to-end publish flow.
+ */
 async function main() {
 	const settingLoader = new AutoSettingsLoader();
 	const settings = settingLoader.load();

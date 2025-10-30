@@ -1,3 +1,9 @@
+/**
+ * Public library surface for Markdown ⇄ Confluence ADF transformations and publishing.
+ *
+ * Re-exports primary components including transformers, settings, loaders, adaptors,
+ * publisher, and ADF processing plugins.
+ */
 export * from "./Publisher";
 export * from "./MdToADF";
 export * from "./adaptors";

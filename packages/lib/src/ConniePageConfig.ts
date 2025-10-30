@@ -5,6 +5,12 @@ import { parseMarkdownToADF } from "./MdToADF";
 
 export type PageContentType = "page" | "blogpost";
 
+/**
+ * Configuration schema that drives per-page behavior via YAML frontmatter.
+ *
+ * Each field defines the frontmatter key, default value, input type/validation,
+ * and a `process` function that transforms raw frontmatter into typed values.
+ */
 export type ConfluencePerPageConfig = {
 	publish: FrontmatterConfig<boolean, "boolean">;
 	pageTitle: FrontmatterConfig<string, "text">;
@@ -61,6 +67,9 @@ export type ConfluencePerPageValues = Omit<
 	excludedProperties
 >;
 
+/**
+ * Default frontmatter-driven configuration for individual pages.
+ */
 export const conniePerPageConfig: ConfluencePerPageConfig = {
 	publish: {
 		key: "connie-publish",
@@ -154,13 +163,19 @@ export const conniePerPageConfig: ConfluencePerPageConfig = {
 				let frontmatterHeader =
 					"| Key | Value | \n | ----- | ----- |\n";
 				for (const key of yamlValue) {
-					if (markdownFile.frontmatter[key]) {
-						const keyString = key.toString();
-						const valueString = JSON.stringify(
-							markdownFile.frontmatter[key],
-						);
-						frontmatterHeader += `| ${keyString} | ${valueString} |\n`;
+					if (
+						!Object.prototype.hasOwnProperty.call(
+							markdownFile.frontmatter,
+							key,
+						)
+					) {
+						continue;
 					}
+					const value = markdownFile.frontmatter[key];
+					const keyString = `${key}`;
+					const valueString =
+						value === undefined ? "" : JSON.stringify(value);
+					frontmatterHeader += `| ${keyString} | ${valueString} |\n`;
 				}
 
 				const newADF = parseMarkdownToADF(
@@ -337,6 +352,18 @@ export const conniePerPageConfig: ConfluencePerPageConfig = {
 	},
 };
 
+/**
+ * Parse YAML frontmatter and ADF content to compute final per-page settings and metadata.
+ *
+ * Applies `conniePerPageConfig` rules to the provided `markdownFile.frontmatter`, optionally
+ * enriching the ADF body (e.g., publishing selected frontmatter into a table) and deriving
+ * the page title from the first heading when configured.
+ *
+ * @param markdownFile The source Markdown file and its parsed frontmatter.
+ * @param settings Global Confluence settings.
+ * @param adfContent The page ADF content, possibly modified by processing.
+ * @returns A typed set of per-page values used for publishing.
+ */
 export function processConniePerPageConfig(
 	markdownFile: MarkdownFile,
 	settings: ConfluenceSettings,

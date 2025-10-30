@@ -18,6 +18,17 @@ const frontmatterRegex = /^\s*?---\n([\s\S]*?)\n---\s*/g;
 const transformer = new MarkdownTransformer();
 const serializer = new JSONTransformer();
 
+/**
+ * Parse a Markdown string into an ADF (Atlassian Document Format) JSON document.
+ *
+ * - Uses the local `MarkdownTransformer` to parse Markdown into ProseMirror nodes
+ * - Serializes nodes into ADF using Atlaskit's `JSONTransformer`
+ * - Performs post-processing to align links, tables, lists and code blocks with Confluence expectations
+ *
+ * @param markdown The Markdown content to convert.
+ * @param confluenceBaseUrl Base URL of the target Confluence instance used for URL cleanup/normalization.
+ * @returns A normalized ADF `JSONDocNode` ready for further processing or upload.
+ */
 export function parseMarkdownToADF(
 	markdown: string,
 	confluenceBaseUrl: string,
@@ -28,6 +39,20 @@ export function parseMarkdownToADF(
 	return nodes;
 }
 
+/**
+ * Internal: traverse and normalize an ADF tree to match Confluence constraints.
+ *
+ * Adjusts items such as:
+ * - Task-list glyphs within list items
+ * - Unsafe/empty link URLs and inline-card detection
+ * - Table cell/header attributes and ordered list start index
+ * - Code block language mapping plus special handling for embedded ADF blocks
+ *
+ * @param adf The input ADF document.
+ * @param confluenceBaseUrl Base URL of the target Confluence instance used for URL cleanup/normalization.
+ * @returns The normalized ADF document.
+ * @throws If traversal unexpectedly returns nothing.
+ */
 function processADF(adf: JSONDocNode, confluenceBaseUrl: string): JSONDocNode {
 	const olivia = traverse(adf, {
 		text: (node, _parent) => {
@@ -147,6 +172,17 @@ function processADF(adf: JSONDocNode, confluenceBaseUrl: string): JSONDocNode {
 	return olivia as JSONDocNode;
 }
 
+/**
+ * Convert a `MarkdownFile` to a local ADF file representation suitable for publishing.
+ *
+ * - Strips frontmatter prior to conversion
+ * - Converts Markdown to ADF
+ * - Applies per-page configuration derived from the file and settings
+ *
+ * @param file The Markdown file abstraction (path, contents, metadata).
+ * @param settings Global Confluence settings controlling conversion behavior.
+ * @returns A `LocalAdfFile` with populated ADF contents and derived metadata.
+ */
 export function convertMDtoADF(
 	file: MarkdownFile,
 	settings: ConfluenceSettings,

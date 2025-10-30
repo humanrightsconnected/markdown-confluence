@@ -45,6 +45,7 @@
       "@types/yargs": "^17.0.33",
       "@types/d3-dispatch": "2.0.4",
       "prosemirror-model": "1.25.4",
-      "boolean": "npm:yn@^5.0.0"
+      "boolean": "npm:yn@^5.0.0",
+      "prismjs": "^1.30.0"
    }
 }

@@ -2,6 +2,17 @@ import { ADFEntity } from "@atlaskit/adf-utils/dist/types/types";
 import { JSONDocNode } from "@atlaskit/editor-json-transformer";
 import { markdownTable } from "markdown-table";
 
+/**
+ * Render a subset of ADF (Atlassian Document Format) into Markdown.
+ *
+ * Converts the provided ADF document's top-level content into Markdown lines,
+ * handling paragraphs, headings, lists, tables, panels/callouts, code blocks,
+ * inline cards, mentions, emojis, and more. Unknown nodes are surfaced as
+ * fenced ADF code blocks for easier debugging.
+ *
+ * @param adfDoc The ADF document to render.
+ * @returns Markdown string representation of the document.
+ */
 export function renderADFDoc(adfDoc: JSONDocNode) {
 	const lines = (adfDoc.content ?? []).reduce(
 		(prev, curr, currentIndex) => {

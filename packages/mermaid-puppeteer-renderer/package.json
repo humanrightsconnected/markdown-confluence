@@ -17,10 +17,22 @@
     "keywords": [],
     "author": "andymac4182",
     "license": "Apache 2.0",
+    "devDependencies": {
+        "@types/node": "^24.9.2",
+        "esbuild": "0.25.11",
+        "esbuild-node-externals": "^1.18.0",
+        "esbuild-plugin-copy": "^2.1.1",
+        "eslint": "^9.38.0",
+        "eslint-config-prettier": "^10.1.8",
+        "globals": "^16.4.0",
+        "prettier": "3.6.2",
+        "typescript": "^5.9.3",
+        "typescript-eslint": "^8.46.2"
+    },
     "dependencies": {
         "@markdown-confluence/lib": "5.5.2",
         "mermaid": "^11.12.1",
-        "puppeteer": "^24.26.0"
+        "puppeteer": "^24.27.0"
     },
     "publishConfig": {
         "access": "public",

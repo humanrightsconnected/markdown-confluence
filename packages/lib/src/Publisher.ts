@@ -92,6 +92,16 @@ export interface UploadAdfFileResult {
 	labelResult: "same" | "updated";
 }
 
+/**
+ * Publisher orchestrates conversion and upload of Markdown-derived ADF content to Confluence.
+ *
+ * Responsibilities:
+ * - Load settings and discover local Markdown files
+ * - Ensure pages exist/upsert structure in Confluence
+ * - Run ADF processing plugins, update content, attachments, and labels
+ *
+ * Use `publish()` to perform a full sync, optionally constrained to a single file via `publishFilter`.
+ */
 export class Publisher {
 	private confluenceClient: RequiredConfluenceClient;
 	private adaptor: LoaderAdaptor;
@@ -99,6 +109,13 @@ export class Publisher {
 	private settingsLoader: SettingsLoader;
 	private adfProcessingPlugins: ADFProcessingPlugin<unknown, unknown>[];
 
+	/**
+	 * Create a new Publisher.
+	 * @param adaptor Abstraction over local I/O and helpers for reading Markdown files.
+	 * @param settingsLoader Provider for Confluence and conversion settings.
+	 * @param confluenceClient Minimal Confluence client API used for content, users, labels, and attachments.
+	 * @param adfProcessingPlugins Pipeline plugins applied to ADF before upload (Always-appended with built-ins).
+	 */
 	constructor(
 		adaptor: LoaderAdaptor,
 		settingsLoader: SettingsLoader,
@@ -114,6 +131,11 @@ export class Publisher {
 		);
 	}
 
+	/**
+	 * Discover files, ensure Confluence structure, and update pages, attachments, and labels.
+	 * @param publishFilter Optional absolute file path to limit publishing to a single file.
+	 * @returns Results for each processed file indicating whether content/images/labels changed.
+	 */
 	async publish(publishFilter?: string) {
 		const settings = this.settingsLoader.load();
 
@@ -159,6 +181,10 @@ export class Publisher {
 		return adrFiles;
 	}
 
+	/**
+	 * Upload a single file node: runs content update and returns a structured result.
+	 * @param node The Confluence node representing the local file and remote metadata.
+	 */
 	private async publishFile(
 		node: ConfluenceNode,
 	): Promise<FilePublishResult> {
@@ -183,13 +209,32 @@ export class Publisher {
 				};
 			}
 
+			// Handle non-Error objects by extracting useful information
+			// JSON.stringify() doesn't capture Error properties well due to non-enumerable properties
 			return {
 				node,
-				reason: JSON.stringify(e), // TODO: Understand why this doesn't show error message properly
+				reason:
+					typeof e === "string"
+						? e
+						: typeof e === "object" && e !== null
+							? String(e)
+							: "Unknown error",
 			};
 		}
 	}
 
+	/**
+	 * Update Confluence content, attachments, and labels for a single page when needed.
+	 *
+	 * Throws if the page was last updated by another user or if content types are incompatible.
+	 *
+	 * @param ancestors Ordered list of ancestor page IDs for hierarchy placement (if applicable).
+	 * @param pageVersionNumber Current version number of the page.
+	 * @param existingPageData Snapshot of the current page ADF and metadata in Confluence.
+	 * @param adfFile Target ADF file to upload and its metadata.
+	 * @param lastUpdatedBy Account ID of the user who last updated the page.
+	 * @returns Summary of what changed for this page.
+	 */
 	private async updatePageContent(
 		ancestors: string[],
 		pageVersionNumber: number,
@@ -301,13 +346,6 @@ export class Publisher {
 			!isEqual(existingPageDetails, newPageDetails)
 		) {
 			result.contentResult = "updated";
-			console.log(`TESTING DIFF - ${adfFile.absoluteFilePath}`);
-
-			const replacer = (_key: unknown, value: unknown) =>
-				typeof value === "undefined" ? null : value;
-
-			console.log(JSON.stringify(existingPageData.adfContent, replacer));
-			console.log(JSON.stringify(adfToUpload, replacer));
 
 			const updateContentDetails = {
 				...newPageDetails,

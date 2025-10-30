@@ -1,16 +1,14 @@
 {
-  "extends": "../../tsconfig.json",
-  "compilerOptions":{
-     "baseUrl":".",
-     "rootDir": "src",
-         "outDir": "dist",
-         "declarationDir": "dist",
-         "emitDeclarationOnly": false,
-    "skipLibCheck": true,
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "rootDir": "src",
+    "outDir": "dist",
+    "declarationDir": "dist",
+    "emitDeclarationOnly": false,
     "listEmittedFiles": true,
-    "module":"ESNext",
-    "target":"ESNext",
+    "module": "ESNext",
+    "target": "ESNext"
   },
-  "include":[ "**/*.ts", "**/*.tsx"  ],
-    "exclude": ["node_modules", "packages/**/dist/*", "dist/*", "**/*.test.ts", "**/jest.config.ts"]
+  "include": ["**/*.ts", "**/*.tsx"]
 }

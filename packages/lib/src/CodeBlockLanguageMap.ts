@@ -1,4 +1,8 @@
 /* eslint-disable @typescript-eslint/naming-convention */
+/**
+ * Mapping from common Markdown/Prism code block language identifiers
+ * to Confluence code macro language names.
+ */
 export const MarkdownToConfluenceCodeBlockLanguageMap: {
 	[key: string]: string;
 } = {
