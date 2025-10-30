@@ -30,6 +30,18 @@ type PossibleMatchForInlineComment = {
 	commentEnd: number;
 };
 
+/**
+ * Normalize and enrich ADF for upload, per page, before publishing.
+ *
+ * Steps:
+ * - Ensure document has at least one paragraph
+ * - Resolve wikilinks and mentions to actual Confluence links or inline nodes
+ * - Merge adjacent text nodes with identical marks to reduce churn
+ * - Re-apply existing inline comments by best-effort fuzzy matching
+ *
+ * @param confluencePagesToPublish The pages prepared for publishing.
+ * @param settings Global Confluence settings used for URL construction.
+ */
 export function prepareAdfToUpload(
 	confluencePagesToPublish: ConfluenceNode[],
 	settings: ConfluenceSettings,

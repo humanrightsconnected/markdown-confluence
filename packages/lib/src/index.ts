@@ -12,3 +12,4 @@ export * as ConfluencePageConfig from "./ConniePageConfig";
 export * from "./SettingsLoader";
 export * from "./ADFToMarkdown";
 export * from "./ADFProcessingPlugins";
+export * from "./MacroHelpers";

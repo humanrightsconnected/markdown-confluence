@@ -29,31 +29,13 @@
  */
 
 /**
- * Compare two data objects / arrays in typescript.
+ * Recursively compare objects and arrays for deep equality. Order within objects is ignored; order in arrays is relevant.
  *
- * @author Marco Antonio Anastacio Cintra
- * @link https://gist.github.com/anastaciocintra/6a9bf013d8bd940f857d5c9ad08990e1
- * @param {any} obj1 the first object.
- * @param {any} obj2 the second object.
- * @param {boolean} checkDataOrder determine if order  data is relevant on comparison
+ * Works for plain objects/arrays/primitives, including nested structures. Dates and function equality are not handled.
  *
- * @returns {boolean} return true if obj1 and obj2 have the same data
- *
- * @example
- *
- * expected results:
- * { a: 1, b: 2 } === { a: 1, b: 2 }
- * { a: 1, b: 2 } === { b: 2, a: 1 }
- * { a: 1, b: 3 } !== { b: 2, a: 1 }
- * [1, 2] === [1, 2]
- * [2, 1] === [1, 2]
- * [1, 3] !== [1, 2]
- *
- * but with checkDataOrder = true, the results are different for arrays:
- * [1, 2] === [1, 2] // same result as without checkDataOrder
- * [2, 1] !== [1, 2] // different order
- * [1, 3] !== [1, 2] // same result as without checkDataOrder
- *
+ * @param obj1 First value or structure
+ * @param obj2 Second value or structure
+ * @returns Whether both are deeply equal
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const isEqual = (obj1: any, obj2: any): boolean => {

@@ -164,9 +164,8 @@ export default class ConfluencePlugin extends Plugin {
 
 		// loadMermaid is only available in Obsidian 1.9.0+
 		// For older versions, use default mermaid config
-		let mermaidConfig;
+		let mermaidConfig: Record<string, unknown> | object;
 		try {
-			// @ts-expect-error - loadMermaid may not exist in older Obsidian versions
 			const { loadMermaid } = await import("obsidian");
 			if (loadMermaid) {
 				mermaidConfig = (
@@ -174,13 +173,17 @@ export default class ConfluencePlugin extends Plugin {
 				).mermaidAPI.getConfig();
 			} else {
 				// Fallback to default mermaid config
+				console.log(
+					"Confluence Integration: loadMermaid not found in obsidian module, using default mermaid configuration.",
+				);
 				mermaidConfig = {};
 			}
 		} catch (error) {
 			// loadMermaid not available in this Obsidian version
 			// Use default mermaid config
-			console.log(
+			console.error(
 				"Confluence Integration: loadMermaid not available, using default mermaid configuration. This is normal for Obsidian versions < 1.9.0",
+				error,
 			);
 			mermaidConfig = {};
 		}

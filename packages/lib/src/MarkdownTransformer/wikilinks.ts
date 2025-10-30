@@ -2,6 +2,9 @@ import MarkdownIt from "markdown-it";
 // @ts-expect-error - markdown-it internal modules don't have type declarations
 import StateInline from "markdown-it/lib/rules_inline/state_inline";
 
+/**
+ * Inline rule that converts [[Wiki Links]] to markdown-it link tokens, preserving optional alias and header hash.
+ */
 export function wikilinks(state: StateInline): boolean {
 	const max = state.posMax;
 
@@ -202,6 +205,9 @@ function findAlias(
 	return { alias, aliasStart, aliasEnd };
 }
 
+/**
+ * Markdown-it plugin to enable wikilinks inline rule.
+ */
 export default function wikilinksPlugin(md: MarkdownIt): void {
 	md.inline.ruler.push("wikilinks", wikilinks);
 }
