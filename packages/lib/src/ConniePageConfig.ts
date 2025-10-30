@@ -163,13 +163,19 @@ export const conniePerPageConfig: ConfluencePerPageConfig = {
 				let frontmatterHeader =
 					"| Key | Value | \n | ----- | ----- |\n";
 				for (const key of yamlValue) {
-					if (markdownFile.frontmatter[key]) {
-						const keyString = key.toString();
-						const valueString = JSON.stringify(
-							markdownFile.frontmatter[key],
-						);
-						frontmatterHeader += `| ${keyString} | ${valueString} |\n`;
+					if (
+						!Object.prototype.hasOwnProperty.call(
+							markdownFile.frontmatter,
+							key,
+						)
+					) {
+						continue;
 					}
+					const value = markdownFile.frontmatter[key];
+					const keyString = `${key}`;
+					const valueString =
+						value === undefined ? "" : JSON.stringify(value);
+					frontmatterHeader += `| ${keyString} | ${valueString} |\n`;
 				}
 
 				const newADF = parseMarkdownToADF(
