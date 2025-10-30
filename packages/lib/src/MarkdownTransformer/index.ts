@@ -147,6 +147,11 @@ md.enable([
 
 export type Markdown = string;
 
+/**
+ * Markdown → ProseMirror transformer configured for the Atlaskit schema.
+ *
+ * Enables plugins for tables, media, callouts and wikilinks as supported by the schema.
+ */
 export class MarkdownTransformer implements Transformer<Markdown> {
 	private markdownParser: MarkdownParser;
 	constructor(schema: Schema = defaultSchema, tokenizer: MarkdownIt = md) {

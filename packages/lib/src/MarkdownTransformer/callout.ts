@@ -84,6 +84,9 @@ function getPanelAttributes(calloutType: string): [string, string][] {
 	return panelTypeToAttributesMap["info"];
 }
 
+/**
+ * Markdown-it plugin that converts special blockquote callouts into ADF panel/expand nodes.
+ */
 export default function calloutPlugin(md: MarkdownIt): void {
 	md.core.ruler.push("panel", panel);
 	md.core.ruler.push("expand", () => false);
@@ -93,6 +96,9 @@ function capitalizeFirstLetter(string: string) {
 	return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
+/**
+ * Core rule that recognizes callout/expand syntax inside blockquotes and rewrites tokens.
+ */
 export function panel(state: StateCore): boolean {
 	let isInCallout = false;
 	let adfType = "panel";
