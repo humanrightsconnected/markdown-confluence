@@ -13,32 +13,21 @@ import { ConfluenceSettings } from "./Settings";
 
 const blankPageAdf: string = JSON.stringify(doc(p("Page not published yet")));
 
-function flattenTree(
-	node: ConfluenceTreeNode,
-	ancestors: string[] = [],
-): ConfluenceNode[] {
-	const nodes: ConfluenceNode[] = [];
-	const { file, version, lastUpdatedBy, existingPageData, children } = node;
-
-	if (ancestors.length > 0) {
-		nodes.push({
-			file,
-			version,
-			lastUpdatedBy,
-			existingPageData,
-			ancestors,
-		});
-	}
-
-	if (children) {
-		children.forEach((child) => {
-			nodes.push(...flattenTree(child, [...ancestors, file.pageId]));
-		});
-	}
-
-	return nodes;
-}
-
+/**
+ * Ensures all files and folders in the local tree exist as Confluence content pages, creating/updating as needed.
+ *
+ * The returned nodes contain the IDs, versions, and all metadata for each matched or created Confluence page for publishing.
+ * The ADF is preprocessed for upload.
+ *
+ * @param confluenceClient Minimal Confluence client for content/attachments/labels/users
+ * @param adaptor Loader for local files and metadata
+ * @param node Tree of all files/folders to ensure exist remotely
+ * @param spaceKey Target space key
+ * @param parentPageId Parent page for this branch
+ * @param topPageId Top of tree (used to avoid accidental cross-tree overwrites)
+ * @param settings Global Confluence publishing settings
+ * @returns Array with all found/created ConfluenceNode objects for upload
+ */
 export async function ensureAllFilesExistInConfluence(
 	confluenceClient: RequiredConfluenceClient,
 	adaptor: LoaderAdaptor,
@@ -66,6 +55,38 @@ export async function ensureAllFilesExistInConfluence(
 	return pages;
 }
 
+/**
+ * Internal: Walk a ConfluenceTreeNode to flatten into ConfluenceNode[] for batch processing.
+ */
+function flattenTree(
+	node: ConfluenceTreeNode,
+	ancestors: string[] = [],
+): ConfluenceNode[] {
+	const nodes: ConfluenceNode[] = [];
+	const { file, version, lastUpdatedBy, existingPageData, children } = node;
+
+	if (ancestors.length > 0) {
+		nodes.push({
+			file,
+			version,
+			lastUpdatedBy,
+			existingPageData,
+			ancestors,
+		});
+	}
+
+	if (children) {
+		children.forEach((child) => {
+			nodes.push(...flattenTree(child, [...ancestors, file.pageId]));
+		});
+	}
+
+	return nodes;
+}
+
+/**
+ * Internal: Recursively create each local page/folder as a page in Confluence if needed, with blanks pre-filled.
+ */
 async function createFileStructureInConfluence(
 	settings: ConfluenceSettings,
 	confluenceClient: RequiredConfluenceClient,
@@ -148,6 +169,9 @@ async function createFileStructureInConfluence(
 	};
 }
 
+/**
+ * Internal: Looks up existing page by ID or by space/title; creates a blank if needed and returns the key details.
+ */
 async function ensurePageExists(
 	confluenceClient: RequiredConfluenceClient,
 	adaptor: LoaderAdaptor,

@@ -2,8 +2,14 @@ import SparkMD5 from "spark-md5";
 import { RequiredConfluenceClient, LoaderAdaptor } from "./adaptors";
 import sizeOf from "image-size";
 
+/**
+ * Status of an image stored in Confluence.
+ */
 export type ConfluenceImageStatus = "existing" | "uploaded";
 
+/**
+ * Metadata for an image attachment present or uploaded on Confluence.
+ */
 export interface UploadedImageData {
 	filename: string;
 	id: string;
@@ -13,6 +19,9 @@ export interface UploadedImageData {
 	status: ConfluenceImageStatus;
 }
 
+/**
+ * Mapping of filename to details on previously uploaded attachments (by filehash).
+ */
 export type CurrentAttachments = Record<
 	string,
 	{
@@ -22,6 +31,19 @@ export type CurrentAttachments = Record<
 	}
 >;
 
+/**
+ * Uploads a binary buffer to Confluence as an image attachment, deduplicating using MD5.
+ *
+ * If the image content is already present and matches by hash, no upload occurs.
+ *
+ * @param confluenceClient Confluence API client.
+ * @param pageId Page ID to attach image to.
+ * @param uploadFilename Target filename.
+ * @param fileBuffer Image buffer (PNG expected).
+ * @param currentAttachments Mapping of current attachments for duplicate check.
+ * @returns Metadata for the uploaded/new/existing image, or null if no upload.
+ * @throws If upload fails.
+ */
 export async function uploadBuffer(
 	confluenceClient: RequiredConfluenceClient,
 	pageId: string,
@@ -81,6 +103,20 @@ export async function uploadBuffer(
 	};
 }
 
+/**
+ * Reads a file from disk, computes its hash, and uploads to Confluence as an attachment.
+ *
+ * If the file is unchanged and already attached, a new upload is skipped. Handles filenames with percent encoding.
+ *
+ * @param confluenceClient Confluence API client.
+ * @param adaptor Adaptor for reading local files.
+ * @param pageId Page ID to attach file to.
+ * @param pageFilePath Path to the page the attachment relates to.
+ * @param fileNameToUpload Filename to upload (relative).
+ * @param currentAttachments Attachments already present in Confluence.
+ * @returns Metadata for the uploaded/existing file, or null if not found.
+ * @throws If reading or uploading the file fails.
+ */
 export async function uploadFile(
 	confluenceClient: RequiredConfluenceClient,
 	adaptor: LoaderAdaptor,

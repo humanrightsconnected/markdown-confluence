@@ -6,6 +6,40 @@ import { JSONDocNode } from "@atlaskit/editor-json-transformer";
 import { LocalAdfFileTreeNode } from "./Publisher";
 import { ConfluenceSettings } from "./Settings";
 
+/**
+ * Build a tree of local Markdown and folder structure for publishing to Confluence.
+ *
+ * Converts a flat Markdown file array into a tree, assigning each file and folder its CORRECT ADF document/node and publishing config.
+ * Throws if any page titles are not unique.
+ *
+ * @param markdownFiles List of files (with metadata and contents)
+ * @param settings Global Confluence publishing settings
+ * @returns Root tree node representing all files/folders as LocalAdfFileTreeNode
+ */
+export const createFolderStructure = (
+	markdownFiles: MarkdownFile[],
+	settings: ConfluenceSettings,
+): LocalAdfFileTreeNode => {
+	const commonPath = findCommonPath(
+		markdownFiles.map((file) => file.absoluteFilePath),
+	);
+	const rootNode = createTreeNode(commonPath);
+
+	markdownFiles.forEach((file) => {
+		const relativePath = path.relative(commonPath, file.absoluteFilePath);
+		addFileToTree(rootNode, file, relativePath, settings);
+	});
+
+	processNode(commonPath, rootNode);
+
+	checkUniquePageTitle(rootNode);
+
+	return rootNode;
+};
+
+/**
+ * Internal: finds the common ancestor path for a set of absolute paths.
+ */
 const findCommonPath = (paths: string[]): string => {
 	const [firstPath, ...rest] = paths;
 	if (!firstPath) {
@@ -31,6 +65,9 @@ const createTreeNode = (name: string): LocalAdfFileTreeNode => ({
 	children: [],
 });
 
+/**
+ * Internal: Inserts a MarkdownFile into the tree at the right path, converting to ADF.
+ */
 const addFileToTree = (
 	treeNode: LocalAdfFileTreeNode,
 	file: MarkdownFile,
@@ -62,6 +99,9 @@ const addFileToTree = (
 	}
 };
 
+/**
+ * Internal: After tree is built, ensure each branch gets its file node and points children correctly.
+ */
 const processNode = (commonPath: string, node: LocalAdfFileTreeNode) => {
 	if (!node.file) {
 		let indexFile = node.children.find(
@@ -107,27 +147,9 @@ const processNode = (commonPath: string, node: LocalAdfFileTreeNode) => {
 	);
 };
 
-export const createFolderStructure = (
-	markdownFiles: MarkdownFile[],
-	settings: ConfluenceSettings,
-): LocalAdfFileTreeNode => {
-	const commonPath = findCommonPath(
-		markdownFiles.map((file) => file.absoluteFilePath),
-	);
-	const rootNode = createTreeNode(commonPath);
-
-	markdownFiles.forEach((file) => {
-		const relativePath = path.relative(commonPath, file.absoluteFilePath);
-		addFileToTree(rootNode, file, relativePath, settings);
-	});
-
-	processNode(commonPath, rootNode);
-
-	checkUniquePageTitle(rootNode);
-
-	return rootNode;
-};
-
+/**
+ * Internal: throws if any page titles in the tree are duplicates.
+ */
 function checkUniquePageTitle(
 	rootNode: LocalAdfFileTreeNode,
 	pageTitles: Set<string> = new Set<string>(),
