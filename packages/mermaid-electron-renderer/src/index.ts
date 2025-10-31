@@ -87,15 +87,34 @@ export class ElectronMermaidRenderer implements MermaidRenderer {
 
 			try {
 				// Capture the chart as a NativeImage
-				const image = await chartWindow.webContents.capturePage(
-					dimensions,
-					{ stayHidden: true, stayAwake: true },
-				);
-				// Convert the NativeImage to a PNG buffer
-				const imageBuffer = image.toPNG();
-				// Add the buffer to the capturedCharts map
-				capturedCharts.set(chart.name, imageBuffer);
-				// Resolve the promise
+				try {
+					const image = await chartWindow.webContents.capturePage(
+						dimensions,
+						{ stayHidden: true, stayAwake: true },
+					);
+					// Convert the NativeImage to a PNG buffer
+					const imageBuffer = image.toPNG();
+					// Add the buffer to the capturedCharts map
+					capturedCharts.set(chart.name, imageBuffer);
+					// Resolve the promise
+				} catch (captureError: unknown) {
+					const errorMessage =
+						captureError instanceof Error
+							? captureError.message
+							: String(captureError);
+					throw new Error(
+						`Failed to capture mermaid chart '${chart.name}': ${errorMessage}. ` +
+							`This typically occurs when Electron's desktop capture capabilities are not available. ` +
+							`Common causes:\n` +
+							`  - Running in a headless environment without X11 display server\n` +
+							`  - Missing graphics capabilities or virtual framebuffer (xvfb)\n` +
+							`  - Insufficient permissions for screen capture\n` +
+							`Solutions:\n` +
+							`  - For Linux servers: Install and configure xvfb (X virtual framebuffer)\n` +
+							`  - For Docker: Use a base image with X11 support or switch to puppeteer renderer\n` +
+							`  - For desktop: Ensure Electron has necessary screen capture permissions`,
+					);
+				}
 			} finally {
 				if (!debug) {
 					chartWindow.close();

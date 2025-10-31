@@ -5,6 +5,11 @@ import { ADFProcessingPlugin, PublisherFunctions } from "./types";
 import { ADFEntity } from "@atlaskit/adf-utils/types";
 import SparkMD5 from "spark-md5";
 
+/**
+ * Create a deterministic filename for a mermaid chart’s rendered image using the content hash.
+ * @param mermaidContent Mermaid code block content
+ * @returns Object containing upload filename and sanitized mermaid text
+ */
 export function getMermaidFileName(mermaidContent: string | undefined) {
 	const mermaidText = mermaidContent ?? "flowchart LR\nid1[Missing Chart]";
 	const pathMd5 = SparkMD5.hash(mermaidText);
@@ -12,15 +17,24 @@ export function getMermaidFileName(mermaidContent: string | undefined) {
 	return { uploadFilename, mermaidText };
 }
 
+/**
+ * Minimal data needed to render and identify a mermaid chart.
+ */
 export interface ChartData {
 	name: string;
 	data: string;
 }
 
+/**
+ * An abstraction for rendering mermaid charts into image buffers.
+ */
 export interface MermaidRenderer {
 	captureMermaidCharts(charts: ChartData[]): Promise<Map<string, Buffer>>;
 }
 
+/**
+ * Plugin that finds mermaid code blocks, renders them to images, uploads them, and swaps blocks for media.
+ */
 export class MermaidRendererPlugin
 	implements
 		ADFProcessingPlugin<
@@ -30,6 +44,7 @@ export class MermaidRendererPlugin
 {
 	constructor(private mermaidRenderer: MermaidRenderer) {}
 
+	/** Extract charts from mermaid code blocks. */
 	extract(adf: JSONDocNode): ChartData[] {
 		const mermaidNodes = filter(
 			adf,
@@ -53,6 +68,7 @@ export class MermaidRendererPlugin
 		return Array.from(mermaidNodesToUpload);
 	}
 
+	/** Render charts and upload resulting images, returning a filename→upload map. */
 	async transform(
 		mermaidNodesToUpload: ChartData[],
 		supportFunctions: PublisherFunctions,
@@ -81,6 +97,7 @@ export class MermaidRendererPlugin
 
 		return imageMap;
 	}
+	/** Replace mermaid code blocks with mediaSingle nodes referencing uploaded images. */
 	load(
 		adf: JSONDocNode,
 		imageMap: Record<string, UploadedImageData | null>,
