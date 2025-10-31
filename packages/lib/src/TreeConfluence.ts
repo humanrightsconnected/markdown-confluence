@@ -233,6 +233,9 @@ async function ensurePageExists(
 			if (!pageSpaceKey) {
 				// If API didn't return space data, try using configured space key as fallback
 				if (settings.confluenceSpaceKey) {
+					console.warn(
+						`Page ${file.pageId}: Using fallback space key '${settings.confluenceSpaceKey}' (API did not return space data)`,
+					);
 					pageSpaceKey = settings.confluenceSpaceKey;
 				} else {
 					throw new Error(

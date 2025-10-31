@@ -156,6 +156,9 @@ export class Publisher {
 			spaceKey = parentPage.space.key;
 		} else if (settings.confluenceSpaceKey) {
 			// If API didn't return space data, use configured space key as fallback
+			console.warn(
+				`Parent page ${settings.confluenceParentId}: Using fallback space key '${settings.confluenceSpaceKey}' (API did not return space data)`,
+			);
 			spaceKey = settings.confluenceSpaceKey;
 		} else {
 			throw new Error(
