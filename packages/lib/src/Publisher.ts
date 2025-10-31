@@ -149,7 +149,15 @@ export class Publisher {
 			id: settings.confluenceParentId,
 			expand: ["body.atlas_doc_format", "space"],
 		});
-		if (!parentPage.space) {
+
+		let spaceKey: string;
+
+		if (parentPage.space?.key) {
+			spaceKey = parentPage.space.key;
+		} else if (settings.confluenceSpaceKey) {
+			// If API didn't return space data, use configured space key as fallback
+			spaceKey = settings.confluenceSpaceKey;
+		} else {
 			throw new Error(
 				`Failed to retrieve space information for parent page ID: ${settings.confluenceParentId}. ` +
 					`The Confluence API did not return space data for this page. ` +
@@ -158,6 +166,7 @@ export class Publisher {
 					`  - Insufficient permissions to access this page\n` +
 					`  - Page may have been deleted or moved\n` +
 					`Solutions:\n` +
+					`  - Add "confluenceSpaceKey" to your .markdown-confluence.json configuration file\n` +
 					`  - Verify the 'confluenceParentId' in your configuration is correct\n` +
 					`  - Check that you have read access to the parent page in Confluence\n` +
 					`  - Ensure your API token has appropriate permissions\n` +
@@ -165,15 +174,13 @@ export class Publisher {
 			);
 		}
 
-		const spaceToPublishTo = parentPage.space;
-
 		const files = await this.adaptor.getMarkdownFilesToUpload();
 		const folderTree = createLocalAdfTree(files, settings);
 		let confluencePagesToPublish = await ensureAllFilesExistInConfluence(
 			this.confluenceClient,
 			this.adaptor,
 			folderTree,
-			spaceToPublishTo.key,
+			spaceKey,
 			parentPage.id,
 			parentPage.id,
 			settings,
