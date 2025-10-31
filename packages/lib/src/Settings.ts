@@ -4,6 +4,7 @@
 export type ConfluenceSettings = {
 	confluenceBaseUrl: string;
 	confluenceParentId: string;
+	confluenceSpaceKey?: string;
 	atlassianUserName: string;
 	atlassianApiToken: string;
 	folderToPublish: string;

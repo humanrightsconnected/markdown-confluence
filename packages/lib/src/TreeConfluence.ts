@@ -145,6 +145,7 @@ async function createFileStructureInConfluence(
 			spaceKey,
 			parentPageId,
 			topPageId,
+			settings,
 		);
 		file.pageId = pageDetails.id;
 		file.spaceKey = pageDetails.spaceKey;
@@ -213,6 +214,7 @@ async function ensurePageExists(
 	spaceKey: string,
 	parentPageId: string,
 	topPageId: string,
+	settings: ConfluenceSettings,
 ) {
 	if (file.pageId) {
 		try {
@@ -226,8 +228,30 @@ async function ensurePageExists(
 				],
 			});
 
-			if (!contentById.space?.key) {
-				throw new Error("Missing Space Key");
+			let pageSpaceKey = contentById.space?.key;
+
+			if (!pageSpaceKey) {
+				// If API didn't return space data, try using configured space key as fallback
+				if (settings.confluenceSpaceKey) {
+					console.warn(
+						`Page ${file.pageId}: Using fallback space key '${settings.confluenceSpaceKey}' (API did not return space data)`,
+					);
+					pageSpaceKey = settings.confluenceSpaceKey;
+				} else {
+					throw new Error(
+						`Failed to retrieve space key for page ID: ${file.pageId}. ` +
+							`The Confluence API did not return space data for this page. ` +
+							`Common causes:\n` +
+							`  - Invalid or non-existent page ID (${file.pageId})\n` +
+							`  - Insufficient permissions to access this page\n` +
+							`  - Page may have been deleted or moved\n` +
+							`Solutions:\n` +
+							`  - Add "confluenceSpaceKey" to your .markdown-confluence.json configuration file\n` +
+							`  - Verify the page ID in '${file.absoluteFilePath}' frontmatter is correct\n` +
+							`  - Check that you have read access to this page in Confluence\n` +
+							`  - Remove the page ID from frontmatter to create a new page instead`,
+					);
+				}
 			}
 
 			await adaptor.updateMarkdownValues(file.absoluteFilePath, {
@@ -242,7 +266,7 @@ async function ensurePageExists(
 				lastUpdatedBy:
 					contentById?.version?.by?.accountId ?? "NO ACCOUNT ID",
 				existingAdf: contentById?.body?.atlas_doc_format?.value,
-				spaceKey: contentById.space.key,
+				spaceKey: pageSpaceKey,
 				pageTitle: contentById.title,
 				ancestors:
 					contentById.ancestors?.map((ancestor) => ({
