@@ -20,4 +20,6 @@ data.json
 # Claude Code configuration
 .claude/
 
+# Build artifacts
 dist/
+*.tsbuildinfo
