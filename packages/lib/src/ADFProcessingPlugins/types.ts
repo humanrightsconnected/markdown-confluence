@@ -7,6 +7,9 @@ import {
 import { JSONDocNode } from "@atlaskit/editor-json-transformer";
 import { LoaderAdaptor, RequiredConfluenceClient } from "../adaptors";
 
+/**
+ * Support functions provided to plugins for uploading files/buffers to Confluence.
+ */
 export interface PublisherFunctions {
 	uploadBuffer(
 		uploadFilename: string,
@@ -15,6 +18,13 @@ export interface PublisherFunctions {
 	uploadFile(fileNameToUpload: string): Promise<UploadedImageData | null>;
 }
 
+/**
+ * A three-phase ADF processing plugin: extract → transform → load.
+ *
+ * - extract: read the ADF and gather items to process
+ * - transform: perform the heavy work (e.g., uploads, rendering) and return a mapping/result
+ * - load: apply the transformed results back onto the ADF
+ */
 export interface ADFProcessingPlugin<E, T> {
 	extract(adf: JSONDocNode, supportFunctions: PublisherFunctions): E;
 	transform(items: E, supportFunctions: PublisherFunctions): Promise<T>;
@@ -25,6 +35,9 @@ export interface ADFProcessingPlugin<E, T> {
 	): JSONDocNode;
 }
 
+/**
+ * Create an object exposing helper functions for plugins to upload files/buffers.
+ */
 export function createPublisherFunctions(
 	confluenceClient: RequiredConfluenceClient,
 	adaptor: LoaderAdaptor,
@@ -64,6 +77,9 @@ export function createPublisherFunctions(
 	};
 }
 
+/**
+ * Execute the configured extract/transform/load pipeline across all plugins.
+ */
 export async function executeADFProcessingPipeline(
 	plugins: ADFProcessingPlugin<unknown, unknown>[],
 	adf: JSONDocNode,

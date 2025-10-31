@@ -1,4 +1,14 @@
 import { traverse } from "@atlaskit/adf-utils/traverse";
+
+/**
+ * ADF preprocessing and normalization utilities used before uploading content to Confluence.
+ *
+ * This module contains helpers to enrich and stabilize ADF documents, including:
+ * - Wikilink and mention resolution to Confluence URLs/nodes
+ * - Merge adjacent text nodes with identical marks
+ * - Extract and re-apply inline comments using fuzzy text matching
+ * - Lightweight cleanup (remove empty properties, ensure minimum structure)
+ */
 import { JSONDocNode } from "@atlaskit/editor-json-transformer";
 import { ConfluenceAdfFile, ConfluenceNode } from "./Publisher";
 import { ConfluenceSettings } from "./Settings";
@@ -30,6 +40,18 @@ type PossibleMatchForInlineComment = {
 	commentEnd: number;
 };
 
+/**
+ * Normalize and enrich ADF for upload, per page, before publishing.
+ *
+ * Steps:
+ * - Ensure document has at least one paragraph
+ * - Resolve wikilinks and mentions to actual Confluence links or inline nodes
+ * - Merge adjacent text nodes with identical marks to reduce churn
+ * - Re-apply existing inline comments by best-effort fuzzy matching
+ *
+ * @param confluencePagesToPublish The pages prepared for publishing.
+ * @param settings Global Confluence settings used for URL construction.
+ */
 export function prepareAdfToUpload(
 	confluencePagesToPublish: ConfluenceNode[],
 	settings: ConfluenceSettings,
