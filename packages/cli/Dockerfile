@@ -1,4 +1,4 @@
-FROM ghcr.io/puppeteer/puppeteer:24.26.1
+FROM ghcr.io/puppeteer/puppeteer:24.27.0
 
 COPY ./dist /app
 
