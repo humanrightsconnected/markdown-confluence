@@ -18,7 +18,7 @@
     "author": "andymac4182",
     "license": "Apache 2.0",
     "devDependencies": {
-        "@types/node": "^24.9.2",
+        "@types/node": "^24.10.1",
         "eslint": "^9.38.0",
         "eslint-config-prettier": "^10.1.8",
         "globals": "^16.4.0",

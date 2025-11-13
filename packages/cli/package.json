@@ -16,7 +16,7 @@
     "author": "andymac4182",
     "license": "Apache 2.0",
     "devDependencies": {
-        "@types/node": "^24.9.2",
+        "@types/node": "^24.10.1",
         "esbuild": "0.25.11",
         "esbuild-node-externals": "^1.18.0",
         "esbuild-plugin-copy": "^2.1.1",
