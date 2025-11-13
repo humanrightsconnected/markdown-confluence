@@ -21,7 +21,7 @@
         "esbuild": "0.25.11",
         "esbuild-node-externals": "^1.18.0",
         "esbuild-plugin-copy": "^2.1.1",
-        "eslint": "^9.38.0",
+        "eslint": "^9.39.1",
         "eslint-config-prettier": "^10.1.8",
         "globals": "^16.4.0",
         "mermaid": "^11.12.1",
