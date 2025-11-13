@@ -103,11 +103,11 @@ jobs:
 
           gh pr comment "${{ github.event.pull_request.number }}" --body "🤖 **Auto-merge enabled**
 
-This Dependabot PR has been automatically approved because:
-- All required checks passed ✅
-- Update type: \`$UPDATE_TYPE\`
-- Package(s): \`$PACKAGE_NAME\`
+          This Dependabot PR has been automatically approved because:
+          - All required checks passed ✅
+          - Update type: \`$UPDATE_TYPE\`
+          - Package(s): \`$PACKAGE_NAME\`
 
-The PR will be automatically merged when all branch protection requirements are met."
+          The PR will be automatically merged when all branch protection requirements are met."
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
