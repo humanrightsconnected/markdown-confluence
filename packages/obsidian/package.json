@@ -18,7 +18,7 @@
         "@types/mime-types": "^3.0.1",
         "@types/node": "^24.9.2",
         "@types/react-dom": "^19.0.0",
-        "esbuild": "0.25.11",
+        "esbuild": "0.27.0",
         "esbuild-node-externals": "^1.18.0",
         "esbuild-plugin-copy": "^2.1.1",
         "eslint": "^9.38.0",
