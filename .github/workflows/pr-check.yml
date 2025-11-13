@@ -5,7 +5,9 @@ on:
     branches:
       - main
 
-permissions: read-all
+permissions:
+  contents: write
+  pull-requests: read
 
 concurrency:
   group: "ci-check"
@@ -40,11 +42,39 @@ jobs:
 
     - name: Check out repository code
       uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      with:
+        ref: ${{ github.event.pull_request.head.ref }}
+        token: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Set up Node.js
       uses: actions/setup-node@2028fbc5c25fe9cf00d9f06a71cc4710d4507903 # v6.0.0
       with:
         node-version: "24.x"
+
+    - name: Check package-lock.json sync
+      id: check_lock
+      run: |
+        if ! npm ci --dry-run 2>/dev/null; then
+          echo "lock_out_of_sync=true" >> $GITHUB_OUTPUT
+          echo "package-lock.json is out of sync"
+        else
+          echo "lock_out_of_sync=false" >> $GITHUB_OUTPUT
+          echo "package-lock.json is in sync"
+        fi
+
+    - name: Update package-lock.json if needed
+      if: steps.check_lock.outputs.lock_out_of_sync == 'true' && github.actor == 'dependabot[bot]'
+      run: |
+        npm install --package-lock-only
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+        git add package-lock.json
+        if git diff --staged --quiet; then
+          echo "No changes to commit"
+        else
+          git commit -m "chore: update package-lock.json for Dependabot PR"
+          git push
+        fi
 
     - name: Install dependencies
       run: npm ci
