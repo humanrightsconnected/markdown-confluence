@@ -7,6 +7,7 @@
 ![GitHub code size](https://img.shields.io/github/languages/code-size/humanrightsconnected/markdown-confluence)
 ![GitHub repo size](https://img.shields.io/github/repo-size/humanrightsconnected/markdown-confluence)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-%23FE5196?logo=conventionalcommits&logoColor=white)](https://conventionalcommits.org)
+![CodeRabbit Pull Request Reviews](https://img.shields.io/coderabbit/prs/github/humanrightsconnected/markdown-confluence?utm_source=oss&utm_medium=github&utm_campaign=humanrightsconnected%2Fmarkdown-confluence&labelColor=171717&color=FF570A&link=https%3A%2F%2Fcoderabbit.ai&label=CodeRabbit+Reviews)
 
 Obsidian Downloads: ![GitHub all releases](https://img.shields.io/github/downloads/markdown-confluence/obsidian-integration/total)
 
