@@ -1,0 +1,113 @@
+name: Dependabot Auto-Approve and Merge
+
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  auto-approve-and-merge:
+    runs-on: ubuntu-latest
+    if: github.actor == 'dependabot[bot]'
+    steps:
+      - name: Dependabot metadata
+        id: metadata
+        uses: dependabot/fetch-metadata@5e5f99653a5b510e8555840e80cbf1514ad4af38 # v2.1.0
+        with:
+          github-token: "${{ secrets.GITHUB_TOKEN }}"
+
+      - name: Wait for checks to complete
+        run: |
+          echo "Waiting 30 seconds for checks to start..."
+          sleep 30
+
+      - name: Check if all checks passed
+        id: check_status
+        run: |
+          PR_NUMBER="${{ github.event.pull_request.number }}"
+
+          # Get the commit SHA
+          COMMIT_SHA="${{ github.event.pull_request.head.sha }}"
+
+          # Wait for checks to complete (max 10 minutes)
+          MAX_ATTEMPTS=60
+          ATTEMPT=0
+
+          while [ $ATTEMPT -lt $MAX_ATTEMPTS ]; do
+            echo "Checking status (attempt $((ATTEMPT+1))/$MAX_ATTEMPTS)..."
+
+            # Get check runs status
+            CHECK_RUNS=$(gh api repos/${{ github.repository }}/commits/$COMMIT_SHA/check-runs --jq '.check_runs[] | select(.name != "Dependabot Auto-Approve and Merge") | {name: .name, status: .status, conclusion: .conclusion}')
+
+            # Count total checks
+            TOTAL_CHECKS=$(echo "$CHECK_RUNS" | jq -s 'length')
+
+            if [ "$TOTAL_CHECKS" -eq 0 ]; then
+              echo "No checks found yet, waiting..."
+              sleep 10
+              ATTEMPT=$((ATTEMPT+1))
+              continue
+            fi
+
+            # Check if all checks are completed
+            COMPLETED_CHECKS=$(echo "$CHECK_RUNS" | jq -s '[.[] | select(.status == "completed")] | length')
+
+            if [ "$COMPLETED_CHECKS" -lt "$TOTAL_CHECKS" ]; then
+              echo "Checks still running: $COMPLETED_CHECKS/$TOTAL_CHECKS completed"
+              sleep 10
+              ATTEMPT=$((ATTEMPT+1))
+              continue
+            fi
+
+            # Check if all completed checks passed
+            FAILED_CHECKS=$(echo "$CHECK_RUNS" | jq -s '[.[] | select(.conclusion != "success" and .conclusion != "skipped")] | length')
+
+            if [ "$FAILED_CHECKS" -gt 0 ]; then
+              echo "Some checks failed. Not auto-merging."
+              echo "all_passed=false" >> $GITHUB_OUTPUT
+              exit 0
+            fi
+
+            echo "All checks passed!"
+            echo "all_passed=true" >> $GITHUB_OUTPUT
+            exit 0
+          done
+
+          echo "Timeout waiting for checks"
+          echo "all_passed=false" >> $GITHUB_OUTPUT
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Approve PR
+        if: steps.check_status.outputs.all_passed == 'true'
+        run: |
+          gh pr review "${{ github.event.pull_request.number }}" --approve --body "Auto-approving Dependabot PR as all checks passed ✅"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Enable auto-merge
+        if: steps.check_status.outputs.all_passed == 'true'
+        run: |
+          gh pr merge "${{ github.event.pull_request.number }}" --auto --squash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Comment on PR
+        if: steps.check_status.outputs.all_passed == 'true'
+        run: |
+          PACKAGE_NAME="${{ steps.metadata.outputs.dependency-names }}"
+          UPDATE_TYPE="${{ steps.metadata.outputs.update-type }}"
+
+          gh pr comment "${{ github.event.pull_request.number }}" --body "🤖 **Auto-merge enabled**
+
+This Dependabot PR has been automatically approved because:
+- All required checks passed ✅
+- Update type: \`$UPDATE_TYPE\`
+- Package(s): \`$PACKAGE_NAME\`
+
+The PR will be automatically merged when all branch protection requirements are met."
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
