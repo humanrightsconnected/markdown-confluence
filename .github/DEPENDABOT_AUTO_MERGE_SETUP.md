@@ -46,6 +46,8 @@ If you have **admin access** to the repository, you can exempt Dependabot from r
 
 ### Setup Steps
 
+#### Method 1: Using GitHub UI
+
 1. Go to **Settings** → **Branches**
 2. Edit the **main** branch protection rule (or create one)
 3. Under **"Require a pull request before merging"**:
@@ -53,9 +55,37 @@ If you have **admin access** to the repository, you can exempt Dependabot from r
    - Set minimum approvals (e.g., 1)
 4. Under **"Allow specified actors to bypass required pull requests"**:
    - Click **"Add bypass allowed actor"**
-   - Select or search for `dependabot[bot]`
-   - Add the actor
+   - In the search box, type **just** `dependabot` (without `[bot]`)
+   - Look for the **app** icon (not a user)
+   - Select **Dependabot** from the dropdown
+   - Add the app
 5. Save changes
+
+**Troubleshooting:**
+- If `dependabot` doesn't show up, make sure Dependabot is enabled:
+  - Go to **Settings** → **Code security and analysis**
+  - Enable **"Dependabot security updates"**
+  - Enable **"Dependabot version updates"**
+- Try searching in the "Apps" section/tab if available
+- Don't include `[bot]` in your search - just type `dependabot`
+
+#### Method 2: Using GitHub CLI (Easier!)
+
+If the UI search doesn't work, use this command:
+
+```bash
+# Get current protection settings
+gh api repos/humanrightsconnected/markdown-confluence/branches/main/protection \
+  > protection.json
+
+# Add Dependabot to bypass list (you'll need to edit the JSON)
+# Or use this one-liner to add Dependabot:
+gh api --method PUT \
+  repos/humanrightsconnected/markdown-confluence/branches/main/protection/required_pull_request_reviews \
+  -f bypass_pull_request_allowances='{"apps":["dependabot"]}'
+```
+
+**Note:** The CLI method requires careful handling of existing settings. It's easier to use the UI if possible.
 
 ### What This Does
 
