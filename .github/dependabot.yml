@@ -13,6 +13,15 @@ updates:
       prefix: "deps"
       prefix-development: "deps-dev"
       include: "scope"
+    open-pull-requests-limit: 10
+    # Auto-merge patch and minor updates for development dependencies
+    # Requires GitHub auto-merge to be enabled
+    groups:
+      development-dependencies:
+        dependency-type: "development"
+        update-types:
+          - "minor"
+          - "patch"
 
   - package-ecosystem: github-actions
     directory: /
@@ -22,6 +31,15 @@ updates:
       prefix: "deps"
       prefix-development: "deps-dev"
       include: "scope"
+    open-pull-requests-limit: 10
+    # Auto-merge minor and patch updates for GitHub Actions
+    groups:
+      github-actions:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
 
   - package-ecosystem: npm
     directory: /packages/lib
@@ -31,7 +49,14 @@ updates:
       prefix: "deps"
       prefix-development: "deps-dev"
       include: "scope"
-  
+    open-pull-requests-limit: 10
+    groups:
+      development-dependencies:
+        dependency-type: "development"
+        update-types:
+          - "minor"
+          - "patch"
+
   - package-ecosystem: docker
     directory: /packages/cli
     schedule:
@@ -40,6 +65,7 @@ updates:
       prefix: "deps"
       prefix-development: "deps-dev"
       include: "scope"
+    open-pull-requests-limit: 10
 
   - package-ecosystem: npm
     directory: /packages/cli
@@ -49,6 +75,13 @@ updates:
       prefix: "deps"
       prefix-development: "deps-dev"
       include: "scope"
+    open-pull-requests-limit: 10
+    groups:
+      development-dependencies:
+        dependency-type: "development"
+        update-types:
+          - "minor"
+          - "patch"
 
   - package-ecosystem: npm
     directory: /packages/mermaid-electron-renderer
@@ -58,7 +91,14 @@ updates:
       prefix: "deps"
       prefix-development: "deps-dev"
       include: "scope"
-    
+    open-pull-requests-limit: 10
+    groups:
+      development-dependencies:
+        dependency-type: "development"
+        update-types:
+          - "minor"
+          - "patch"
+
   - package-ecosystem: npm
     directory: /packages/mermaid-puppeteer-renderer
     schedule:
@@ -67,6 +107,13 @@ updates:
       prefix: "deps"
       prefix-development: "deps-dev"
       include: "scope"
+    open-pull-requests-limit: 10
+    groups:
+      development-dependencies:
+        dependency-type: "development"
+        update-types:
+          - "minor"
+          - "patch"
 
   - package-ecosystem: npm
     directory: /packages/obsidian
@@ -76,3 +123,10 @@ updates:
       prefix: "deps"
       prefix-development: "deps-dev"
       include: "scope"
+    open-pull-requests-limit: 10
+    groups:
+      development-dependencies:
+        dependency-type: "development"
+        update-types:
+          - "minor"
+          - "patch"
