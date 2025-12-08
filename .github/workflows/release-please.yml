@@ -24,7 +24,7 @@ jobs:
       packages: write
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@95d9a5deda9de15063e7595e9719c11c38c90ae2 # v2.13.2
+        uses: step-security/harden-runner@df199fb7be9f65074067a9eb93f12bb4c5547cf2 # v2.13.3
         with:
           egress-policy: audit # TODO: change to 'egress-policy: block' after couple of runs
 
@@ -93,7 +93,7 @@ jobs:
       - name: Extract metadata (tags, labels) for Docker
         if: ${{ steps.release-please.outputs.release_created }}
         id: meta
-        uses: docker/metadata-action@318604b99e75e41977312d83839a89be02ca4893
+        uses: docker/metadata-action@c299e40c65443455700f0fdfc63efafe5b349051
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
