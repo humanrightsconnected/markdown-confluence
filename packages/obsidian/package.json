@@ -33,7 +33,7 @@
     "dependencies": {
         "confluence.js": "^2.1.0",
         "mime-types": "^3.0.1",
-        "react": "^19.2.0",
+        "react": "^19.2.1",
         "react-dom": "^19.2.0",
         "@markdown-confluence/lib": "5.5.2",
         "@markdown-confluence/mermaid-electron-renderer": "5.5.2"
